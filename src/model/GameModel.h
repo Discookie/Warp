@@ -18,7 +18,7 @@ public:
     void selectTower(EntityType type);
     bool isBuildable(EntityType type);
     void buildTower(std::pair<int, int> pos);
-    int getGold;
+    int getGold();
     int getPoints(); // ?
     int getWaveNumber();
     int getWaveProgress();
@@ -26,6 +26,5 @@ public:
     void pause();
     void resume();
 };
-
 
 #endif //WARP_GAMEMODEL_H

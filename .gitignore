@@ -1,0 +1,5 @@
+# Build output directories
+build/
+
+# IDE config directories
+.vs*/
