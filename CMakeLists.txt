@@ -7,10 +7,13 @@ set (CMAKE_GENERATOR_PLATFORM=x64)
 
 # Dependencies
 add_subdirectory (libs/allegro)
+add_subdirectory (libs/googletest)
 # Neither doesn't have any build deps
 
 # Add include directories
 include_directories (libs/allegro/include)
+include_directories (libs/googletest/googletest/include)
+include_directories (libs/googletest/googlemock/include)
 include_directories (libs/neither/include)
 
 # Add the project itself
