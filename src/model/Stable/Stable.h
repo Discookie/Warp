@@ -5,11 +5,11 @@
 
 class Stable : public FieldEntity{
 protected:
-    const int upgradeCost;
     bool isUpgraded;
 public:
+    static const int upgradeCost;
     virtual ~Stable() = default;
-    virtual void upgarde() = 0;
+    virtual void upgrade() = 0;
     virtual int value() = 0;
 };
 
