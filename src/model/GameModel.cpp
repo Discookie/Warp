@@ -1,8 +1,7 @@
 #include "GameModel.h"
 
 GameModel::GameModel(){
-    //this->timer = al_create_timer(1.0 / 30.0); // 30 fps
-    this->fields = std::vector(10, std::vector<Field>(12));
+    this->timer = al_create_timer(1);
     GameModel::newGame();
 }
 
@@ -12,35 +11,28 @@ void GameModel::newGame(){
     this->gold = 0;
     this->waveTimer = 2000;
     this->haveSpecial = false;
-    this->selectedTower = EntityType::typeNone;
-    this->constructFields();
-    //al_start_timer(this->timer);
+    this->selectedTower = typeNone;
+    this->fields.resize(5);
+    for(int i = 0; i < 5; i++){
+        this->fields[i].resize(8);
+        for(int j = 0; j < 8; j++){
+            this->fields[i][j] = Field(std::pair<int,int>(i,j));
+        }
+    }
+    al_start_timer(this->timer);
 }
 
 void GameModel::loadGame() {
     throw std::logic_error("Unimplemented");
 }
 
-void GameModel::constructFields() {
-    for(int i = 0; i < 10; i++) {
-        for(int j = 0; j < 12; j++) {
-            this->fields[i][j] = Field(std::pair<int,int>(i,j));
-        }
+Field GameModel::getField(std::pair<int, int> position) {
+    if((0 <= position.first  && position.first  < 5) &&
+       (0 <= position.second && position.second < 8) ){
+        this->fields[position.first][position.second];
     }
-}
 
-std::optional<Field> GameModel::getField(std::pair<int, int> position) {
-    if((0 <= position.first  && position.first  < 10) &&
-       (0 <= position.second && position.second < 12) ){
-        return this->fields[position.first][position.second];
-    }
-    return std::nullopt;
-}
-
-void GameModel::updateModel() {
-    this->updateFields();
-
-
+    // Implement this function with either
 }
 
 void GameModel::updateFields() {
@@ -57,35 +49,31 @@ void GameModel::selectTower(EntityType type) {
 
 bool GameModel::isBuildable(EntityType type) {
     switch (type) {
-        case EntityType::typeFactory  :
-            return this->gold >= FieldEntity::cost_of<Factory>();
-        case EntityType::typeStable_1 :
-            return this->gold >= FieldEntity::cost_of<Stable1>();
-        case EntityType::typeStable_2 :
-            return this->gold >= FieldEntity::cost_of<Stable1>();
-        case EntityType::typeStable_3 :
-            return this->gold >= FieldEntity::cost_of<Stable1>();
-        case EntityType::typeHqAttack :
-            return this->gold >= FieldEntity::cost_of<HqAttack>();
+        case EntityType::typeFactory :
+            return this->gold >= Factory::cost;
+        case EntityType::typeStable_1:
+            return this->gold >= Stable1::cost;
+        case EntityType::typeStable_2:
+            return this->gold >= Stable1::cost;
+        case EntityType::typeStable_3:
+            return this->gold >= Stable1::cost;
+        case EntityType::typeHqAttack:
+            return this->gold >= HqAttack::cost;
         case EntityType::typeHqDefense:
-            return this->gold >= FieldEntity::cost_of<HqDefense>();
-        case EntityType::typeSpecial  :
-            return this->gold >= FieldEntity::cost_of<Special>() &&
+            return this->gold >= HqDefense::cost;
+        case EntityType::typeSpecial:
+            return this->gold >= Special::cost &&
                    this->haveSpecial;
         default: return false;
     }
 }
 
 void GameModel::buildTower(std::pair<int, int> position) {
-    if( isBuildable(selectedTower) &&
-        getField(position).has_value() &&
-        getField(position)->getTeamStatus() != Team::Enemy) {
-        this->fields[position.first][position.second].buildTower(selectedTower);
-        this->gold -= this->fields[position.first][position.second].getTower().value()->cost();
-        // this->points += 100;
-    }
-    else{
-        // You can't build here!
+    if(isBuildable(selectedTower)) {
+        // Implemented with either
+        //if(getField(position) == empty)
+            this->fields[position.first][position.second].buildTower(selectedTower);
+        //}
     }
 }
 
@@ -93,7 +81,6 @@ int GameModel::getWaveProgress() {
     throw std::logic_error("Unimplemented");
 }
 
-/*
 void GameModel::pause() {
     al_stop_timer(this->timer);
 }
@@ -101,4 +88,7 @@ void GameModel::pause() {
 void GameModel::resume() {
     al_resume_timer(this->timer);
 }
-*/
+
+
+
+

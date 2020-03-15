@@ -7,8 +7,8 @@ class Stable : public FieldEntity{
 protected:
     bool isUpgraded;
 public:
+    static const int upgradeCost;
     virtual ~Stable() = default;
-
     virtual void upgrade() = 0;
     virtual int value() = 0;
 };
