@@ -1,22 +1,33 @@
 #include "Factory.h"
 
-Factory::Factory(
-    Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) {
+Factory::Factory(std::pair<int, int> position) {
     this->position = position;
-    this->callback = game_model_callback;
-    this->upgraded = false;
-    this->hp       = Constants::FACTORY_BASE_MAX_HP;
+    this->isUpgraded = false;
+    this->production = 100;
+    this->hp = 1000;
+    this->maxHp = 1000;
 }
 
-void Factory::produce() { callback->produce(shared_from_this()); }
+void Factory::update() {
 
-void Factory::update() {}
+}
 
-void Factory::die() { callback->die(shared_from_this()); }
+void Factory::upgrade() {
 
-void Factory::take_damage(int amount) {
-    this->hp -= amount;
-    if (hp < 0) {
-        this->die();
-    }
+}
+
+void Factory::die() {
+
+}
+
+void Factory::attack() {
+
+}
+
+int Factory::value() {
+
+}
+
+void Factory::takeDamage(int amount) {
+
 }

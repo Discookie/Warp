@@ -1,15 +1,15 @@
 #ifndef WARP_ENTITYTYPE_H
 #define WARP_ENTITYTYPE_H
 
-enum EntityType {
-    TypeNone,
-    TypeFactory,
-    TypeLaserTower,
-    TypeTeslaCoil,
-    TypeSniperTower,
-    TypeHqAttack,
-    TypeHqDefense,
-    TypeSpecial
+enum EntityType{
+    typeNone,
+    typeFactory,
+    typeStable_1,
+    typeStable_2,
+    typeStable_3,
+    typeHqAttack,
+    typeHqDefense,
+    typeSpecial
 };
 
-#endif  // WARP_ENTITYTYPE_H
+#endif //WARP_ENTITYTYPE_H

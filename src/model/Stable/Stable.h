@@ -3,22 +3,15 @@
 
 #include "../FieldEntity.h"
 
-class Stable : public FieldEntity {
+class Stable : public FieldEntity{
 protected:
-    bool upgraded;
-
+    bool isUpgraded;
 public:
-    ~Stable() override = default;
-
-    bool is_friendly() final { return true; }
-
-    int get_vector_pos() final { return -1; }
-
-    void upgrade() { upgraded = true; };
-
-    bool is_upgraded() { return upgraded; };
-
-    virtual int remove_value() = 0;
+    static const int upgradeCost;
+    virtual ~Stable() = default;
+    virtual void upgrade() = 0;
+    virtual int value() = 0;
 };
 
-#endif  // WARP_STABLE_H
+
+#endif //WARP_STABLE_H

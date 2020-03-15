@@ -1,14 +1,11 @@
-#ifndef WARP_FACTORY_H
-#define WARP_FACTORY_H
+#ifndef WARP_STABLE1_H
+#define WARP_STABLE1_H
 
-#include <bits/unique_ptr.h>
 #include "Stable.h"
 
-class Factory : public Stable {
-private:
-    int production;
+class Stable1 : public Stable{
 public:
-    explicit Factory(std::pair<int, int> position);
+    explicit Stable1(std::pair<int, int> position);
     static const int cost = 100;
     static const int upgradeCost = 100;
 
@@ -23,4 +20,4 @@ public:
 };
 
 
-#endif //WARP_FACTORY_H
+#endif //WARP_STABLE1_H
