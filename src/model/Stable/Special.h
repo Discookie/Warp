@@ -4,7 +4,18 @@
 #include "Stable.h"
 
 class Special : public Stable{
+public:
+    explicit Special(std::pair<int, int> position);
+    static const int cost = 200;
 
+    void update() override;
+    void upgrade() override;
+    void die() override;
+    void attack() override;
+    int value() override;
+    void takeDamage(int amount) override;
+    bool isFriendly() override { return true; }
+    void getStats() override;
 };
 
 

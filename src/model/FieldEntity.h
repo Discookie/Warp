@@ -9,9 +9,9 @@ protected:
     int timeCounter;
     int attackSpeed;
     int hp;
-    const int maxHp;
-    const int cost;
+    int maxHp;
 public:
+    static const int cost;
     virtual ~FieldEntity() = default;
     virtual void update() = 0;
     virtual void attack() = 0;
