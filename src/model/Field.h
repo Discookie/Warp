@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <vector>
-#include <neither/neither.hpp>
+#include <optional>
 
 #include "Stable/Stable.h"
 #include "Stable/Factory.h"
@@ -18,14 +18,14 @@
 class Field {
 private:
     std::pair<int, int> position;
-    std::shared_ptr<Stable> tower;
+    std::optional<std::shared_ptr<Stable>> tower;
     std::vector<std::unique_ptr<Unstable>> movingEntities;
     Team teamStatus;
 public:
     explicit Field(std::pair<int, int> position);
     void buildTower(EntityType type);
-    std::shared_ptr<Stable> getTower() const;      //neither::Either<std::string, std::unique_ptr<Stable>> getTower();
-    std::vector<std::unique_ptr<Unstable>> getMovingEntities() const;
+    std::optional<std::shared_ptr<Stable>> getTower();
+    std::vector<std::unique_ptr<Unstable>> getMovingEntities();
     Team getTeamStatus() const { return teamStatus; }
     void updateEntities();
 };
