@@ -42,11 +42,10 @@ void Field::updateEntities() {
     }
 }
 
-std::unique_ptr<Stable> Field::getTower() {
-    return std::move(this->tower);
+std::shared_ptr<Stable> Field::getTower() const {
+    return this->tower;
 }
 
-std::vector<std::unique_ptr<Unstable>> Field::getMovingEntities() {
-    return std::move(this->movingEntities);
-
+std::vector<std::unique_ptr<Unstable>> Field::getMovingEntities() const {
+    return this->movingEntities;
 }
