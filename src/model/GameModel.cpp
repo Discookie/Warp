@@ -30,13 +30,12 @@ void GameModel::constructFields() {
     }
 }
 
-neither::Either<std::out_of_range,Field> GameModel::getField(std::pair<int, int> position) {
+std::optional<Field> GameModel::getField(std::pair<int, int> position) {
     if((0 <= position.first  && position.first  < 10) &&
        (0 <= position.second && position.second < 12) ){
-        return neither::Either<std::out_of_range,Field>::rightOf(this->fields[position.first][position.second]);
+        return this->fields[position.first][position.second];
     }
-    return neither::Either<std::out_of_range,Field>::leftOf(std::out_of_range("Index out of range!"));
-    // Implement this function with either
+    return std::nullopt;
 }
 
 void GameModel::updateModel() {
@@ -59,19 +58,19 @@ void GameModel::selectTower(EntityType type) {
 
 bool GameModel::isBuildable(EntityType type) {
     switch (type) {
-        case EntityType::typeFactory :
+        case EntityType::typeFactory  :
             return this->gold >= Factory::cost;
-        case EntityType::typeStable_1:
+        case EntityType::typeStable_1 :
             return this->gold >= Stable1::cost;
-        case EntityType::typeStable_2:
+        case EntityType::typeStable_2 :
             return this->gold >= Stable1::cost;
-        case EntityType::typeStable_3:
+        case EntityType::typeStable_3 :
             return this->gold >= Stable1::cost;
-        case EntityType::typeHqAttack:
+        case EntityType::typeHqAttack :
             return this->gold >= HqAttack::cost;
         case EntityType::typeHqDefense:
             return this->gold >= HqDefense::cost;
-        case EntityType::typeSpecial:
+        case EntityType::typeSpecial  :
             return this->gold >= Special::cost &&
                    this->haveSpecial;
         default: return false;
@@ -79,13 +78,11 @@ bool GameModel::isBuildable(EntityType type) {
 }
 
 void GameModel::buildTower(std::pair<int, int> position) {
-    // Implemented with either
-    if(isBuildable(selectedTower)  &&
-        !getField(position).isLeft &&
-        getField(position).right().value.getTeamStatus() != Team::Enemy) {
-
+    if( isBuildable(selectedTower) &&
+        getField(position).has_value() &&
+        getField(position)->getTeamStatus() != Team::Enemy) {
         this->fields[position.first][position.second].buildTower(selectedTower);
-        this->gold -= this->fields[position.first][position.second].getTower()->cost;
+        this->gold -= this->fields[position.first][position.second].getTower().value()->cost;
         // this->points += 100;
     }
     else{
