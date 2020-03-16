@@ -24,20 +24,29 @@ private:
     bool haveSpecial;
     EntityType selectedTower;
 public:
+    // Constructors
     GameModel();
     void newGame();
     void loadGame();
+    void constructFields();
 
-    Field getField(std::pair<int, int> position);
+    // Updates
+    void updateModel();
     void updateFields();
+
+    // Building (player interaction)
     void selectTower(EntityType type);
-    bool isBuildable(EntityType type);
     void buildTower(std::pair<int, int> position);
+    bool isBuildable(EntityType type);
+
+    // Getters
+    neither::Either<std::out_of_range, Field> getField(std::pair<int, int> position);
     int getGold() const { return this->gold; }
     int getPoints() const { return this->points; }
     int getWaveNumber() const { return this->waveNumber; }
     int getWaveProgress();
 
+    // Time handling
     void pause();
     void resume();
 };
