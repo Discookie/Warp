@@ -18,14 +18,15 @@
 class Field {
 private:
     std::pair<int, int> position;
-    std::unique_ptr<Stable> tower;
+    std::shared_ptr<Stable> tower;
     std::vector<std::unique_ptr<Unstable>> movingEntities;
     Team teamStatus;
 public:
     explicit Field(std::pair<int, int> position);
     void buildTower(EntityType type);
-    std::unique_ptr<Stable> getTower();      //neither::Either<std::string, std::unique_ptr<Stable>> getTower();
-    std::vector<std::unique_ptr<Unstable>> getMovingEntities();
+    std::shared_ptr<Stable> getTower() const;      //neither::Either<std::string, std::unique_ptr<Stable>> getTower();
+    std::vector<std::unique_ptr<Unstable>> getMovingEntities() const;
+    Team getTeamStatus() const { return teamStatus; }
     void updateEntities();
 };
 

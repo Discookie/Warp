@@ -12,13 +12,7 @@ void GameModel::newGame(){
     this->waveTimer = 2000;
     this->haveSpecial = false;
     this->selectedTower = typeNone;
-    this->fields.resize(5);
-    for(int i = 0; i < 5; i++){
-        this->fields[i].resize(8);
-        for(int j = 0; j < 8; j++){
-            this->fields[i][j] = Field(std::pair<int,int>(i,j));
-        }
-    }
+    this->constructFields();
     al_start_timer(this->timer);
 }
 
@@ -26,13 +20,29 @@ void GameModel::loadGame() {
     throw std::logic_error("Unimplemented");
 }
 
-Field GameModel::getField(std::pair<int, int> position) {
-    if((0 <= position.first  && position.first  < 5) &&
-       (0 <= position.second && position.second < 8) ){
-        this->fields[position.first][position.second];
+void GameModel::constructFields() {
+    this->fields.resize(10);
+    for(int i = 0; i < 10; i++) {
+        this->fields[i].resize(12);
+        for(int j = 0; j < 12; j++) {
+            this->fields[i][j] = Field(std::pair<int,int>(i,j));
+        }
     }
+}
 
+neither::Either<std::out_of_range,Field> GameModel::getField(std::pair<int, int> position) {
+    if((0 <= position.first  && position.first  < 10) &&
+       (0 <= position.second && position.second < 12) ){
+        return neither::Either<std::out_of_range,Field>::rightOf(this->fields[position.first][position.second]);
+    }
+    return neither::Either<std::out_of_range,Field>::leftOf(std::out_of_range("Index out of range!"));
     // Implement this function with either
+}
+
+void GameModel::updateModel() {
+    this->updateFields();
+
+
 }
 
 void GameModel::updateFields() {
@@ -69,11 +79,17 @@ bool GameModel::isBuildable(EntityType type) {
 }
 
 void GameModel::buildTower(std::pair<int, int> position) {
-    if(isBuildable(selectedTower)) {
-        // Implemented with either
-        //if(getField(position) == empty)
-            this->fields[position.first][position.second].buildTower(selectedTower);
-        //}
+    // Implemented with either
+    if(isBuildable(selectedTower)  &&
+        !getField(position).isLeft &&
+        getField(position).right().value.getTeamStatus() != Team::Enemy) {
+
+        this->fields[position.first][position.second].buildTower(selectedTower);
+        this->gold -= this->fields[position.first][position.second].getTower()->cost;
+        // this->points += 100;
+    }
+    else{
+        // You can't build here!
     }
 }
 
@@ -88,7 +104,3 @@ void GameModel::pause() {
 void GameModel::resume() {
     al_resume_timer(this->timer);
 }
-
-
-
-
