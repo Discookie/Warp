@@ -4,34 +4,37 @@ Field::Field(std::pair<int, int> position){
     this->position = position;
     this->teamStatus = Team::Neutral;
     this->tower = std::nullopt;
-    this->movingEntities = std::vector<std::unique_ptr<Unstable>>();
+    this->movingEntities = std::vector<std::shared_ptr<Unstable>>();
 }
 
 void Field::buildTower(EntityType type) {
-    switch (type) {
-        case EntityType::typeFactory :
-            this->tower = std::shared_ptr<Stable>(new Factory(this->position));
-            return;
-        case EntityType::typeStable_1:
-            this->tower = std::shared_ptr<Stable>(new Stable1(this->position));
-            return;
-        case EntityType::typeStable_2:
-            this->tower = std::shared_ptr<Stable>(new Stable1(this->position));
-            return;
-        case EntityType::typeStable_3:
-            this->tower = std::shared_ptr<Stable>(new Stable1(this->position));
-            return;
-        case EntityType::typeHqAttack:
-            this->tower = std::shared_ptr<Stable>(new HqAttack(this->position));
-            return;
-        case EntityType::typeHqDefense:
-            this->tower = std::shared_ptr<Stable>(new HqDefense(this->position));
-            return;
-        case EntityType::typeSpecial:
-            this->tower = std::shared_ptr<Stable>(new Special(this->position));
-            return;
-        default:
-            return;
+    if(this->teamStatus != Team::Enemy) {
+        switch (type) {
+            case EntityType::typeFactory :
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Factory>(this->position));
+                break;
+            case EntityType::typeStable_1:
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Stable1>(this->position));
+                break;
+            case EntityType::typeStable_2:
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Stable1>(this->position));
+                break;
+            case EntityType::typeStable_3:
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Stable1>(this->position));
+                break;
+            case EntityType::typeHqAttack:
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<HqAttack>(this->position));
+                break;
+            case EntityType::typeHqDefense:
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<HqDefense>(this->position));
+                break;
+            case EntityType::typeSpecial:
+                this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Special>(this->position));
+                break;
+            default:
+                return;
+        }
+        this->teamStatus = Team::Friendly;
     }
 }
 
@@ -51,6 +54,14 @@ std::optional<std::shared_ptr<Stable>> Field::getTower() {
     return std::nullopt;
 }
 
-std::vector<std::unique_ptr<Unstable>> Field::getMovingEntities() {
+void Field::removeTower() {
+    this->tower = std::nullopt;
+    if(this->movingEntities.empty()){
+        this->teamStatus = Team::Neutral;
+    }
+
+}
+
+std::vector<std::shared_ptr<Unstable>> Field::getMovingEntities() {
     return this->movingEntities;
 }

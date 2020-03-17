@@ -11,7 +11,9 @@
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
 #include "Stable/Special.h"
+
 #include "Unstable/Unstable.h"
+
 #include "Team.h"
 #include "EntityType.h"
 
@@ -19,13 +21,15 @@ class Field {
 private:
     std::pair<int, int> position;
     std::optional<std::shared_ptr<Stable>> tower;
-    std::vector<std::unique_ptr<Unstable>> movingEntities;
+    std::vector<std::shared_ptr<Unstable>> movingEntities;
     Team teamStatus;
 public:
+    Field(){}
     explicit Field(std::pair<int, int> position);
     void buildTower(EntityType type);
+    void removeTower();
     std::optional<std::shared_ptr<Stable>> getTower();
-    std::vector<std::unique_ptr<Unstable>> getMovingEntities();
+    std::vector<std::shared_ptr<Unstable>> getMovingEntities();
     Team getTeamStatus() const { return teamStatus; }
     void updateEntities();
 };
