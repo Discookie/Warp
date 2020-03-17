@@ -1,29 +1,35 @@
 #include "HqDefense.h"
 
-#include <memory>
+HqDefense::HqDefense(std::pair<int, int> position) {
 
-HqDefense::HqDefense(
-    Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) {
-    this->position = position;
-    this->callback = game_model_callback;
-    this->upgraded = true;
-    this->hp       = 1000;
 }
 
-void HqDefense::update() {}
+void HqDefense::update() {
 
-void HqDefense::die() { callback->die(shared_from_this()); }
+}
 
-int HqDefense::remove_value() {
-    if (upgraded) {
+void HqDefense::upgrade() {
+    this->isUpgraded = true;
+}
+
+void HqDefense::die() {
+
+}
+
+void HqDefense::attack() {
+
+}
+
+int HqDefense::value() {
+    if(isUpgraded){
         return 100;
     }
     return 50;
 }
 
-void HqDefense::take_damage(int amount) {
+void HqDefense::takeDamage(int amount) {
     this->hp -= amount;
-    if (hp < 0) {
+    if(hp < 0){
         this->die();
     }
 }
