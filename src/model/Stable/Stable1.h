@@ -6,8 +6,10 @@
 class Stable1 : public Stable{
 public:
     explicit Stable1(std::pair<int, int> position);
-    static const int cost = 100;
-    static const int upgradeCost = 100;
+    int cost() override { return 100; }
+    static int maxHp() { return 1000; }
+    static int upgradeCost() { return 100; }
+    static int attackSpeed() { return 10; }
 
     void update() override;
     void upgrade() override;
@@ -16,7 +18,7 @@ public:
     int value() override;
     void takeDamage(int amount) override;
     bool isFriendly() override { return true; }
-    void getStats() override;
+    // void getStats() override;
 };
 
 

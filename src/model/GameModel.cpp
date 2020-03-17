@@ -1,7 +1,8 @@
 #include "GameModel.h"
 
 GameModel::GameModel(){
-    this->timer = al_create_timer(1);
+    //this->timer = al_create_timer(1.0 / 30.0); // 30 fps
+    this->fields = std::vector(10, std::vector<Field>(12));
     GameModel::newGame();
 }
 
@@ -11,9 +12,9 @@ void GameModel::newGame(){
     this->gold = 0;
     this->waveTimer = 2000;
     this->haveSpecial = false;
-    this->selectedTower = typeNone;
+    this->selectedTower = EntityType::typeNone;
     this->constructFields();
-    al_start_timer(this->timer);
+    //al_start_timer(this->timer);
 }
 
 void GameModel::loadGame() {
@@ -21,9 +22,7 @@ void GameModel::loadGame() {
 }
 
 void GameModel::constructFields() {
-    this->fields.resize(10);
     for(int i = 0; i < 10; i++) {
-        this->fields[i].resize(12);
         for(int j = 0; j < 12; j++) {
             this->fields[i][j] = Field(std::pair<int,int>(i,j));
         }
@@ -59,19 +58,19 @@ void GameModel::selectTower(EntityType type) {
 bool GameModel::isBuildable(EntityType type) {
     switch (type) {
         case EntityType::typeFactory  :
-            return this->gold >= Factory::cost;
+            return this->gold >= FieldEntity::cost_of<Factory>();
         case EntityType::typeStable_1 :
-            return this->gold >= Stable1::cost;
+            return this->gold >= FieldEntity::cost_of<Stable1>();
         case EntityType::typeStable_2 :
-            return this->gold >= Stable1::cost;
+            return this->gold >= FieldEntity::cost_of<Stable1>();
         case EntityType::typeStable_3 :
-            return this->gold >= Stable1::cost;
+            return this->gold >= FieldEntity::cost_of<Stable1>();
         case EntityType::typeHqAttack :
-            return this->gold >= HqAttack::cost;
+            return this->gold >= FieldEntity::cost_of<HqAttack>();
         case EntityType::typeHqDefense:
-            return this->gold >= HqDefense::cost;
+            return this->gold >= FieldEntity::cost_of<HqDefense>();
         case EntityType::typeSpecial  :
-            return this->gold >= Special::cost &&
+            return this->gold >= FieldEntity::cost_of<Special>() &&
                    this->haveSpecial;
         default: return false;
     }
@@ -82,7 +81,7 @@ void GameModel::buildTower(std::pair<int, int> position) {
         getField(position).has_value() &&
         getField(position)->getTeamStatus() != Team::Enemy) {
         this->fields[position.first][position.second].buildTower(selectedTower);
-        this->gold -= this->fields[position.first][position.second].getTower().value()->cost;
+        this->gold -= this->fields[position.first][position.second].getTower().value()->cost();
         // this->points += 100;
     }
     else{
@@ -94,6 +93,7 @@ int GameModel::getWaveProgress() {
     throw std::logic_error("Unimplemented");
 }
 
+/*
 void GameModel::pause() {
     al_stop_timer(this->timer);
 }
@@ -101,3 +101,4 @@ void GameModel::pause() {
 void GameModel::resume() {
     al_resume_timer(this->timer);
 }
+*/
