@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <optional>
-#include <allegro5/allegro.h>
+//#include <allegro5/allegro.h>
 
 #include "Field.h"
 #include "EntityType.h"
@@ -17,7 +17,7 @@
 class GameModel {
 private:
     std::vector<std::vector<Field>> fields;
-    ALLEGRO_TIMER *timer;
+    //ALLEGRO_TIMER *timer;
     int points;
     int gold;
     int waveTimer;
@@ -51,8 +51,8 @@ public:
     int getWaveProgress();
 
     // Time handling
-    void pause();
-    void resume();
+    //void pause();
+    //void resume();
 };
 
 #endif //WARP_GAMEMODEL_H
