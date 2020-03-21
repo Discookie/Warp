@@ -5,6 +5,7 @@
 #include <vector>
 #include <optional>
 
+#include "CallbackClass.h"
 #include "Stable/Stable.h"
 #include "Stable/Factory.h"
 #include "model/Stable/LaserTower.h"
@@ -20,13 +21,15 @@
 class Field {
 private:
     std::pair<int, int> position;
+    CallbackClass callback;
     std::shared_ptr<Stable> tower;
     std::vector<std::shared_ptr<Unstable>> movingEntities;
     Team teamStatus;
 public:
     Field(){}
-    explicit Field(std::pair<int, int> position);
+    explicit Field(std::pair<int, int> position, CallbackClass gameModelCallback);
     void buildTower(EntityType type);
+    void upgradeTower();
     void removeTower();
     std::shared_ptr<Stable> getTower();
     std::vector<std::shared_ptr<Unstable>> getMovingEntities();

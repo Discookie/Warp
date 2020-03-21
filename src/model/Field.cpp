@@ -8,8 +8,9 @@
 #include "model/Stable/TeslaCoil.h"
 #include "Stable/SniperTower.h"
 
-Field::Field(std::pair<int, int> position){
+Field::Field(std::pair<int, int> position, CallbackClass gameModelCallback){
     this->position = position;
+    this->callback = gameModelCallback;
     this->teamStatus = Team::Neutral;
     this->tower = nullptr;
     this->movingEntities = std::vector<std::shared_ptr<Unstable>>();
@@ -19,30 +20,34 @@ void Field::buildTower(EntityType type) {
     if (this->teamStatus == Team::Enemy) return;
     switch (type) {
         case EntityType::typeFactory :
-            this->tower = std::make_shared<Factory>(this->position);
+            this->tower = std::make_shared<Factory>(this->position, this->callback);
             break;
         case EntityType::typeLaserTower:
-            this->tower = std::make_shared<LaserTower>(this->position);
+            this->tower = std::make_shared<LaserTower>(this->position, this->callback);
             break;
         case EntityType::typeTeslaCoil:
-            this->tower = std::make_shared<TeslaCoil>(this->position);
+            this->tower = std::make_shared<TeslaCoil>(this->position, this->callback);
             break;
         case EntityType::typeSniperTower:
-            this->tower = std::make_shared<SniperTower>(this->position);
+            this->tower = std::make_shared<SniperTower>(this->position, this->callback);
             break;
         case EntityType::typeHqAttack:
-            this->tower = std::make_shared<HqAttack>(this->position);
+            this->tower = std::make_shared<HqAttack>(this->position, this->callback);
             break;
         case EntityType::typeHqDefense:
-            this->tower = std::make_shared<HqDefense>(this->position);
+            this->tower = std::make_shared<HqDefense>(this->position, this->callback);
             break;
         case EntityType::typeSpecial:
-            this->tower = std::make_shared<Special>(this->position);
+            this->tower = std::make_shared<Special>(this->position, this->callback);
             break;
         default:
             return;
     }
     this->teamStatus = Team::Friendly;
+}
+
+void Field::upgradeTower(){
+    this->tower->upgrade();
 }
 
 void Field::updateEntities() {

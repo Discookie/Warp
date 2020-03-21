@@ -1,15 +1,14 @@
 #include "HqAttack.h"
 
-HqAttack::HqAttack(std::pair<int, int> position) {
-
+HqAttack::HqAttack(std::pair<int, int> position, CallbackClass gameModelCallback) {
+    this->position = position;
+    this->callback = gameModelCallback;
+    this->isUpgraded = true;
+    this->hp = 1000;
 }
 
 void HqAttack::update() {
 
-}
-
-void HqAttack::upgrade() {
-    this->isUpgraded = true;
 }
 
 void HqAttack::die() {
@@ -20,7 +19,7 @@ void HqAttack::attack() {
 
 }
 
-int HqAttack::value() {
+int HqAttack::removeValue() {
     if(isUpgraded){
         return 100;
     }
