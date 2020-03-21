@@ -3,7 +3,7 @@
 
 #include "../FieldEntity.h"
 
-class Stable : public FieldEntity{
+class Stable : public FieldEntity {
 protected:
     bool isUpgraded;
 public:

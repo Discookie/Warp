@@ -6,12 +6,6 @@
 #include <optional>
 
 #include "Stable/Stable.h"
-#include "Stable/Factory.h"
-#include "Stable/Stable1.h"
-#include "Stable/HqAttack.h"
-#include "Stable/HqDefense.h"
-#include "Stable/Special.h"
-
 #include "Unstable/Unstable.h"
 
 #include "Team.h"
