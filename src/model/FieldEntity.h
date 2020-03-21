@@ -25,6 +25,8 @@ public:
     static int cost_of();
     template<class T>
     static int baseMaxHp_of();
+    template<class T>
+    static int baseAttack_of();
 };
 
 #endif //WARP_FIELDENTITY_H

@@ -1,11 +1,11 @@
-#ifndef WARP_STABLE1_H
-#define WARP_STABLE1_H
+#ifndef WARP_TESLACOIL_H
+#define WARP_TESLACOIL_H
 
 #include "Stable.h"
 
-class Stable1 : public Stable{
+class TeslaCoil : public Stable{
 public:
-    explicit Stable1(std::pair<int, int> position);
+    explicit TeslaCoil(std::pair<int, int> position);
     int cost() override { return 100; }
     static int maxHp() { return 1000; }
     static int upgradeCost() { return 100; }
@@ -22,4 +22,4 @@ public:
 };
 
 
-#endif //WARP_STABLE1_H
+#endif //WARP_TESLACOIL_H

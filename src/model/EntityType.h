@@ -4,9 +4,9 @@
 enum EntityType{
     typeNone,
     typeFactory,
-    typeStable_1,
-    typeStable_2,
-    typeStable_3,
+    typeLaserTower,
+    typeTeslaCoil,
+    typeSniperTower,
     typeHqAttack,
     typeHqDefense,
     typeSpecial

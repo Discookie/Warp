@@ -1,17 +1,15 @@
-#ifndef WARP_FACTORY_H
-#define WARP_FACTORY_H
-
+#ifndef WARP_LASERTOWER_H
+#define WARP_LASERTOWER_H
 
 #include "Stable.h"
 
-class Factory : public Stable {
+class LaserTower : public Stable{
 public:
-    explicit Factory(std::pair<int, int> position);
+    explicit LaserTower(std::pair<int, int> position);
     int cost() override { return 100; }
     static int maxHp() { return 1000; }
     static int upgradeCost() { return 100; }
     static int attackSpeed() { return 10; }
-    static int production() { return 50; }
 
     void update() override;
     void upgrade() override;
@@ -24,4 +22,4 @@ public:
 };
 
 
-#endif //WARP_FACTORY_H
+#endif //WARP_LASERTOWER_H
