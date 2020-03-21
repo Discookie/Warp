@@ -1,15 +1,14 @@
 #include "TeslaCoil.h"
 
-TeslaCoil::TeslaCoil(std::pair<int, int> position) {
-
+TeslaCoil::TeslaCoil(std::pair<int, int> position, CallbackClass gameModelCallback) {
+    this->position = position;
+    this->callback = gameModelCallback;
+    this->isUpgraded = false;
+    this->hp = 1000;
 }
 
 void TeslaCoil::update() {
 
-}
-
-void TeslaCoil::upgrade() {
-    this->isUpgraded = true;
 }
 
 void TeslaCoil::die() {
@@ -20,7 +19,7 @@ void TeslaCoil::attack() {
 
 }
 
-int TeslaCoil::value() {
+int TeslaCoil::removeValue() {
     if(isUpgraded){
         return 100;
     }

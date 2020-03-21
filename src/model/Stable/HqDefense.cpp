@@ -1,15 +1,14 @@
 #include "HqDefense.h"
 
-HqDefense::HqDefense(std::pair<int, int> position) {
-
+HqDefense::HqDefense(std::pair<int, int> position, CallbackClass gameModelCallback) {
+    this->position = position;
+    this->callback = gameModelCallback;
+    this->isUpgraded = true;
+    this->hp = 1000;
 }
 
 void HqDefense::update() {
 
-}
-
-void HqDefense::upgrade() {
-    this->isUpgraded = true;
 }
 
 void HqDefense::die() {
@@ -20,7 +19,7 @@ void HqDefense::attack() {
 
 }
 
-int HqDefense::value() {
+int HqDefense::removeValue() {
     if(isUpgraded){
         return 100;
     }

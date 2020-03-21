@@ -38,21 +38,18 @@ public:
     // Building (player interaction)
     void selectTower(EntityType type);
     void buildTower(std::pair<int, int> position);
+    void upgradeTower(std::pair<int, int> position);
     bool isBuildable(EntityType type);
 
     // Enemy interaction
     void spawnEnemies();
 
     // Getters
-    std::optional<Field> getField(std::pair<int, int> position);
+    Field* getField(std::pair<int, int> position);
     int getGold() const { return this->gold; }
     int getPoints() const { return this->points; }
     int getWaveNumber() const { return this->waveNumber; }
     int getWaveProgress();
-
-    // Time handling
-    //void pause();
-    //void resume();
 };
 
 #endif //WARP_GAMEMODEL_H

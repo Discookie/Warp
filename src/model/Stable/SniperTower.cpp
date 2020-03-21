@@ -1,15 +1,14 @@
 #include "SniperTower.h"
 
-SniperTower::SniperTower(std::pair<int, int> position) {
-
+SniperTower::SniperTower(std::pair<int, int> position, CallbackClass gameModelCallback) {
+    this->position = position;
+    this->callback = gameModelCallback;
+    this->isUpgraded = false;
+    this->hp = 1000;
 }
 
 void SniperTower::update() {
 
-}
-
-void SniperTower::upgrade() {
-    this->isUpgraded = true;
 }
 
 void SniperTower::die() {
@@ -20,7 +19,7 @@ void SniperTower::attack() {
 
 }
 
-int SniperTower::value() {
+int SniperTower::removeValue() {
     if(isUpgraded){
         return 100;
     }

@@ -22,17 +22,17 @@ void GameModel::loadGame() {
 void GameModel::constructFields() {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 12; j++) {
-            this->fields[i][j] = Field(std::pair<int,int>(i,j));
+            this->fields[i][j] = Field(std::pair<int,int>(i,j), CallbackClass());
         }
     }
 }
 
-std::optional<Field> GameModel::getField(std::pair<int, int> position) {
+Field* GameModel::getField(std::pair<int, int> position) {
     if((0 <= position.first  && position.first  < 10) &&
        (0 <= position.second && position.second < 12) ){
-        return this->fields[position.first][position.second];
+        return &this->fields[position.first][position.second];
     }
-    return std::nullopt;
+    throw std::exception();
 }
 
 void GameModel::updateModel() {
@@ -75,14 +75,23 @@ bool GameModel::isBuildable(EntityType type) {
 
 void GameModel::buildTower(std::pair<int, int> position) {
     if( isBuildable(selectedTower) &&
-        getField(position).has_value() &&
+        getField(position)->getTower() == nullptr &&
         getField(position)->getTeamStatus() != Team::Enemy) {
-        this->fields[position.first][position.second].buildTower(selectedTower);
-        this->gold -= this->fields[position.first][position.second].getTower()->cost();
+        getField(position)->buildTower(selectedTower);
+        this->gold -= getField(position)->getTower()->cost();
         // this->points += 100;
     }
     else{
         // You can't build here!
+    }
+}
+
+void GameModel::upgradeTower(std::pair<int, int> position) {
+    if(getField(position)->getTower() && !getField(position)->getTower()->getIsUpgraded()){
+        if(this->gold >= getField(position)->getTower()->upgradeCost()){
+            this->gold -= getField(position)->getTower()->upgradeCost();
+            getField(position)->upgradeTower();
+        }
     }
 }
 

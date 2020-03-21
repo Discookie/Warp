@@ -9,8 +9,9 @@ protected:
 public:
     virtual ~Stable() = default;
 
-    virtual void upgrade() = 0;
-    virtual int value() = 0;
+    void upgrade() { isUpgraded = true; };
+    bool getIsUpgraded() { return isUpgraded; };
+    virtual int removeValue() = 0;
 };
 
 
