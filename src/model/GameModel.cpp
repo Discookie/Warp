@@ -1,7 +1,6 @@
 #include "GameModel.h"
 
 GameModel::GameModel(){
-    //this->timer = al_create_timer(1.0 / 30.0); // 30 fps
     this->fields = std::vector(10, std::vector<Field>(12));
     GameModel::newGame();
 }
@@ -14,7 +13,6 @@ void GameModel::newGame(){
     this->haveSpecial = false;
     this->selectedTower = EntityType::typeNone;
     this->constructFields();
-    //al_start_timer(this->timer);
 }
 
 void GameModel::loadGame() {
@@ -40,7 +38,6 @@ std::optional<Field> GameModel::getField(std::pair<int, int> position) {
 void GameModel::updateModel() {
     this->updateFields();
 
-
 }
 
 void GameModel::updateFields() {
@@ -59,12 +56,12 @@ bool GameModel::isBuildable(EntityType type) {
     switch (type) {
         case EntityType::typeFactory  :
             return this->gold >= FieldEntity::cost_of<Factory>();
-        case EntityType::typeStable_1 :
-            return this->gold >= FieldEntity::cost_of<Stable1>();
-        case EntityType::typeStable_2 :
-            return this->gold >= FieldEntity::cost_of<Stable1>();
-        case EntityType::typeStable_3 :
-            return this->gold >= FieldEntity::cost_of<Stable1>();
+        case EntityType::typeLaserTower :
+            return this->gold >= FieldEntity::cost_of<LaserTower>();
+        case EntityType::typeTeslaCoil :
+            return this->gold >= FieldEntity::cost_of<TeslaCoil>();
+        case EntityType::typeSniperTower :
+            return this->gold >= FieldEntity::cost_of<SniperTower>();
         case EntityType::typeHqAttack :
             return this->gold >= FieldEntity::cost_of<HqAttack>();
         case EntityType::typeHqDefense:
@@ -81,7 +78,7 @@ void GameModel::buildTower(std::pair<int, int> position) {
         getField(position).has_value() &&
         getField(position)->getTeamStatus() != Team::Enemy) {
         this->fields[position.first][position.second].buildTower(selectedTower);
-        this->gold -= this->fields[position.first][position.second].getTower().value()->cost();
+        this->gold -= this->fields[position.first][position.second].getTower()->cost();
         // this->points += 100;
     }
     else{

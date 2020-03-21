@@ -3,6 +3,8 @@
 
 #include "Enemy.h"
 
-class Robot : public Enemy {};
+class Robot : public Enemy{
 
-#endif  // WARP_ROBOT_H
+};
+
+#endif //WARP_ROBOT_H

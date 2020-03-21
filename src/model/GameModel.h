@@ -2,22 +2,22 @@
 #define WARP_GAMEMODEL_H
 
 #include <vector>
-#include <optional>
-//#include <allegro5/allegro.h>
 
 #include "Field.h"
 #include "EntityType.h"
+#include "CallbackClass.h"
 
 #include "Stable/Factory.h"
-#include "Stable/Stable1.h"
+#include "model/Stable/LaserTower.h"
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
 #include "Stable/Special.h"
+#include "Stable/TeslaCoil.h"
+#include "Stable/SniperTower.h"
 
 class GameModel {
 private:
     std::vector<std::vector<Field>> fields;
-    //ALLEGRO_TIMER *timer;
     int points;
     int gold;
     int waveTimer;

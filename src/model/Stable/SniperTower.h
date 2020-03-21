@@ -1,34 +1,25 @@
 #ifndef WARP_SNIPERTOWER_H
 #define WARP_SNIPERTOWER_H
 
-#include <memory>
-
-#include "../Constants.h"
 #include "Stable.h"
 
-class SniperTower : public Stable {
+class SniperTower : public Stable{
 public:
-    SniperTower(
-        Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback);
-
-    int max_hp() override { return Constants::SNIPERTOWER_BASE_MAX_HP; }
-
-    int cost() override { return Constants::SNIPERTOWER_BASE_COST; }
-
-    int upgrade_cost() override { return Constants::SNIPERTOWER_UPGRADE_COST; }
-
-    int attack_speed() override { return 10; }
+    explicit SniperTower(std::pair<int, int> position);
+    int cost() override { return 100; }
+    static int maxHp() { return 1000; }
+    static int upgradeCost() { return 100; }
+    static int attackSpeed() { return 10; }
 
     void update() override;
-
+    void upgrade() override;
     void die() override;
-
     void attack() override;
-
-    int remove_value() override;
-
-    void take_damage(int amount) override;
+    int value() override;
+    void takeDamage(int amount) override;
+    bool isFriendly() override { return true; }
     // void getStats() override;
 };
 
-#endif  // WARP_SNIPERTOWER_H
+
+#endif //WARP_SNIPERTOWER_H

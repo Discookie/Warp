@@ -3,6 +3,9 @@
 
 #include "Enemy.h"
 
-class Alien : public Enemy {};
+class Alien : public Enemy{
 
-#endif  // WARP_ALIEN_H
+};
+
+
+#endif //WARP_ALIEN_H
