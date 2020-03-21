@@ -17,25 +17,25 @@ void Field::buildTower(EntityType type) {
     if (this->teamStatus == Team::Enemy) return;
     switch (type) {
         case EntityType::typeFactory :
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Factory>(this->position));
+            this->tower = std::make_shared<Factory>(this->position);
             break;
         case EntityType::typeStable_1:
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Stable1>(this->position));
+            this->tower = std::make_shared<Stable1>(this->position);
             break;
         case EntityType::typeStable_2:
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Stable1>(this->position));
+            this->tower = std::make_shared<Stable1>(this->position);
             break;
         case EntityType::typeStable_3:
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Stable1>(this->position));
+            this->tower = std::make_shared<Stable1>(this->position);
             break;
         case EntityType::typeHqAttack:
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<HqAttack>(this->position));
+            this->tower = std::make_shared<HqAttack>(this->position);
             break;
         case EntityType::typeHqDefense:
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<HqDefense>(this->position));
+            this->tower = std::make_shared<HqDefense>(this->position);
             break;
         case EntityType::typeSpecial:
-            this->tower = std::dynamic_pointer_cast<Stable>(std::make_shared<Special>(this->position));
+            this->tower = std::make_shared<Special>(this->position);
             break;
         default:
             return;
