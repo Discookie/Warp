@@ -1,5 +1,10 @@
 #include "FieldEntity.h"
 
+#include <model/Stable/Factory.h>
+#include <model/Stable/HqAttack.h>
+#include <model/Stable/HqDefense.h>
+#include <model/Stable/Special.h>
+#include <model/Stable/Stable1.h>
 
 /// Factory
 template<>
