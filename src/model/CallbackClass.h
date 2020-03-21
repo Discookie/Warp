@@ -2,11 +2,15 @@
 #define WARP_CALLBACKCLASS_H
 
 
+
 class CallbackClass {
 public:
-
     CallbackClass();
 
+    void attack(){}
+    void move(){}
+    void produce(){}
+    void die(){}
 };
 
 
