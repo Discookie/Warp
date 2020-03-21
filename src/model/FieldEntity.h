@@ -3,12 +3,6 @@
 
 #include <tuple>
 
-#include <model/Stable/Factory.h>
-#include <model/Stable/HqAttack.h>
-#include <model/Stable/HqDefense.h>
-#include <model/Stable/Special.h>
-#include <model/Stable/Stable1.h>
-
 class FieldEntity {
 protected:
     std::pair<int,int> position;
@@ -17,7 +11,7 @@ protected:
     int hp;
 public:
     virtual ~FieldEntity() = default;
-    virtual int baseMaxHp() = 0;
+    //virtual int baseMaxHp() = 0;
     virtual int cost() = 0;
     virtual void update() = 0;
     virtual void attack() = 0;
