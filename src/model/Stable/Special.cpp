@@ -4,7 +4,7 @@ Special::Special(std::pair<int, int> position, CallbackClass gameModelCallback) 
     this->position = position;
     this->callback = gameModelCallback;
     this->isUpgraded = true;
-    this->hp = 1000;
+    this->hp = CONSTANTS::SPECIAL_BASE_MAX_HP;
 }
 
 void Special::update() {

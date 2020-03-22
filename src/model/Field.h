@@ -26,7 +26,7 @@ private:
     std::vector<std::shared_ptr<Unstable>> movingEntities;
     Team teamStatus;
 public:
-    Field(){}
+    Field() = default;
     explicit Field(std::pair<int, int> position, CallbackClass gameModelCallback);
     void buildTower(EntityType type);
     void upgradeTower();

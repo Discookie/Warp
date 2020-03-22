@@ -4,7 +4,7 @@ TeslaCoil::TeslaCoil(std::pair<int, int> position, CallbackClass gameModelCallba
     this->position = position;
     this->callback = gameModelCallback;
     this->isUpgraded = false;
-    this->hp = 1000;
+    this->hp = CONSTANTS::TESLACOIL_BASE_MAX_HP;
 }
 
 void TeslaCoil::update() {

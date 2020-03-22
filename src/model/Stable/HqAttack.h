@@ -2,16 +2,16 @@
 #define WARP_HQATTACK_H
 
 #include "Hq.h"
+#include "../Constants.h"
 
 class HqAttack : public Hq {
 public:
     HqAttack(std::pair<int, int> position, CallbackClass gameModelCallback);
-    int maxHp() override { return 1000; }
-    int cost() override { return 100; }
-    int upgradeCost() override { return 100; }
+    int maxHp() override { return CONSTANTS::HQATTACK_BASE_MAX_HP; }
+    int cost() override { return CONSTANTS::HQATTACK_BASE_COST; }
+    int upgradeCost() override { return CONSTANTS::HQATTACK_UPGRADE_COST; }
     int attackSpeed() override { return 10; }
 
-    bool isFriendly() override { return true; }
     void update() override;
     void die() override;
     void attack() override;
