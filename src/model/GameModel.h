@@ -39,17 +39,21 @@ public:
     void selectTower(EntityType type);
     void buildTower(std::pair<int, int> position);
     void upgradeTower(std::pair<int, int> position);
-    bool isBuildable(EntityType type);
 
     // Enemy interaction
     void spawnEnemies();
 
     // Getters
     Field* getField(std::pair<int, int> position);
-    int getGold() const { return this->gold; }
-    int getPoints() const { return this->points; }
+    int getGold()       const { return this->gold; }
+    int getPoints()     const { return this->points; }
     int getWaveNumber() const { return this->waveNumber; }
     int getWaveProgress();
+    bool isBuildable(EntityType type);
+
+    // Callbacks
+    // void (* cbf)(std::shared_ptr<Stable> obj)
+
 };
 
 #endif //WARP_GAMEMODEL_H

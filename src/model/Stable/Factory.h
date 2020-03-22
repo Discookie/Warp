@@ -1,19 +1,18 @@
 #ifndef WARP_FACTORY_H
 #define WARP_FACTORY_H
 
-
 #include "Stable.h"
+#include "../Constants.h"
 
 class Factory : public Stable {
 public:
     Factory(std::pair<int, int> position, CallbackClass callback);
-    int maxHp() override { return 1000; }
-    int cost() override { return 100; }
-    int upgradeCost() override { return 100; }
+    int maxHp() override { return CONSTANTS::FACTORY_BASE_MAX_HP; }
+    int cost() override { return CONSTANTS::FACTORY_BASE_COST; }
+    int upgradeCost() override { return CONSTANTS::FACTORY_UPGRADE_COST; }
     int attackSpeed() override { return 10; }
-    int production() { return 50; }
+    int production() { return CONSTANTS::FACTORY_BASE_PRODUCTION; }
 
-    bool isFriendly() override { return true; }
     void update() override;
     void die() override;
     void attack() override;

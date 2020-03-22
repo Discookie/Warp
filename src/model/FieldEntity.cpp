@@ -8,100 +8,101 @@
 #include <model/Stable/TeslaCoil.h>
 #include <model/Stable/SniperTower.h>
 
+#include "Constants.h"
 /// Factory
 template<>
 int FieldEntity::cost_of<Factory>() {
-    return 100;
+    return CONSTANTS::FACTORY_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<Factory>() {
-    return 1000;
+    return CONSTANTS::FACTORY_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<Factory>() {
-    return 100;
+    return CONSTANTS::FACTORY_BASE_ATTACK;
 }
 
 /// HqAttack
 template<>
 int FieldEntity::cost_of<HqAttack>() {
-    return 100;
+    return CONSTANTS::HQATTACK_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<HqAttack>() {
-    return 0;
+    return CONSTANTS::HQATTACK_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<HqAttack>() {
-    return 100;
+    return CONSTANTS::HQATTACK_BASE_ATTACK;
 }
 
 /// HqDefense
 template<>
 int FieldEntity::cost_of<HqDefense>() {
-    return 100;
+    return CONSTANTS::HQDEFENSE_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<HqDefense>() {
-    return 1000;
+    return CONSTANTS::HQDEFENSE_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<HqDefense>() {
-    return 0;
+    return CONSTANTS::HQDEFENSE_BASE_ATTACK;
 }
 
 /// Special
 template<>
 int FieldEntity::cost_of<Special>() {
-    return 100;
+    return CONSTANTS::SPECIAL_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<Special>() {
-    return 1410065407;
+    return CONSTANTS::SPECIAL_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<Special>() {
-    return 100;
+    return CONSTANTS::SPECIAL_BASE_ATTACK;
 }
 
 /// LaserTower
 template<>
 int FieldEntity::cost_of<LaserTower>() {
-    return 100;
+    return CONSTANTS::LASERTOWER_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<LaserTower>() {
-    return 1000;
+    return CONSTANTS::LASERTOWER_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<LaserTower>() {
-    return 100;
+    return CONSTANTS::LASERTOWER_BASE_ATTACK;
 }
 
 /// TeslaCoil
 template<>
 int FieldEntity::cost_of<TeslaCoil>() {
-    return 100;
+    return CONSTANTS::TESLACOIL_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<TeslaCoil>() {
-    return 1000;
+    return CONSTANTS::TESLACOIL_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<TeslaCoil>() {
-    return 100;
+    return CONSTANTS::TESLACOIL_BASE_ATTACK;
 }
 
 /// SniperTower
 template<>
 int FieldEntity::cost_of<SniperTower>() {
-    return 100;
+    return CONSTANTS::SNIPERTOWER_BASE_COST;
 }
 template<>
 int FieldEntity::baseMaxHp_of<SniperTower>() {
-    return 1000;
+    return CONSTANTS::SNIPERTOWER_BASE_MAX_HP;
 }
 template<>
 int FieldEntity::baseAttack_of<SniperTower>() {
-    return 100;
+    return CONSTANTS::SNIPERTOWER_BASE_ATTACK;
 }

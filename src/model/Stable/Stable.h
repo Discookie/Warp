@@ -9,6 +9,7 @@ protected:
 public:
     virtual ~Stable() = default;
 
+    bool isFriendly() final { return true; }
     void upgrade() { isUpgraded = true; };
     bool getIsUpgraded() { return isUpgraded; };
     virtual int removeValue() = 0;
