@@ -2,7 +2,9 @@
 
 GameModel::GameModel(){
     this->fields = std::vector(10, std::vector<Field>(12));
+    GameModel::initCallbacks();
     GameModel::newGame();
+
 }
 
 void GameModel::newGame(){
@@ -15,6 +17,30 @@ void GameModel::newGame(){
     this->constructFields();
 }
 
+void GameModel::initCallbacks() {
+    // Produce Callback
+    this->CBPro = [this](const std::shared_ptr<FieldEntity>& obj) {
+        this->gold += std::static_pointer_cast<Factory>(obj)->productionAmount();
+    };
+    // Move Callback
+    this->CBMov = [this](const std::shared_ptr<FieldEntity>& obj) {
+        // Not implemented
+    };
+    // Attack Callback
+    this->CBAtt = [this](const std::shared_ptr<FieldEntity>& obj) {
+        // Not implemented
+    };
+    // Die Callback
+    this->CBDie = [this](const std::shared_ptr<FieldEntity>& obj) {
+        if(obj->getVectorPos() == -1) {
+            this->getField(obj->getPosition())->removeTower();
+        }
+        else{
+            this->getField(obj->getPosition())->removeEntityAt(obj->getVectorPos());
+        }
+    };
+}
+
 void GameModel::loadGame() {
     throw std::logic_error("Unimplemented");
 }
@@ -22,7 +48,12 @@ void GameModel::loadGame() {
 void GameModel::constructFields() {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 12; j++) {
-            this->fields[i][j] = Field(std::pair<int,int>(i,j), CallbackClass());
+            this->fields[i][j] = Field(std::pair<int,int>(i,j),
+                    std::make_shared<CallbackClass>(
+                            this->CBPro,
+                            this->CBMov,
+                            this->CBAtt,
+                            this->CBDie));
         }
     }
 }
@@ -54,20 +85,20 @@ void GameModel::selectTower(EntityType type) {
 
 bool GameModel::isBuildable(EntityType type) {
     switch (type) {
-        case EntityType::typeFactory  :
-            return this->gold >= FieldEntity::cost_of<Factory>();
-        case EntityType::typeLaserTower :
-            return this->gold >= FieldEntity::cost_of<LaserTower>();
-        case EntityType::typeTeslaCoil :
-            return this->gold >= FieldEntity::cost_of<TeslaCoil>();
-        case EntityType::typeSniperTower :
-            return this->gold >= FieldEntity::cost_of<SniperTower>();
-        case EntityType::typeHqAttack :
-            return this->gold >= FieldEntity::cost_of<HqAttack>();
+        case EntityType::typeFactory:
+            return this->gold >= CONSTANTS::FACTORY_BASE_COST;
+        case EntityType::typeLaserTower:
+            return this->gold >= CONSTANTS::LASERTOWER_BASE_COST;
+        case EntityType::typeTeslaCoil:
+            return this->gold >= CONSTANTS::TESLACOIL_BASE_COST;
+        case EntityType::typeSniperTower:
+            return this->gold >= CONSTANTS::SNIPERTOWER_BASE_COST;
+        case EntityType::typeHqAttack:
+            return this->gold >= CONSTANTS::HQATTACK_BASE_COST;
         case EntityType::typeHqDefense:
-            return this->gold >= FieldEntity::cost_of<HqDefense>();
-        case EntityType::typeSpecial  :
-            return this->gold >= FieldEntity::cost_of<Special>() &&
+            return this->gold >= CONSTANTS::HQDEFENSE_BASE_COST;
+        case EntityType::typeSpecial:
+            return this->gold >= CONSTANTS::SPECIAL_BASE_COST &&
                    this->haveSpecial;
         default: return false;
     }
@@ -88,7 +119,7 @@ void GameModel::buildTower(std::pair<int, int> position) {
 
 void GameModel::upgradeTower(std::pair<int, int> position) {
     if(getField(position)->getTower() && !getField(position)->getTower()->getIsUpgraded()){
-        if(this->gold >= getField(position)->getTower()->upgradeCost()){
+        if( this->gold >= getField(position)->getTower()->upgradeCost()){
             this->gold -= getField(position)->getTower()->upgradeCost();
             getField(position)->upgradeTower();
         }

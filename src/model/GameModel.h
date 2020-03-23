@@ -2,6 +2,7 @@
 #define WARP_GAMEMODEL_H
 
 #include <vector>
+#include <functional>
 
 #include "Field.h"
 #include "EntityType.h"
@@ -24,6 +25,12 @@ private:
     int waveNumber;
     bool haveSpecial;
     EntityType selectedTower;
+    // Callbacks
+    void initCallbacks();
+    std::function<void(const std::shared_ptr<FieldEntity>&)> CBPro;
+    std::function<void(const std::shared_ptr<FieldEntity>&)> CBMov;
+    std::function<void(const std::shared_ptr<FieldEntity>&)> CBAtt;
+    std::function<void(const std::shared_ptr<FieldEntity>&)> CBDie;
 public:
     // Constructors
     GameModel();
@@ -51,8 +58,6 @@ public:
     int getWaveProgress();
     bool isBuildable(EntityType type);
 
-    // Callbacks
-    // void (* cbf)(std::shared_ptr<Stable> obj)
 
 };
 

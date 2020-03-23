@@ -20,7 +20,7 @@ int FieldEntity::baseMaxHp_of<Factory>() {
 }
 template<>
 int FieldEntity::baseAttack_of<Factory>() {
-    return CONSTANTS::FACTORY_BASE_ATTACK;
+    return CONSTANTS::FACTORY_ATTACK;
 }
 
 /// HqAttack
