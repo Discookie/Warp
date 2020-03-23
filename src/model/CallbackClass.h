@@ -1,33 +1,30 @@
 #ifndef WARP_CALLBACKCLASS_H
 #define WARP_CALLBACKCLASS_H
 
-
+#include <functional>
+class FieldEntity;
 
 class CallbackClass {
-    /*
-    void (*cBproduce)(std::shared_ptr<Stable> obj);
-    void (*cBattack) (std::shared_ptr<Stable> obj);
-    void (*cBdie)    (std::shared_ptr<Stable> obj);
-     */
+    std::function<void(std::shared_ptr<FieldEntity> obj)> CBp;
+    std::function<void(std::shared_ptr<FieldEntity> obj)> CBm;
+    std::function<void(std::shared_ptr<FieldEntity> obj)> CBa;
+    std::function<void(std::shared_ptr<FieldEntity> obj)> CBd;
+
 public:
-    CallbackClass(){}
-    /*
-    explicit CallbackClass(void (* gmCBproduce)(std::shared_ptr<Stable> obj),
-                           void (* gmCBattack) (std::shared_ptr<Stable> obj),
-                           void (* gmCBdie)    (std::shared_ptr<Stable> obj)){
-        this->cBproduce = gmCBproduce;
-        this->cBattack  = gmCBattack;
-        this->cBdie     = gmCBdie;
+    explicit CallbackClass(std::function<void(std::shared_ptr<FieldEntity> obj)> CBProduce,
+                           std::function<void(std::shared_ptr<FieldEntity> obj)> CBMove,
+                           std::function<void(std::shared_ptr<FieldEntity> obj)> CBAttack,
+                           std::function<void(std::shared_ptr<FieldEntity> obj)> CBDie){
+        this->CBp = CBProduce;
+        this->CBm = CBMove;
+        this->CBa = CBAttack;
+        this->CBd = CBDie;
     }
 
-    void produce(std::shared_ptr<Stable> obj){ cBproduce(obj); }
-    void attack(std::shared_ptr<Stable> obj) { cBattack(obj);  }
-    void die(std::shared_ptr<Stable> obj)    { cBdie(obj);     }
-     */
-    void produce(){}
-    void move(){}
-    void attack(){}
-    void die(){}
+    void produce(std::shared_ptr<FieldEntity> obj){this->CBp(obj);}
+    void move   (std::shared_ptr<FieldEntity> obj){this->CBm(obj);}
+    void attack (std::shared_ptr<FieldEntity> obj){this->CBa(obj);}
+    void die    (std::shared_ptr<FieldEntity> obj){this->CBd(obj);}
 };
 
 
