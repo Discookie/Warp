@@ -10,6 +10,7 @@ public:
     virtual ~Stable() = default;
 
     bool isFriendly() final { return true; }
+    int getVectorPos() final { return -1; }
     void upgrade() { isUpgraded = true; };
     bool getIsUpgraded() { return isUpgraded; };
     virtual int removeValue() = 0;

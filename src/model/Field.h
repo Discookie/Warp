@@ -21,18 +21,24 @@
 class Field {
 private:
     std::pair<int, int> position;
-    CallbackClass callback;
+    std::shared_ptr<CallbackClass> callback;
     std::shared_ptr<Stable> tower;
     std::vector<std::shared_ptr<Unstable>> movingEntities;
-    Team teamStatus;
+    Team teamStatus = Team::Neutral;
 public:
     Field() = default;
-    explicit Field(std::pair<int, int> position, CallbackClass gameModelCallback);
+    explicit Field(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback);
+    // Stable
     void buildTower(EntityType type);
     void upgradeTower();
     void removeTower();
     std::shared_ptr<Stable> getTower();
+
+    // Unstable
+    void removeEntityAt(int ind);
     std::vector<std::shared_ptr<Unstable>> getMovingEntities();
+
+    // General
     Team getTeamStatus() const { return teamStatus; }
     void updateEntities();
 };

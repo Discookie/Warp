@@ -4,12 +4,18 @@
 namespace CONSTANTS {
 // Stable
 /// Factory
-    static const int FACTORY_BASE_COST       = 100;
-    static const int FACTORY_UPGRADE_COST    = 100;
-    static const int FACTORY_BASE_MAX_HP     = 1000;
-    static const int FACTORY_BASE_ATTACK     = 100;
-    static const int FACTORY_BASE_PRODUCTION = 100;
-
+    static const int FACTORY_BASE_COST                  = 100;
+    static const int FACTORY_UPGRADE_COST               = 100;
+    static const int FACTORY_BASE_MAX_HP                = 1000;
+    static const int FACTORY_UPGRADE_MAX_HP             = 1500;
+    static const int FACTORY_ATTACK                     = 0;
+    static const int FACTORY_ATTACK_SPEED               = 0;
+    static const int FACTORY_BASE_PRODUCTION            = 10;
+    static const int FACTORY_UPGRADE_PRODUCTION         = 20;
+    static const int FACTORY_BASE_PRODUCTION_SPEED      = 10;
+    static const int FACTORY_UPGRADE_PRODUCTION_SPEED   = 5;
+    static const int FACTORY_BASE_REMOVE_VALUE          = 50;
+    static const int FACTORY_UPGRADE_REMOVE_VALUE       = 100;
 
 /// LaserTower
     static const int LASERTOWER_BASE_COST    = 100;

@@ -8,7 +8,7 @@
 #include "model/Stable/TeslaCoil.h"
 #include "Stable/SniperTower.h"
 
-Field::Field(std::pair<int, int> position, CallbackClass gameModelCallback){
+Field::Field(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback){
     this->position = position;
     this->callback = gameModelCallback;
     this->teamStatus = Team::Neutral;
@@ -50,6 +50,26 @@ void Field::upgradeTower(){
     this->tower->upgrade();
 }
 
+void Field::removeTower() {
+    this->tower = nullptr;
+    if(this->movingEntities.empty()){
+        this->teamStatus = Team::Neutral;
+    }
+}
+
+std::shared_ptr<Stable> Field::getTower() {
+    return this->tower;
+}
+
+
+void Field::removeEntityAt(int ind) {
+    this->movingEntities.erase(this->movingEntities.begin() + ind);
+}
+
+std::vector<std::shared_ptr<Unstable>> Field::getMovingEntities() {
+    return this->movingEntities;
+}
+
 void Field::updateEntities() {
     if(this->tower) {
         this->tower->update();
@@ -59,17 +79,3 @@ void Field::updateEntities() {
     }
 }
 
-std::shared_ptr<Stable> Field::getTower() {
-    return this->tower;
-}
-
-void Field::removeTower() {
-    this->tower = nullptr;
-    if(this->movingEntities.empty()){
-        this->teamStatus = Team::Neutral;
-    }
-}
-
-std::vector<std::shared_ptr<Unstable>> Field::getMovingEntities() {
-    return this->movingEntities;
-}

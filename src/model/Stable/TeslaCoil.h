@@ -1,12 +1,16 @@
 #ifndef WARP_TESLACOIL_H
 #define WARP_TESLACOIL_H
 
+#include <memory>
+
 #include "Stable.h"
 #include "../Constants.h"
 
 class TeslaCoil : public Stable{
 public:
-    explicit TeslaCoil(std::pair<int, int> position, CallbackClass gameModelCallback);
+    TeslaCoil(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback);
+    explicit TeslaCoil(TeslaCoil *pTeslaCoil);
+
     int maxHp() override { return CONSTANTS::TESLACOIL_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::TESLACOIL_BASE_COST; }
     int upgradeCost() override { return CONSTANTS::TESLACOIL_UPGRADE_COST; }

@@ -1,12 +1,16 @@
 #ifndef WARP_SNIPERTOWER_H
 #define WARP_SNIPERTOWER_H
 
+#include <memory>
+
 #include "Stable.h"
 #include "../Constants.h"
 
 class SniperTower : public Stable{
 public:
-    explicit SniperTower(std::pair<int, int> position, CallbackClass gameModelCallback);
+    SniperTower(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback);
+    explicit SniperTower(SniperTower *pSniperTower);
+
     int maxHp() override { return CONSTANTS::SNIPERTOWER_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::SNIPERTOWER_BASE_COST; }
     int upgradeCost() override { return CONSTANTS::SNIPERTOWER_UPGRADE_COST; }
