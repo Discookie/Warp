@@ -8,8 +8,7 @@
 
 class TeslaCoil : public Stable{
 public:
-    TeslaCoil(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback);
-    explicit TeslaCoil(TeslaCoil *pTeslaCoil);
+    TeslaCoil(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
 
     int maxHp() override { return CONSTANTS::TESLACOIL_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::TESLACOIL_BASE_COST; }

@@ -1,17 +1,10 @@
 #include "HqAttack.h"
 
-HqAttack::HqAttack(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback) {
+HqAttack::HqAttack(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
-    this->isUpgraded = true;
+    this->upgraded = true;
     this->hp = CONSTANTS::HQATTACK_BASE_MAX_HP;
-}
-
-HqAttack::HqAttack(HqAttack *pHqAttack) {
-    this->position = pHqAttack->position;
-    this->callback = pHqAttack->callback;
-    this->isUpgraded = pHqAttack->isUpgraded;
-    this->hp = pHqAttack->hp;
 }
 
 void HqAttack::update() {
@@ -19,15 +12,15 @@ void HqAttack::update() {
 }
 
 void HqAttack::die() {
-    callback->die(std::make_shared<HqAttack>(this));
+    callback->die(shared_from_this());
 }
 
 void HqAttack::attack() {
-    callback->attack(std::make_shared<HqAttack>(this));
+    callback->attack(shared_from_this());
 }
 
 int HqAttack::removeValue() {
-    if(isUpgraded){
+    if(upgraded){
         return 100;
     }
     return 50;

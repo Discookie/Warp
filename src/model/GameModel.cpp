@@ -4,7 +4,6 @@ GameModel::GameModel(){
     this->fields = std::vector(10, std::vector<Field>(12));
     GameModel::initCallbacks();
     GameModel::newGame();
-
 }
 
 void GameModel::newGame(){
@@ -19,26 +18,27 @@ void GameModel::newGame(){
 
 void GameModel::initCallbacks() {
     // Produce Callback
-    this->CBPro = [this](const std::shared_ptr<FieldEntity>& obj) {
+    auto pro = [this](const std::shared_ptr<FieldEntity>& obj) {
         this->gold += std::static_pointer_cast<Factory>(obj)->productionAmount();
     };
     // Move Callback
-    this->CBMov = [this](const std::shared_ptr<FieldEntity>& obj) {
+    auto mov = [this](const std::shared_ptr<FieldEntity>& obj) {
         // Not implemented
     };
     // Attack Callback
-    this->CBAtt = [this](const std::shared_ptr<FieldEntity>& obj) {
+    auto att = [this](const std::shared_ptr<FieldEntity>& obj) {
         // Not implemented
     };
     // Die Callback
-    this->CBDie = [this](const std::shared_ptr<FieldEntity>& obj) {
+    auto die = [this](const std::shared_ptr<FieldEntity>& obj) {
         if(obj->getVectorPos() == -1) {
-            this->getField(obj->getPosition())->removeTower();
+            this->getField(obj->getPosition()).removeTower();
         }
         else{
-            this->getField(obj->getPosition())->removeEntityAt(obj->getVectorPos());
+            this->getField(obj->getPosition()).removeEntityAt(obj->getVectorPos());
         }
     };
+    callBacks = std::make_shared<FieldEntityCallbackClass>(pro,mov,att,die);
 }
 
 void GameModel::loadGame() {
@@ -48,20 +48,15 @@ void GameModel::loadGame() {
 void GameModel::constructFields() {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 12; j++) {
-            this->fields[i][j] = Field(std::pair<int,int>(i,j),
-                    std::make_shared<CallbackClass>(
-                            this->CBPro,
-                            this->CBMov,
-                            this->CBAtt,
-                            this->CBDie));
+            this->fields[i][j] = Field(std::pair<int,int>(i,j), this->callBacks);
         }
     }
 }
 
-Field* GameModel::getField(std::pair<int, int> position) {
+Field& GameModel::getField(std::pair<int, int> position) {
     if((0 <= position.first  && position.first  < 10) &&
        (0 <= position.second && position.second < 12) ){
-        return &this->fields[position.first][position.second];
+        return this->fields[position.first][position.second];
     }
     throw std::exception();
 }
@@ -106,10 +101,11 @@ bool GameModel::isBuildable(EntityType type) {
 
 void GameModel::buildTower(std::pair<int, int> position) {
     if( isBuildable(selectedTower) &&
-        getField(position)->getTower() == nullptr &&
-        getField(position)->getTeamStatus() != Team::Enemy) {
-        getField(position)->buildTower(selectedTower);
-        this->gold -= getField(position)->getTower()->cost();
+        !getField(position).getTower() &&
+        getField(position).getTeamStatus() != Team::Enemy
+        ) {
+        getField(position).buildTower(selectedTower);
+        this->gold -= getField(position).getTower()->cost();
         // this->points += 100;
     }
     else{
@@ -118,10 +114,10 @@ void GameModel::buildTower(std::pair<int, int> position) {
 }
 
 void GameModel::upgradeTower(std::pair<int, int> position) {
-    if(getField(position)->getTower() && !getField(position)->getTower()->getIsUpgraded()){
-        if( this->gold >= getField(position)->getTower()->upgradeCost()){
-            this->gold -= getField(position)->getTower()->upgradeCost();
-            getField(position)->upgradeTower();
+    if(getField(position).getTower() && !getField(position).getTower()->isUpgraded()){
+        if( this->gold >= getField(position).getTower()->upgradeCost()){
+            this->gold -= getField(position).getTower()->upgradeCost();
+            getField(position).upgradeTower();
         }
     }
 }

@@ -1,17 +1,10 @@
 #include "SniperTower.h"
 
-SniperTower::SniperTower(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback) {
+SniperTower::SniperTower(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
-    this->isUpgraded = false;
+    this->upgraded = false;
     this->hp = CONSTANTS::SNIPERTOWER_BASE_MAX_HP;
-}
-
-SniperTower::SniperTower(SniperTower *pSniperTower) {
-    this->position = pSniperTower->position;
-    this->callback = pSniperTower->callback;
-    this->isUpgraded = pSniperTower->isUpgraded;
-    this->hp = pSniperTower->hp;
 }
 
 void SniperTower::update() {
@@ -19,15 +12,15 @@ void SniperTower::update() {
 }
 
 void SniperTower::die() {
-    callback->die(std::make_shared<SniperTower>(this));
+    callback->die(shared_from_this());
 }
 
 void SniperTower::attack() {
-    callback->attack(std::make_shared<SniperTower>(this));
+    callback->attack(shared_from_this());
 }
 
 int SniperTower::removeValue() {
-    if(isUpgraded){
+    if(upgraded){
         return 100;
     }
     return 50;

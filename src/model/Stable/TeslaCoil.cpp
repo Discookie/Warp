@@ -1,17 +1,10 @@
 #include "TeslaCoil.h"
 
-TeslaCoil::TeslaCoil(std::pair<int, int> position, const  std::shared_ptr<CallbackClass>& gameModelCallback) {
+TeslaCoil::TeslaCoil(std::pair<int, int> position, const  std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
-    this->isUpgraded = false;
+    this->upgraded = false;
     this->hp = CONSTANTS::TESLACOIL_BASE_MAX_HP;
-}
-
-TeslaCoil::TeslaCoil(TeslaCoil *pTeslaCoil) {
-    this->position = pTeslaCoil->position;
-    this->callback = pTeslaCoil->callback;
-    this->isUpgraded = pTeslaCoil->isUpgraded;
-    this->hp = pTeslaCoil->hp;
 }
 
 void TeslaCoil::update() {
@@ -19,15 +12,15 @@ void TeslaCoil::update() {
 }
 
 void TeslaCoil::die() {
-    callback->die(std::make_shared<TeslaCoil>(this));
+    callback->die(shared_from_this());
 }
 
 void TeslaCoil::attack() {
-    callback->attack(std::make_shared<TeslaCoil>(this));
+    callback->attack(shared_from_this());
 }
 
 int TeslaCoil::removeValue() {
-    if(isUpgraded){
+    if(upgraded){
         return 100;
     }
     return 50;

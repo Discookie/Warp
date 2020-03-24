@@ -8,8 +8,7 @@
 
 class LaserTower : public Stable{
 public:
-    LaserTower(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback);
-    explicit LaserTower(LaserTower *pLaserTower);
+    LaserTower(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
 
     int maxHp() override { return CONSTANTS::LASERTOWER_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::LASERTOWER_BASE_COST; }
