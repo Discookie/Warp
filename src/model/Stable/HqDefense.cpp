@@ -1,18 +1,11 @@
 #include "HqDefense.h"
 #include <memory>
 
-HqDefense::HqDefense(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback) {
+HqDefense::HqDefense(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
-    this->isUpgraded = true;
+    this->upgraded = true;
     this->hp = 1000;
-}
-
-HqDefense::HqDefense(HqDefense *pHqDefense) {
-    this->position = pHqDefense->position;
-    this->callback = pHqDefense->callback;
-    this->isUpgraded = pHqDefense->isUpgraded;
-    this->hp = pHqDefense->hp;
 }
 
 void HqDefense::update() {
@@ -20,13 +13,11 @@ void HqDefense::update() {
 }
 
 void HqDefense::die() {
-    callback->die(std::make_shared<HqDefense>(this));
+    callback->die(shared_from_this());
 }
 
-void HqDefense::attack() {}
-
 int HqDefense::removeValue() {
-    if(isUpgraded){
+    if(upgraded){
         return 100;
     }
     return 50;

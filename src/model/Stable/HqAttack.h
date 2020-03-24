@@ -8,8 +8,7 @@
 
 class HqAttack : public Hq {
 public:
-    HqAttack(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback);
-    explicit HqAttack(HqAttack *pHqAttack);
+    HqAttack(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
 
     int maxHp() override { return CONSTANTS::HQATTACK_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::HQATTACK_BASE_COST; }

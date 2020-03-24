@@ -3,12 +3,12 @@
 
 #include <tuple>
 #include <memory>
-#include "CallbackClass.h"
+#include "FieldEntityCallbackClass.h"
 
-class FieldEntity {
+class FieldEntity : public std::enable_shared_from_this<FieldEntity> {
 protected:
     std::pair<int,int> position;
-    std::shared_ptr<CallbackClass> callback;
+    std::shared_ptr<FieldEntityCallbackClass> callback;
     int timeCounter;
     int hp;
 public:
@@ -21,6 +21,7 @@ public:
     // Getters
     virtual bool isFriendly() = 0;
     std::pair<int,int> getPosition() { return position; }
+    /// Returns the index of a given unstable object inside the MoovingEntities vector or -1 if its a Tower object.
     virtual int getVectorPos() = 0;
     // virtual void getStats() = 0; // Stats class???
 

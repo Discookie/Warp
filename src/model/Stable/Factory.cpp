@@ -1,21 +1,14 @@
 #include "Factory.h"
 
-Factory::Factory(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback) {
+Factory::Factory(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
-    this->isUpgraded = false;
+    this->upgraded = false;
     this->hp = CONSTANTS::FACTORY_BASE_MAX_HP;
 }
 
-Factory::Factory(Factory *pFactory) {
-    this->position = pFactory->position;
-    this->callback = pFactory->callback;
-    this->isUpgraded = pFactory->isUpgraded;
-    this->hp = pFactory->hp;
-}
-
 void Factory::produce() {
-    callback->produce(std::make_shared<Factory>(this));
+    callback->produce(shared_from_this());
 }
 
 void Factory::update() {
@@ -23,7 +16,7 @@ void Factory::update() {
 }
 
 void Factory::die() {
-    callback->die(std::make_shared<Factory>(this));
+    callback->die(shared_from_this());
 }
 
 void Factory::takeDamage(int amount) {

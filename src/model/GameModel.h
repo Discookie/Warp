@@ -6,7 +6,7 @@
 
 #include "Field.h"
 #include "EntityType.h"
-#include "CallbackClass.h"
+#include "FieldEntityCallbackClass.h"
 
 #include "Stable/Factory.h"
 #include "model/Stable/LaserTower.h"
@@ -26,11 +26,8 @@ private:
     bool haveSpecial;
     EntityType selectedTower;
     // Callbacks
+    std::shared_ptr<FieldEntityCallbackClass> callBacks;
     void initCallbacks();
-    std::function<void(const std::shared_ptr<FieldEntity>&)> CBPro;
-    std::function<void(const std::shared_ptr<FieldEntity>&)> CBMov;
-    std::function<void(const std::shared_ptr<FieldEntity>&)> CBAtt;
-    std::function<void(const std::shared_ptr<FieldEntity>&)> CBDie;
 public:
     // Constructors
     GameModel();
@@ -51,14 +48,12 @@ public:
     void spawnEnemies();
 
     // Getters
-    Field* getField(std::pair<int, int> position);
+    Field& getField(std::pair<int, int> position);
     int getGold()       const { return this->gold; }
     int getPoints()     const { return this->points; }
     int getWaveNumber() const { return this->waveNumber; }
     int getWaveProgress();
     bool isBuildable(EntityType type);
-
-
 };
 
 #endif //WARP_GAMEMODEL_H

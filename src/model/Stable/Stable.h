@@ -5,14 +5,14 @@
 
 class Stable : public FieldEntity {
 protected:
-    bool isUpgraded;
+    bool upgraded;
 public:
     virtual ~Stable() = default;
 
     bool isFriendly() final { return true; }
     int getVectorPos() final { return -1; }
-    void upgrade() { isUpgraded = true; };
-    bool getIsUpgraded() { return isUpgraded; };
+    void upgrade() { upgraded = true; };
+    bool isUpgraded() { return upgraded; };
     virtual int removeValue() = 0;
 };
 

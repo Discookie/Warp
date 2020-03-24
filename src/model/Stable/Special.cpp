@@ -1,17 +1,10 @@
 #include "Special.h"
 
-Special::Special(std::pair<int, int> position, const std::shared_ptr<CallbackClass>& gameModelCallback) {
+Special::Special(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
-    this->isUpgraded = true;
+    this->upgraded = true;
     this->hp = CONSTANTS::SPECIAL_BASE_MAX_HP;
-}
-
-Special::Special(Special *pSpecial) {
-    this->position = pSpecial->position;
-    this->callback = pSpecial->callback;
-    this->isUpgraded = pSpecial->isUpgraded;
-    this->hp = pSpecial->hp;
 }
 
 void Special::update() {
@@ -19,11 +12,11 @@ void Special::update() {
 }
 
 void Special::die() {
-    callback->die(std::make_shared<Special>(this));
+    callback->die(shared_from_this());
 }
 
 void Special::attack() {
-    callback->attack(std::make_shared<Special>(this));
+    callback->attack(shared_from_this());
     this->die();
 }
 
