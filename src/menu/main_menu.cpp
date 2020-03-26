@@ -35,7 +35,6 @@ MainMenuScene::MainMenuScene(MenuImage&& img, const font_ptr& font) {
 
     new_game_button = MenuButton(
         160, 100, MENU_WIDTH, 20, "New game", font, [&]() { clicked_scene = "new_game"; });
-    new_game_button.disable();
     load_game_button = MenuButton(
         160, 130, MENU_WIDTH, 20, "Load game", font, [&]() { clicked_scene = "load_game"; });
     load_game_button.disable();
