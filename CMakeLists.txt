@@ -21,3 +21,6 @@ link_directories (libs/allegro/lib)
 # Add the project itself
 include_directories (src)
 add_subdirectory (src)
+
+# Add tests
+add_subdirectory (test)

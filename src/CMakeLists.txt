@@ -3,25 +3,28 @@
 # No need to update manually
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS *.cpp)
 
-# Set an output folder for the new executable
+# Set an output folder for the builds
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-ADD_EXECUTABLE(Warp ${SRCS})
+add_library(WarpLib STATIC ${SRCS})
+
+# Need to set separately for each build target
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+add_executable(Warp main.cpp)
 
 # Link used libraries
-# TARGET_LINK_LIBRARIES (Warp stdc++fs)
-TARGET_LINK_LIBRARIES (Warp allegro_monolith-debug)
+target_link_libraries(WarpLib allegro_monolith-debug)
+target_link_libraries(Warp WarpLib)
 
-# Copy DLLs to the exe's folder
-# It's enough to link only the monolith
-file(GLOB LIBRARIES "../libs/allegro/bin/allegro_monolith-debug*.dll")
-# TARGET_LINK_LIBRARIES (Warp ${LIBRARIES})
-foreach(CurrentDLL IN LISTS LIBRARIES)
-    add_custom_command(
-        TARGET Warp PRE_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CurrentDLL} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-    )
-endforeach()
+# Copy DLLs to /bin automatically
+# It's enough to copy only the monolith
+add_custom_command(
+    TARGET WarpLib POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/libs/allegro/bin/allegro_monolith-debug-5.2.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+)
 
 # Copy Assets into the exe's folder
 add_custom_command(
