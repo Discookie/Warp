@@ -2,24 +2,43 @@
 #define WARP_FIELDENTITY_H
 
 #include <tuple>
+#include <memory>
+#include "FieldEntityCallbackClass.h"
 
-class FieldEntity {
+class FieldEntity : public std::enable_shared_from_this<FieldEntity> {
 protected:
     std::pair<int,int> position;
+    std::shared_ptr<FieldEntityCallbackClass> callback;
     int timeCounter;
-    int attackSpeed;
     int hp;
-    const int maxHp;
-    const int cost;
 public:
     virtual ~FieldEntity() = default;
+    virtual int maxHp() = 0;
+    virtual int cost() = 0;
+    virtual int upgradeCost() = 0;
+    virtual int attackSpeed() = 0;
+
+    // Getters
+    virtual bool isFriendly() = 0;
+    std::pair<int,int> getPosition() { return position; }
+    /// Returns the index of a given unstable object inside the MoovingEntities vector or -1 if its a Tower object.
+    virtual int getVectorPos() = 0;
+    // virtual void getStats() = 0; // Stats class???
+
+    // Action functions
     virtual void update() = 0;
     virtual void attack() = 0;
     virtual void takeDamage(int amount) = 0;
     virtual void die() = 0;
-    virtual bool isFriendly() = 0;
-    virtual void getStats() = 0; // Stats class???
-};
 
+
+    // Static subclass functions
+    template<class T>
+    static int cost_of();
+    template<class T>
+    static int baseMaxHp_of();
+    template<class T>
+    static int baseAttack_of();
+};
 
 #endif //WARP_FIELDENTITY_H
