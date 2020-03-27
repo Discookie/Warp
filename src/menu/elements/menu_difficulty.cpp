@@ -10,8 +10,9 @@ void MenuDifficultyButton::render_button(bool is_active) {
 
 
     al_draw_rectangle(
-        x - w/2,     y - h/2,
-        x + (w+1)/2, y + (h+1)/2, // So that odd widths/heights are correct px long
+        // Border is added onto the outside
+        x - (w-1)/2, y - (h-1)/2,
+        x + w/2,     y + h/2,
         al_map_rgb(175, 175, 175), 1
     );
     image.render_image();
@@ -23,8 +24,9 @@ void MenuDifficultyButton::render_button(bool is_active) {
 
     if (is_active) {
         al_draw_rectangle(
-            x - w/2 - 1,     y - h/2 - 1,
-            x + (w+1)/2 + 2, y + (h+1)/2 + 2,
+            // 3px of border only adds 2px of width towards the inside
+            x - 2 - (w-1)/2, y - 2 - (h-1)/2,
+            x + 2 + w/2,     y + 2 + h/2,
             al_map_rgb(106, 193, 200), 3
         );
     }
