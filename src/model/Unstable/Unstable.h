@@ -4,9 +4,8 @@
 #include "../FieldEntity.h"
 
 class Unstable : public FieldEntity {
-protected:
-    int speed;
 public:
+    virtual int speed() = 0;
     virtual ~Unstable() = default;
     virtual void move() = 0;
 };

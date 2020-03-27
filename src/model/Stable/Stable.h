@@ -3,14 +3,17 @@
 
 #include "../FieldEntity.h"
 
-class Stable : public FieldEntity{
+class Stable : public FieldEntity {
 protected:
-    const int upgradeCost;
-    bool isUpgraded;
+    bool upgraded;
 public:
     virtual ~Stable() = default;
-    virtual void upgarde() = 0;
-    virtual int value() = 0;
+
+    bool isFriendly() final { return true; }
+    int getVectorPos() final { return -1; }
+    void upgrade() { upgraded = true; };
+    bool isUpgraded() { return upgraded; };
+    virtual int removeValue() = 0;
 };
 
 
