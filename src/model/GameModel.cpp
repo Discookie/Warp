@@ -46,17 +46,17 @@ void GameModel::loadGame() {
 }
 
 void GameModel::constructFields() {
-    for(int i = 0; i < 10; i++) {
-        for(int j = 0; j < 12; j++) {
-            this->fields[i][j] = Field(std::pair<int,int>(i,j), this->callBacks);
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 12; j++) {
+            this->fields[i][j] = Field({i, j}, this->callBacks);
         }
     }
 }
 
-Field& GameModel::getField(std::pair<int, int> position) {
-    if((0 <= position.first  && position.first  < 10) &&
-       (0 <= position.second && position.second < 12) ){
-        return this->fields[position.first][position.second];
+Field &GameModel::getField(Coordinate position) {
+    if ((0 <= position.x && position.y < 10) &&
+        (0 <= position.x && position.y < 12)) {
+        return this->fields[position.x][position.y];
     }
     throw std::exception();
 }
@@ -99,11 +99,9 @@ bool GameModel::isBuildable(EntityType type) {
     }
 }
 
-void GameModel::buildTower(std::pair<int, int> position) {
-    if( isBuildable(selectedTower) &&
-        !getField(position).getTower() &&
-        getField(position).getTeamStatus() != Team::Enemy
-        ) {
+void GameModel::buildTower(Coordinate position) {
+    if (isBuildable(selectedTower) && !getField(position).getTower() &&
+        getField(position).getTeamStatus() != Team::Enemy) {
         getField(position).buildTower(selectedTower);
         this->gold -= getField(position).getTower()->cost();
         // this->points += 100;
@@ -113,9 +111,10 @@ void GameModel::buildTower(std::pair<int, int> position) {
     }
 }
 
-void GameModel::upgradeTower(std::pair<int, int> position) {
-    if(getField(position).getTower() && !getField(position).getTower()->isUpgraded()){
-        if( this->gold >= getField(position).getTower()->upgradeCost()){
+void GameModel::upgradeTower(Coordinate position) {
+    if (getField(position).getTower() &&
+        !getField(position).getTower()->isUpgraded()) {
+        if (this->gold >= getField(position).getTower()->upgradeCost()) {
             this->gold -= getField(position).getTower()->upgradeCost();
             getField(position).upgradeTower();
         }

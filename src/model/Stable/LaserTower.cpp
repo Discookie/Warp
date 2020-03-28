@@ -1,6 +1,7 @@
 #include "LaserTower.h"
 
-LaserTower::LaserTower(std::pair<int, int> position, const  std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+LaserTower::LaserTower(Coordinate position,
+    const  std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
     this->upgraded = false;

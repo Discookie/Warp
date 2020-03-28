@@ -1,6 +1,7 @@
 #include "SniperTower.h"
 
-SniperTower::SniperTower(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+SniperTower::SniperTower(Coordinate position,
+    const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
     this->upgraded = false;

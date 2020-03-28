@@ -1,6 +1,7 @@
 #include "Factory.h"
 
-Factory::Factory(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+Factory::Factory(Coordinate position,
+    const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
     this->upgraded = false;

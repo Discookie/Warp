@@ -7,7 +7,7 @@ class Stable : public FieldEntity {
 protected:
     bool upgraded;
 public:
-    virtual ~Stable() = default;
+    ~Stable() override = default;
 
     bool isFriendly() final { return true; }
     int getVectorPos() final { return -1; }

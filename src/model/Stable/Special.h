@@ -8,7 +8,8 @@
 
 class Special : public Stable{
 public:
-    Special(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
+    Special(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
 
     int maxHp() override { return CONSTANTS::SPECIAL_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::SPECIAL_BASE_COST; }

@@ -1,7 +1,8 @@
 #include "HqDefense.h"
 #include <memory>
 
-HqDefense::HqDefense(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+HqDefense::HqDefense(Coordinate position,
+    const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
     this->upgraded = true;
