@@ -6,7 +6,7 @@
 class Unstable : public FieldEntity {
 public:
     virtual int speed() = 0;
-    virtual ~Unstable() = default;
+    ~Unstable() override = default;
     virtual void move() = 0;
 };
 

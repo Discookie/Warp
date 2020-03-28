@@ -8,7 +8,8 @@
 
 class Factory : public Stable {
 public:
-    Factory(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& callback);
+    Factory(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& callback);
 
     int maxHp() override { return !upgraded ?
                           CONSTANTS::FACTORY_BASE_MAX_HP : CONSTANTS::FACTORY_UPGRADE_MAX_HP; }

@@ -41,14 +41,14 @@ public:
 
     // Building (player interaction)
     void selectTower(EntityType type);
-    void buildTower(std::pair<int, int> position);
-    void upgradeTower(std::pair<int, int> position);
+    void buildTower(Coordinate position);
+    void upgradeTower(Coordinate position);
 
     // Enemy interaction
     void spawnEnemies();
 
     // Getters
-    Field& getField(std::pair<int, int> position);
+    Field& getField(Coordinate position);
     int getGold()       const { return this->gold; }
     int getPoints()     const { return this->points; }
     int getWaveNumber() const { return this->waveNumber; }

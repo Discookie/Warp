@@ -1,6 +1,7 @@
 #include "HqAttack.h"
 
-HqAttack::HqAttack(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+HqAttack::HqAttack(Coordinate position,
+    const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
     this->upgraded = true;

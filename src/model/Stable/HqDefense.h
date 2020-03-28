@@ -8,7 +8,8 @@
 
 class HqDefense : public Hq {
 public:
-    HqDefense(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
+    HqDefense(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
 
     int maxHp() override { return CONSTANTS::HQDEFENSE_BASE_MAX_HP; }
     int cost() override { return  CONSTANTS::HQDEFENSE_BASE_COST; }

@@ -1,13 +1,13 @@
 #ifndef WARP_FIELDENTITY_H
 #define WARP_FIELDENTITY_H
 
-#include <tuple>
 #include <memory>
 #include "FieldEntityCallbackClass.h"
+#include "Coordinate.h"
 
 class FieldEntity : public std::enable_shared_from_this<FieldEntity> {
 protected:
-    std::pair<int,int> position;
+    Coordinate position;
     std::shared_ptr<FieldEntityCallbackClass> callback;
     int timeCounter;
     int hp;
@@ -20,7 +20,7 @@ public:
 
     // Getters
     virtual bool isFriendly() = 0;
-    std::pair<int,int> getPosition() { return position; }
+    Coordinate getPosition() { return position; }
     /// Returns the index of a given unstable object inside the MoovingEntities vector or -1 if its a Tower object.
     virtual int getVectorPos() = 0;
     // virtual void getStats() = 0; // Stats class???

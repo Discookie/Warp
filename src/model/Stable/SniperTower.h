@@ -8,7 +8,8 @@
 
 class SniperTower : public Stable{
 public:
-    SniperTower(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
+    SniperTower(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
 
     int maxHp() override { return CONSTANTS::SNIPERTOWER_BASE_MAX_HP; }
     int cost() override { return CONSTANTS::SNIPERTOWER_BASE_COST; }
