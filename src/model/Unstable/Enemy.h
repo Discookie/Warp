@@ -3,9 +3,6 @@
 
 #include "Unstable.h"
 
-class Enemy : public Unstable{
+class Enemy : public Unstable {};
 
-};
-
-
-#endif //WARP_ENEMY_H
+#endif  // WARP_ENEMY_H

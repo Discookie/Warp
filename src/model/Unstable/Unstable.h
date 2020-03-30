@@ -6,9 +6,10 @@
 class Unstable : public FieldEntity {
 public:
     virtual int speed() = 0;
+
     ~Unstable() override = default;
+
     virtual void move() = 0;
 };
 
-
-#endif //WARP_UNSTABLE_H
+#endif  // WARP_UNSTABLE_H

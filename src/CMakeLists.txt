@@ -22,12 +22,12 @@ target_link_libraries(Warp WarpLib)
 # Copy DLLs to /bin automatically
 # It's enough to copy only the monolith
 add_custom_command(
-    TARGET WarpLib POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/libs/allegro/bin/allegro_monolith-debug-5.2.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        TARGET WarpLib POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/libs/allegro/bin/allegro_monolith-debug-5.2.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
 
 # Copy Assets into the exe's folder
 add_custom_command(
-    TARGET Warp PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+        TARGET Warp PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )

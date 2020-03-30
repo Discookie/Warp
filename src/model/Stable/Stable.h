@@ -6,15 +6,19 @@
 class Stable : public FieldEntity {
 protected:
     bool upgraded;
+
 public:
     ~Stable() override = default;
 
-    bool isFriendly() final { return true; }
-    int getVectorPos() final { return -1; }
+    bool is_friendly() final { return true; }
+
+    int get_vector_pos() final { return -1; }
+
     void upgrade() { upgraded = true; };
-    bool isUpgraded() { return upgraded; };
-    virtual int removeValue() = 0;
+
+    bool is_upgraded() { return upgraded; };
+
+    virtual int remove_value() = 0;
 };
 
-
-#endif //WARP_STABLE_H
+#endif  // WARP_STABLE_H

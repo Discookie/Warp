@@ -1,18 +1,18 @@
+#include "main_menu.h"
+
 #include <functional>
+#include <memory>
 #include <optional>
 #include <tuple>
 
-#include "main_menu.h"
-
 const int MENU_WIDTH = 200;
-using font_ptr = std::shared_ptr<ALLEGRO_FONT>;
-using scene_ptr = std::unique_ptr<MainMenuScene>;
+using font_ptr       = std::shared_ptr<ALLEGRO_FONT>;
+using scene_ptr      = std::unique_ptr<MainMenuScene>;
 
 neither::Either<std::string, std::unique_ptr<MainMenuScene>> MainMenuScene::create() {
-
     // 200px x 70px
     return MenuImage::load_from_path(160, 45, "assets/header.png")
-        .rightFlatMap( [](auto&& img) {
+        .rightFlatMap([](auto&& img) {
             using ret_ty = neither::Either<std::string, std::tuple<MenuImage, font_ptr>>;
 
             font_ptr font = font_ptr(al_create_builtin_font(), FontDeleter());
@@ -20,52 +20,33 @@ neither::Either<std::string, std::unique_ptr<MainMenuScene>> MainMenuScene::crea
             if (!font) {
                 return ret_ty::leftOf("failed to load font");
             } else {
-                return ret_ty::rightOf(std::make_tuple(std::move(img), font));
+                return ret_ty::rightOf(std::make_tuple(std::forward<decltype(img)>(img), font));
             }
-        }).rightMap( [](auto&& tuple_img_font) {
-            return std::unique_ptr<MainMenuScene>(new MainMenuScene(
-                std::move(std::get<0>(tuple_img_font)),
-                std::get<1>(tuple_img_font)
-            ));
+        })
+        .rightMap([](auto&& tuple_img_font) {
+            return std::unique_ptr<MainMenuScene>(
+                new MainMenuScene(  // NOLINT(modernize-make-unique)
+                    std::move(std::get<0>(tuple_img_font)), std::get<1>(tuple_img_font)));
         });
 }
 
-MainMenuScene::MainMenuScene(MenuImage&& img, font_ptr font) {
+MainMenuScene::MainMenuScene(MenuImage&& img, const font_ptr& font) {
     header_image = std::move(img);
-    
+
     new_game_button = MenuButton(
-        160, 100, MENU_WIDTH, 20,
-        "New game", font,
-        [&](){ clicked_scene = "new_game"; }
-    );
+        160, 100, MENU_WIDTH, 20, "New game", font, [&]() { clicked_scene = "new_game"; });
     new_game_button.disable();
     load_game_button = MenuButton(
-        160, 130,
-        MENU_WIDTH, 20,
-        "Load game", font,
-        [&](){ clicked_scene = "load_game"; }
-    );
+        160, 130, MENU_WIDTH, 20, "Load game", font, [&]() { clicked_scene = "load_game"; });
     load_game_button.disable();
-    options_button = MenuButton(
-        160, 160,
-        MENU_WIDTH, 20,
-        "Options", font,
-        [&](){ clicked_scene = "options"; }
-    );
+    options_button =
+        MenuButton(160, 160, MENU_WIDTH, 20, "Options", font, [&]() { clicked_scene = "options"; });
     options_button.disable();
-    credits_button = MenuButton(
-        160, 190,
-        MENU_WIDTH, 20,
-        "Credits", font,
-        [&](){ clicked_scene = "credits"; }
-    );
+    credits_button =
+        MenuButton(160, 190, MENU_WIDTH, 20, "Credits", font, [&]() { clicked_scene = "credits"; });
     credits_button.disable();
-    exit_button = MenuButton(
-        160, 225,
-        MENU_WIDTH, 20,
-        "Exit", font,
-        [&](){ clicked_scene = "exit"; }
-    );
+    exit_button =
+        MenuButton(160, 225, MENU_WIDTH, 20, "Exit", font, [&]() { clicked_scene = "exit"; });
 
     clicked_scene = std::nullopt;
 }

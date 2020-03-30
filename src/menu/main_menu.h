@@ -18,11 +18,12 @@ private:
 
     std::optional<std::string> clicked_scene;
 
-    MainMenuScene(MenuImage&& img, std::shared_ptr<ALLEGRO_FONT> font);
+    MainMenuScene(MenuImage &&img, const std::shared_ptr<ALLEGRO_FONT> &font);
+
 public:
     static neither::Either<std::string, std::unique_ptr<MainMenuScene>> create();
 
+    void render_scene(SceneMessenger &messenger, const ALLEGRO_EVENT &event) override;
 
-    void render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& event) override;
-    void on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) override;
+    void on_mouse_event(SceneMessenger &messenger, const ALLEGRO_EVENT &event) override;
 };

@@ -1,32 +1,31 @@
 #include "scene_manager.h"
 
-using scene_ptr = std::unique_ptr<Scene>;
+using scene_ptr    = std::unique_ptr<Scene>;
 using hashmap_elem = std::pair<const std::string, std::unique_ptr<Scene>>;
 
 SceneManager::SceneManager() : scenes(), current_scene() {
-    scenes.insert({ "exit", std::move(scene_ptr(nullptr)) });
+    scenes.insert({"exit", std::move(scene_ptr(nullptr))});
 }
 
-void SceneManager::add_scene(std::string name, scene_ptr&& scene, bool replace_existing) {
-    if (name == "" || name == "exit") {
+void SceneManager::add_scene(const std::string &name, scene_ptr &&scene, bool replace_existing) {
+    if (name.empty() || name == "exit") {
         return;
     }
 
-    // The reference may be invalidated on insertion, better be safe and re-initialize it
-    std::string current_scene_name = (current_scene) 
-        ? current_scene->get().first
-        : "";
+    // The reference may be invalidated on insertion, better be safe and
+    // re-initialize it
+    std::string current_scene_name = (current_scene) ? current_scene->get().first : "";
 
     if (replace_existing) {
         scenes.insert_or_assign(name, std::move(scene));
     } else {
-        scenes.insert({ name, std::move(scene) });
+        scenes.insert({name, std::move(scene)});
     }
 
     set_scene(current_scene_name);
 }
 
-std::optional<scene_ptr> SceneManager::remove_scene(std::string scene) {
+std::optional<scene_ptr> SceneManager::remove_scene(const std::string &scene) {
     if (current_scene && current_scene->get().first == scene) {
         current_scene = std::nullopt;
     }
@@ -40,8 +39,8 @@ std::optional<scene_ptr> SceneManager::remove_scene(std::string scene) {
     return std::nullopt;
 }
 
-void SceneManager::set_scene(std::string scene) {
-    if (scene == "" || scene == "exit") {
+void SceneManager::set_scene(const std::string &scene) {
+    if (scene.empty() || scene == "exit") {
         current_scene = std::nullopt;
     } else {
         auto found_scene = scenes.find(scene);
@@ -54,7 +53,7 @@ void SceneManager::set_scene(std::string scene) {
     }
 }
 
-void SceneManager::render(const ALLEGRO_EVENT& event) {
+void SceneManager::render(const ALLEGRO_EVENT &event) {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
     if (!current_scene) {
@@ -64,24 +63,24 @@ void SceneManager::render(const ALLEGRO_EVENT& event) {
 
     SceneMessenger messenger = SceneMessenger();
 
-    scene_ptr& scene = current_scene->get().second;
+    scene_ptr &scene = current_scene->get().second;
     scene->render_scene(messenger, event);
 
     if (messenger.get_scene()) {
         set_scene(*messenger.get_scene());
     }
-    
+
     al_flip_display();
 }
 
-void SceneManager::handle_event(const ALLEGRO_EVENT& event) {
+void SceneManager::handle_event(const ALLEGRO_EVENT &event) {
     if (!current_scene) {
         return;
     }
 
-    scene_ptr& scene = current_scene->get().second;
+    scene_ptr &scene         = current_scene->get().second;
     SceneMessenger messenger = SceneMessenger();
-    
+
     switch (event.type) {
         case ALLEGRO_EVENT_KEY_DOWN:
         case ALLEGRO_EVENT_KEY_UP:
