@@ -1,35 +1,29 @@
 #include "HqAttack.h"
 
-HqAttack::HqAttack(Coordinate position,
-    const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+HqAttack::HqAttack(
+    Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) {
     this->position = position;
-    this->callback = gameModelCallback;
+    this->callback = game_model_callback;
     this->upgraded = true;
-    this->hp = CONSTANTS::HQATTACK_BASE_MAX_HP;
+    this->hp       = Constants::HQATTACK_BASE_MAX_HP;
 }
 
-void HqAttack::update() {
+void HqAttack::update() {}
 
-}
+void HqAttack::die() { callback->die(shared_from_this()); }
 
-void HqAttack::die() {
-    callback->die(shared_from_this());
-}
+void HqAttack::attack() { callback->attack(shared_from_this()); }
 
-void HqAttack::attack() {
-    callback->attack(shared_from_this());
-}
-
-int HqAttack::removeValue() {
-    if(upgraded){
+int HqAttack::remove_value() {
+    if (upgraded) {
         return 100;
     }
     return 50;
 }
 
-void HqAttack::takeDamage(int amount) {
+void HqAttack::take_damage(int amount) {
     this->hp -= amount;
-    if(hp < 0){
+    if (hp < 0) {
         this->die();
     }
 }

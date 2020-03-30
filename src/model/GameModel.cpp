@@ -1,25 +1,25 @@
 #include "GameModel.h"
 
-GameModel::GameModel(){
+GameModel::GameModel() {
     this->fields = std::vector(10, std::vector<Field>(12));
-    GameModel::initCallbacks();
-    GameModel::newGame();
+    GameModel::init_callbacks();
+    GameModel::new_game();
 }
 
-void GameModel::newGame(){
+void GameModel::new_game() {
     this->fields.clear();
-    this->points = 0;
-    this->gold = 0;
-    this->waveTimer = 2000;
-    this->haveSpecial = false;
-    this->selectedTower = EntityType::typeNone;
-    this->constructFields();
+    this->points         = 0;
+    this->gold           = 0;
+    this->wave_timer     = 2000;
+    this->have_special   = false;
+    this->selected_tower = EntityType::TypeNone;
+    this->construct_fields();
 }
 
-void GameModel::initCallbacks() {
+void GameModel::init_callbacks() {
     // Produce Callback
     auto pro = [this](const std::shared_ptr<FieldEntity>& obj) {
-        this->gold += std::static_pointer_cast<Factory>(obj)->productionAmount();
+        this->gold += std::static_pointer_cast<Factory>(obj)->production_amount();
     };
     // Move Callback
     auto mov = [this](const std::shared_ptr<FieldEntity>& obj) {
@@ -31,99 +31,86 @@ void GameModel::initCallbacks() {
     };
     // Die Callback
     auto die = [this](const std::shared_ptr<FieldEntity>& obj) {
-        if(obj->getVectorPos() == -1) {
-            this->getField(obj->getPosition()).removeTower();
-        }
-        else{
-            this->getField(obj->getPosition()).removeEntityAt(obj->getVectorPos());
+        if (obj->get_vector_pos() == -1) {
+            this->get_field(obj->get_position()).remove_tower();
+        } else {
+            this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
         }
     };
-    callBacks = std::make_shared<FieldEntityCallbackClass>(pro,mov,att,die);
+    call_backs = std::make_shared<FieldEntityCallbackClass>(pro, mov, att, die);
 }
 
-void GameModel::loadGame() {
-    throw std::logic_error("Unimplemented");
-}
+void GameModel::load_game() { throw std::logic_error("Unimplemented"); }
 
-void GameModel::constructFields() {
+void GameModel::construct_fields() {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 12; j++) {
-            this->fields[i][j] = Field({i, j}, this->callBacks);
+            this->fields[i][j] = Field({i, j}, this->call_backs);
         }
     }
 }
 
-Field &GameModel::getField(Coordinate position) {
-    if ((0 <= position.x && position.y < 10) &&
-        (0 <= position.x && position.y < 12)) {
+Field& GameModel::get_field(Coordinate position) {
+    if ((0 <= position.x && position.y < 10) && (0 <= position.x && position.y < 12)) {
         return this->fields[position.x][position.y];
     }
     throw std::exception();
 }
 
-void GameModel::updateModel() {
-    this->updateFields();
+void GameModel::update_model() { this->update_fields(); }
 
-}
-
-void GameModel::updateFields() {
-    for(auto& v : this->fields){
-        for(auto& f : v){
-            f.updateEntities();
+void GameModel::update_fields() {
+    for (auto& v : this->fields) {
+        for (auto& f : v) {
+            f.update_entities();
         }
     }
 }
 
-void GameModel::selectTower(EntityType type) {
-    this->selectedTower = type;
-}
+void GameModel::select_tower(EntityType type) { this->selected_tower = type; }
 
-bool GameModel::isBuildable(EntityType type) {
+bool GameModel::is_buildable(EntityType type) {
     switch (type) {
-        case EntityType::typeFactory:
-            return this->gold >= CONSTANTS::FACTORY_BASE_COST;
-        case EntityType::typeLaserTower:
-            return this->gold >= CONSTANTS::LASERTOWER_BASE_COST;
-        case EntityType::typeTeslaCoil:
-            return this->gold >= CONSTANTS::TESLACOIL_BASE_COST;
-        case EntityType::typeSniperTower:
-            return this->gold >= CONSTANTS::SNIPERTOWER_BASE_COST;
-        case EntityType::typeHqAttack:
-            return this->gold >= CONSTANTS::HQATTACK_BASE_COST;
-        case EntityType::typeHqDefense:
-            return this->gold >= CONSTANTS::HQDEFENSE_BASE_COST;
-        case EntityType::typeSpecial:
-            return this->gold >= CONSTANTS::SPECIAL_BASE_COST &&
-                   this->haveSpecial;
-        default: return false;
+        case EntityType::TypeFactory:
+            return this->gold >= Constants::FACTORY_BASE_COST;
+        case EntityType::TypeLaserTower:
+            return this->gold >= Constants::LASERTOWER_BASE_COST;
+        case EntityType::TypeTeslaCoil:
+            return this->gold >= Constants::TESLACOIL_BASE_COST;
+        case EntityType::TypeSniperTower:
+            return this->gold >= Constants::SNIPERTOWER_BASE_COST;
+        case EntityType::TypeHqAttack:
+            return this->gold >= Constants::HQATTACK_BASE_COST;
+        case EntityType::TypeHqDefense:
+            return this->gold >= Constants::HQDEFENSE_BASE_COST;
+        case EntityType::TypeSpecial:
+            return this->gold >= Constants::SPECIAL_BASE_COST && this->have_special;
+        default:
+            return false;
     }
 }
 
-void GameModel::buildTower(Coordinate position) {
-    if (isBuildable(selectedTower) && !getField(position).getTower() &&
-        getField(position).getTeamStatus() != Team::Enemy) {
-        getField(position).buildTower(selectedTower);
-        this->gold -= getField(position).getTower()->cost();
+void GameModel::build_tower(Coordinate position) {
+    if (is_buildable(selected_tower) && !get_field(position).get_tower()
+        && get_field(position).get_team_status() != Team::Enemy) {
+        get_field(position).build_tower(selected_tower);
+        this->gold -= get_field(position).get_tower()->cost();
         // this->points += 100;
-    }
-    else{
+    } else {
         // You can't build here!
     }
 }
 
-void GameModel::upgradeTower(Coordinate position) {
-    if (getField(position).getTower() &&
-        !getField(position).getTower()->isUpgraded()) {
-        if (this->gold >= getField(position).getTower()->upgradeCost()) {
-            this->gold -= getField(position).getTower()->upgradeCost();
-            getField(position).upgradeTower();
+void GameModel::upgrade_tower(Coordinate position) {
+    if (get_field(position).get_tower() && !get_field(position).get_tower()->is_upgraded()) {
+        if (this->gold >= get_field(position).get_tower()->upgrade_cost()) {
+            this->gold -= get_field(position).get_tower()->upgrade_cost();
+            get_field(position).upgrade_tower();
         }
     }
 }
 
-int GameModel::getWaveProgress() {
-    throw std::logic_error("Unimplemented");
-}
+int GameModel::get_wave_progress() { throw std::logic_error("Unimplemented"); }
 
 /*
 void GameModel::pause() {

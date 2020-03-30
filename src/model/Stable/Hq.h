@@ -3,9 +3,6 @@
 
 #include "Stable.h"
 
-class Hq : public Stable {
+class Hq : public Stable {};
 
-};
-
-
-#endif //WARP_HQ_H
+#endif  // WARP_HQ_H

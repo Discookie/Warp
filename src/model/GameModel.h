@@ -1,59 +1,71 @@
 #ifndef WARP_GAMEMODEL_H
 #define WARP_GAMEMODEL_H
 
-#include <vector>
 #include <functional>
+#include <vector>
 
-#include "Field.h"
 #include "EntityType.h"
+#include "Field.h"
 #include "FieldEntityCallbackClass.h"
-
 #include "Stable/Factory.h"
-#include "model/Stable/LaserTower.h"
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
+#include "Stable/SniperTower.h"
 #include "Stable/Special.h"
 #include "Stable/TeslaCoil.h"
-#include "Stable/SniperTower.h"
+#include "model/Stable/LaserTower.h"
 
 class GameModel {
 private:
     std::vector<std::vector<Field>> fields;
     int points;
     int gold;
-    int waveTimer;
-    int waveNumber;
-    bool haveSpecial;
-    EntityType selectedTower;
+    int wave_timer;
+    int wave_number;
+    bool have_special;
+    EntityType selected_tower;
     // Callbacks
-    std::shared_ptr<FieldEntityCallbackClass> callBacks;
-    void initCallbacks();
+    std::shared_ptr<FieldEntityCallbackClass> call_backs;
+
+    void init_callbacks();
+
 public:
     // Constructors
     GameModel();
-    void newGame();
-    void loadGame();
-    void constructFields();
+
+    void new_game();
+
+    void load_game();
+
+    void construct_fields();
 
     // Updates
-    void updateModel();
-    void updateFields();
+    void update_model();
+
+    void update_fields();
 
     // Building (player interaction)
-    void selectTower(EntityType type);
-    void buildTower(Coordinate position);
-    void upgradeTower(Coordinate position);
+    void select_tower(EntityType type);
+
+    void build_tower(Coordinate position);
+
+    void upgrade_tower(Coordinate position);
 
     // Enemy interaction
-    void spawnEnemies();
+    void spawn_enemies();
 
     // Getters
-    Field& getField(Coordinate position);
-    int getGold()       const { return this->gold; }
-    int getPoints()     const { return this->points; }
-    int getWaveNumber() const { return this->waveNumber; }
-    int getWaveProgress();
-    bool isBuildable(EntityType type);
+    Field &get_field(Coordinate position);
+
+    int get_gold() const { return this->gold; }
+
+    int get_points() const { return this->points; }
+
+    int get_wave_number() const { return this->wave_number; }
+
+    int get_wave_progress();
+
+    bool is_buildable(EntityType type);
 };
 
-#endif //WARP_GAMEMODEL_H
+#endif  // WARP_GAMEMODEL_H

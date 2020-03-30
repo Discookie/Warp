@@ -6,8 +6,8 @@
 #define WARP_COORDINATE_H
 
 struct Coordinate {
-  int x;
-  int y;
+    int x;
+    int y;
 };
 
-#endif // WARP_COORDINATE_H
+#endif  // WARP_COORDINATE_H

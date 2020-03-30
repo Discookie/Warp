@@ -3,9 +3,6 @@
 
 #include "Unstable.h"
 
-class Friendly : public Unstable {
+class Friendly : public Unstable {};
 
-};
-
-
-#endif //WARP_FRIENDLY_H
+#endif  // WARP_FRIENDLY_H

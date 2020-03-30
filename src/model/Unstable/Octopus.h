@@ -3,9 +3,6 @@
 
 #include "Enemy.h"
 
-class Octopus : public Enemy {
+class Octopus : public Enemy {};
 
-};
-
-
-#endif //WARP_OCTOPUS_H
+#endif  // WARP_OCTOPUS_H

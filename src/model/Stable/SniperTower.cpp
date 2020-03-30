@@ -1,35 +1,29 @@
 #include "SniperTower.h"
 
-SniperTower::SniperTower(Coordinate position,
-    const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) {
+SniperTower::SniperTower(
+    Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) {
     this->position = position;
-    this->callback = gameModelCallback;
+    this->callback = game_model_callback;
     this->upgraded = false;
-    this->hp = CONSTANTS::SNIPERTOWER_BASE_MAX_HP;
+    this->hp       = Constants::SNIPERTOWER_BASE_MAX_HP;
 }
 
-void SniperTower::update() {
+void SniperTower::update() {}
 
-}
+void SniperTower::die() { callback->die(shared_from_this()); }
 
-void SniperTower::die() {
-    callback->die(shared_from_this());
-}
+void SniperTower::attack() { callback->attack(shared_from_this()); }
 
-void SniperTower::attack() {
-    callback->attack(shared_from_this());
-}
-
-int SniperTower::removeValue() {
-    if(upgraded){
+int SniperTower::remove_value() {
+    if (upgraded) {
         return 100;
     }
     return 50;
 }
 
-void SniperTower::takeDamage(int amount) {
+void SniperTower::take_damage(int amount) {
     this->hp -= amount;
-    if(hp < 0){
+    if (hp < 0) {
         this->die();
     }
 }
