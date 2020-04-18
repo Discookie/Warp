@@ -44,6 +44,8 @@ public:
     /// This is supposed to be called only by die() callback
     void remove_entity_at(int ind);
 
+    void add_moving_entity(std::shared_ptr<Unstable> e);
+
     std::vector<std::shared_ptr<Unstable>> get_moving_entities();
 
     // General

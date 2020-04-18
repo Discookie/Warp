@@ -2,9 +2,12 @@
 #define WARP_FIELDENTITY_H
 
 #include <memory>
+#include <vector>
 
 #include "Coordinate.h"
 #include "FieldEntityCallbackClass.h"
+
+class Field;
 
 class FieldEntity : public std::enable_shared_from_this<FieldEntity> {
 protected:
@@ -38,6 +41,11 @@ public:
     virtual void update() = 0;
 
     virtual void attack() = 0;
+
+    virtual std::vector<FieldEntity>&& collect_atteced_entities(
+        const std::vector<std::vector<Field>>&) = 0;
+
+    virtual int get_damage() = 0;
 
     virtual void take_damage(int amount) = 0;
 

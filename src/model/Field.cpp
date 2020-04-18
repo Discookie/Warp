@@ -47,7 +47,10 @@ void Field::build_tower(EntityType type) {
     this->team_status = Team::Friendly;
 }
 
-void Field::upgrade_tower() { this->tower->upgrade(); }
+void Field::upgrade_tower() {
+    if (tower)
+        this->tower->upgrade();
+}
 
 void Field::remove_tower() {
     this->tower = nullptr;
@@ -60,6 +63,9 @@ std::shared_ptr<Stable> Field::get_tower() { return this->tower; }
 
 void Field::remove_entity_at(int ind) {
     this->moving_entities.erase(this->moving_entities.begin() + ind);
+}
+
+void Field::add_moving_entity(std::shared_ptr<Unstable> entity) {
 }
 
 std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities() {
