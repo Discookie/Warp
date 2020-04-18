@@ -23,20 +23,23 @@ void GameModel::init_callbacks() {
     };
     // Move Callback
     auto mov = [this](const std::shared_ptr<Unstable>& obj) {
+        std::optional<Coordinate> new_pos = obj->move_to(fields);
+        if (!new_pos) {
+            return; /* Can't move */
+        }
         int vec_pos    = obj->get_vector_pos();
         Coordinate pos = obj->get_position();
         if (vec_pos == -1) {
-            return; /* Thorw sy */
+            return; /* Thorw sg */
         }
         this->get_field(pos).remove_entity_at(vec_pos);
-        Coordinate new_pos = obj->move_to(pos);
-        this->get_field(new_pos).add_moving_entity(obj);
+        this->get_field(*new_pos).add_moving_entity(obj);
     };
     // Attack Callback
     auto att = [this](const std::shared_ptr<FieldEntity>& obj) {
         std::vector<FieldEntity> objects = obj->collect_atteced_entities(fields);
-        int dmg = obj->get_damage();
-        for(FieldEntity& fe : objects) {
+        int dmg                          = obj->get_damage();
+        for (FieldEntity& fe : objects) {
             fe.take_damage(dmg);
         }
         // Not implemented

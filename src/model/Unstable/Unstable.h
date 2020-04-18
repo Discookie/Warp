@@ -13,7 +13,8 @@ public:
 
     // should set this->position to the new position, and return it
     // should only be called by move callback
-    virtual Coordinate move_to(Coordinate curr_pos) = 0;
+    // if cant move, should return {}
+    virtual std::optional<Coordinate> move_to(const std::vector<std::vector<Field>>&) = 0;
 };
 
 #endif  // WARP_UNSTABLE_H
