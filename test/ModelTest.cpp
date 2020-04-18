@@ -9,7 +9,6 @@
 #include <model/Field.h>
 #include <model/GameModel.h>
 #include <model/Team.h>
-#include <typeinfo>
 
 class GameModelFixture : public ::testing::Test {
 protected:
@@ -22,6 +21,7 @@ TEST_F(GameModelFixture, InitTest) {
     EXPECT_EQ(game_model.get_wave_number(), 0);
     //EXPECT_EQ(game_model.get_wave_progress(), 0);
     EXPECT_EQ(game_model.get_gold(), 0);
+    /*
     for (int i = 0; i < 10; ++i) {
         for (int j = 0; j < 12; ++j) {
             // EXPECT_FALSE(game_model.get_field({i, j}).get_tower());
@@ -29,6 +29,7 @@ TEST_F(GameModelFixture, InitTest) {
             // EXPECT_EQ(game_model.get_field({i, j}).get_team_status(), Team::Neutral);
         }
     }
+    */
 }
 
 class FieldFixture : public ::testing::Test {
@@ -45,8 +46,12 @@ TEST_F(FieldFixture, InitTest) {
 
 TEST_F(FieldFixture, BuildTest) {
     field.build_tower(EntityType::TypeFactory);
+
     EXPECT_EQ(field.get_team_status(), Team::Friendly);
     ASSERT_TRUE(field.get_tower());
+
+    EXPECT_ANY_THROW(field.build_tower(EntityType::TypeFactory)) <<
+        "Double build should throw exception";
 }
 
 TEST_F(FieldFixture, BuildFactoryTest) {
@@ -75,20 +80,33 @@ TEST_F(FieldFixture, BuildSpecialTest) {
 }
 
 TEST_F(FieldFixture, RemoveTowerTest) {
+    EXPECT_ANY_THROW(field.remove_tower()) <<
+        "Removeing nothing should throw exception";
+
     field.build_tower(EntityType::TypeFactory);
     field.remove_tower();
+
     EXPECT_FALSE(field.get_tower());
     EXPECT_EQ(field.get_team_status(), Team::Neutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
 
 TEST_F(FieldFixture, UpgradeTest) {
+    EXPECT_ANY_THROW(field.upgrade_tower()) <<
+        "Updateing nothing should throw exception";
+
     field.build_tower(EntityType::TypeFactory);
+
     EXPECT_FALSE(field.get_tower()->is_upgraded());
+
     field.upgrade_tower();
+
     EXPECT_TRUE(field.get_tower()->is_upgraded());
     EXPECT_EQ(field.get_team_status(), Team::Friendly);
     EXPECT_TRUE(field.get_moving_entities().empty());
+
+    EXPECT_ANY_THROW(field.upgrade_tower()) <<
+        "Duble upgrade should throw exception";
 }
 
 TEST_F(FieldFixture, UpdateTest) {
@@ -96,6 +114,7 @@ TEST_F(FieldFixture, UpdateTest) {
 }
 
 TEST_F(FieldFixture, RemoveEntityTest) {
+//    Can change team_status, but not implemented
 //    TODO
 }
 
