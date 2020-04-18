@@ -25,6 +25,11 @@ public:
 
     void attack() override;
 
+    std::vector<FieldEntity>&& collect_atteced_entities(
+        const std::vector<std::vector<Field>>& fields) override;
+
+    int get_damage() override;
+
     int remove_value() override { return 0; }
 
     void take_damage(int amount) override {}

@@ -27,3 +27,12 @@ void HqDefense::take_damage(int amount) {
         this->die();
     }
 }
+
+std::vector<FieldEntity>&& HqDefense::collect_atteced_entities(
+    const std::vector<std::vector<Field>>& fields) {
+    return std::move(std::vector<FieldEntity>());
+}
+
+int HqDefense::get_damage() {
+    return Constants::HQDEFENSE_BASE_ATTACK;
+};

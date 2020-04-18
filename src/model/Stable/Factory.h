@@ -21,6 +21,11 @@ public:
 
     int attack_speed() override { return Constants::FACTORY_ATTACK_SPEED; }
 
+    std::vector<FieldEntity>&& collect_atteced_entities(
+        const std::vector<std::vector<Field>>&) override { return std::move(std::vector<FieldEntity>()); }
+
+    int get_damage() override { return 0; };
+
     int production_amount() {
         return !upgraded ? Constants::FACTORY_BASE_PRODUCTION
                          : Constants::FACTORY_UPGRADE_PRODUCTION;

@@ -14,6 +14,18 @@ void TeslaCoil::die() { callback->die(shared_from_this()); }
 
 void TeslaCoil::attack() { callback->attack(shared_from_this()); }
 
+std::vector<FieldEntity>&& TeslaCoil::collect_atteced_entities(
+    const std::vector<std::vector<Field>>& fields) {
+    return std::move(std::vector<FieldEntity>());
+}
+
+int TeslaCoil::get_damage() {
+    if (upgraded)
+        return Constants::TESLACOIL_UPGRADE_COST;
+    else
+        return Constants::TESLACOIL_BASE_ATTACK;
+};
+
 int TeslaCoil::remove_value() {
     if (upgraded) {
         return 100;

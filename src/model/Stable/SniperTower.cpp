@@ -14,6 +14,18 @@ void SniperTower::die() { callback->die(shared_from_this()); }
 
 void SniperTower::attack() { callback->attack(shared_from_this()); }
 
+std::vector<FieldEntity>&& SniperTower::collect_atteced_entities(
+    const std::vector<std::vector<Field>>& fields) {
+    return std::move(std::vector<FieldEntity>());
+}
+
+int SniperTower::get_damage() {
+    if (upgraded)
+        return Constants::SNIPERTOWER_UPGRADE_COST;
+    else
+        return Constants::SNIPERTOWER_BASE_ATTACK;
+};
+
 int SniperTower::remove_value() {
     if (upgraded) {
         return 100;

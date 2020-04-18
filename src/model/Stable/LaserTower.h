@@ -9,7 +9,7 @@
 class LaserTower : public Stable {
 public:
     LaserTower(
-        Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback);
+        Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback);
 
     int max_hp() override { return Constants::LASERTOWER_BASE_MAX_HP; }
 
@@ -18,6 +18,11 @@ public:
     int upgrade_cost() override { return Constants::LASERTOWER_UPGRADE_COST; }
 
     int attack_speed() override { return 10; }
+
+    std::vector<FieldEntity>&& collect_atteced_entities(
+        const std::vector<std::vector<Field>>& fields) override;
+
+    int get_damage() override;
 
     void update() override;
 
