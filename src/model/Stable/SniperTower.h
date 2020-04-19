@@ -16,20 +16,33 @@ public:
     }
 
     int max_hp() override { return Constants::SNIPERTOWER_MAX_HP; }
+
     int cost() override { return Constants::SNIPERTOWER_BASE_COST; }
+
     int upgrade_cost() override { return Constants::SNIPERTOWER_UPGRADE_COST; }
-    int attack_speed() override { return !upgraded ?
-                                         Constants::SNIPERTOWER_BASE_ATTACKSPEED : Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED; }
-    int damage() override { return !upgraded ?
-                                   Constants::SNIPERTOWER_BASE_DAMAGE : Constants::SNIPERTOWER_UPGRADE_DAMAGE; }
+
+    int attack_speed() override {
+        return !upgraded ?
+               Constants::SNIPERTOWER_BASE_ATTACKSPEED : Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED;
+    }
+
+    int damage() override {
+        return !upgraded ?
+               Constants::SNIPERTOWER_BASE_DAMAGE : Constants::SNIPERTOWER_UPGRADE_DAMAGE;
+    }
+
+    void attack_entities(const std::vector<std::vector<Field>> &) override {}
 
     void do_actions() override {
-        if(time_counter % attack_speed() == 0){
+        if (time_counter % attack_speed() == 0) {
             attack();
         }
     }
-    int remove_value() override {return !upgraded ?
-                                        Constants::SNIPERTOWER_BASE_REMOVE_VALUE : Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE;}
+
+    int remove_value() override {
+        return !upgraded ?
+               Constants::SNIPERTOWER_BASE_REMOVE_VALUE : Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE;
+    }
     // void getStats() override;
 };
 

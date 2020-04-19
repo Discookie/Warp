@@ -37,6 +37,8 @@ public:
     std::shared_ptr<Stable> get_tower();
 
     // Unstable
+    void add_moving_entity(std::shared_ptr<Unstable> obj);
+
     /// This is supposed to be called only by die() callback
     void remove_entity_at(int ind);
     std::vector<std::shared_ptr<Unstable>> get_moving_entities();

@@ -9,18 +9,25 @@
 class HqDefense : public Hq {
 public:
     HqDefense(Coordinate position,
-        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
-            Hq(position, game_model_callback){
+              const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) :
+            Hq(position, game_model_callback) {
         this->hp = Constants::HQDEFENSE_MAX_HP;
     }
 
     int max_hp() override { return Constants::HQDEFENSE_MAX_HP; }
-    int cost() override { return  Constants::HQDEFENSE_BASE_COST; }
+
+    int cost() override { return Constants::HQDEFENSE_BASE_COST; }
+
     int upgrade_cost() override { return Constants::HQDEFENSE_UPGRADE_COST; }
+
     int attack_speed() override { return Constants::HQDEFENSE_ATTACKSPEED; }
+
     int damage() override { return Constants::HQDEFENSE_DAMAGE; }
-    void do_actions() override{
-        if(time_counter % attack_speed() == 0){
+
+    void attack_entities(const std::vector<std::vector<Field>> &) override {}
+
+    void do_actions() override {
+        if (time_counter % attack_speed() == 0) {
             attack();
         }
     }
