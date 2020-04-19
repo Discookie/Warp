@@ -8,7 +8,7 @@
 #include "model/Stable/TeslaCoil.h"
 #include "Stable/SniperTower.h"
 
-Field::Field(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback){
+Field::Field(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &gameModelCallback) {
     this->position = position;
     this->callback = gameModelCallback;
     this->teamStatus = Team::Neutral;

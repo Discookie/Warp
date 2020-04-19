@@ -31,27 +31,37 @@ private:
 public:
     // Constructors
     GameModel();
+
     void newGame();
+
     void loadGame();
+
     void constructFields();
 
     // Updates
     void updateModel();
+
     void updateFields();
 
     // Building (player interaction)
     void selectTower(EntityType type);
-    void buildTower(std::pair<int, int> position);
-    void upgradeTower(std::pair<int, int> position);
+
+    void buildTower(Coordinate position);
+
+    void upgradeTower(Coordinate position);
 
     // Enemy interaction
     void spawnEnemies();
 
     // Getters
-    Field& getField(std::pair<int, int> position);
-    int getGold()       const { return this->gold; }
-    int getPoints()     const { return this->points; }
+    Field &getField(Coordinate position);
+
+    int getGold() const { return this->gold; }
+
+    int getPoints() const { return this->points; }
+
     int getWaveNumber() const { return this->waveNumber; }
+
     int getWaveProgress();
     bool isBuildable(EntityType type);
 };
