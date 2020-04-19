@@ -5,6 +5,8 @@
 #include "FieldEntityCallbackClass.h"
 #include "Coordinate.h"
 
+class Field;
+
 class FieldEntity : public std::enable_shared_from_this<FieldEntity> {
 protected:
     Coordinate position;
@@ -12,8 +14,8 @@ protected:
     int time_counter;
     int hp;
 public:
-    FieldEntity(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback){
-        this->position    = position;
+    FieldEntity(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) {
+        this->position = position;
         this->callback    = game_model_callback;
         this->time_counter = 0;
     }
@@ -35,6 +37,8 @@ public:
         do_actions(); }
     virtual void do_actions() = 0;
     void attack() { callback->attack(shared_from_this()); }
+
+    virtual void attack_entities(const std::vector<std::vector<Field>> &) = 0;
     virtual void take_damage(int amount) { this->hp -= amount; if(hp < 0){ this->die(); }}
     void die() { callback->die(shared_from_this()); }
 };

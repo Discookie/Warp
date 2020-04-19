@@ -61,6 +61,9 @@ std::shared_ptr<Stable> Field::get_tower() {
     return this->tower;
 }
 
+void Field::add_moving_entity(std::shared_ptr<Unstable> obj) {
+    this->moving_entities.push_back(obj);
+}
 
 void Field::remove_entity_at(int ind) {
     this->moving_entities.erase(this->moving_entities.begin() + ind);

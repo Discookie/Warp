@@ -11,24 +11,34 @@ public:
     Factory(Coordinate position,
         const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
         Stable(position, game_model_callback){
-            this->upgraded = false;
-            this->hp = Constants::FACTORY_MAX_HP;
+        this->upgraded = false;
+        this->hp = Constants::FACTORY_MAX_HP;
     }
 
     int max_hp() override { return Constants::FACTORY_MAX_HP; }
-    int cost()  override { return Constants::FACTORY_BASE_COST; }
+
+    int cost() override { return Constants::FACTORY_BASE_COST; }
+
     int upgrade_cost() override { return Constants::FACTORY_UPGRADE_COST; }
+
     int attack_speed() override { return Constants::FACTORY_ATTACK_SPEED; }
+
     int damage() override { return Constants::FACTORY_DAMAGE; }
 
-    int production_amount() { return !upgraded ?
-                                     Constants::FACTORY_BASE_PRODUCTION : Constants::FACTORY_UPGRADE_PRODUCTION; }
-    int production_speed()  { return !upgraded ?
-                                     Constants::FACTORY_BASE_PRODUCTION_SPEED : Constants::FACTORY_UPGRADE_PRODUCTION_SPEED; }
+    void attack_entities(const std::vector<std::vector<Field>> &) override {}
 
+    int production_amount() {
+        return !upgraded ?
+               Constants::FACTORY_BASE_PRODUCTION : Constants::FACTORY_UPGRADE_PRODUCTION;
+    }
+
+    int production_speed() {
+        return !upgraded ?
+               Constants::FACTORY_BASE_PRODUCTION_SPEED : Constants::FACTORY_UPGRADE_PRODUCTION_SPEED;
+    }
 
     void do_actions() override {
-        if(time_counter % production_speed() == 0) {
+        if (time_counter % production_speed() == 0) {
             produce();
         }
     }
