@@ -260,4 +260,169 @@ TEST_F(FactoryFixture, UpgradeProduceTest) {
     EXPECT_EQ(cb->pro_calls, 1);
 }
 
+class LaserTowerFixture : public ::testing::Test {
+protected:
+    std::shared_ptr<MockCallback> cb;
+    std::shared_ptr<LaserTower> laserTower;
+    LaserTowerFixture() : cb(new MockCallback()), laserTower(new LaserTower({0, 0}, cb)) {}
+};
+
+TEST_F(LaserTowerFixture, InitTest) {
+    EXPECT_EQ(laserTower->attack_speed(), Constants::LASERTOWER_BASE_ATTACKSPEED);
+    EXPECT_EQ(laserTower->damage(), Constants::LASERTOWER_BASE_DAMAGE);
+    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_BASE_COST);
+    EXPECT_EQ(laserTower->remove_value(), Constants::LASERTOWER_BASE_REMOVE_VALUE);
+    EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST);
+    EXPECT_EQ(laserTower->max_hp(), Constants::LASERTOWER_MAX_HP);
+    EXPECT_EQ(laserTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(laserTower->get_vector_pos(), -1);
+    EXPECT_FALSE(laserTower->is_upgraded());
+    EXPECT_TRUE(laserTower->is_friendly());
+}
+
+TEST_F(LaserTowerFixture, UpgradeTest) {
+    laserTower->upgrade();
+    EXPECT_EQ(laserTower->attack_speed(), Constants::LASERTOWER_UPGRADE_ATTACKSPEED);
+    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_UPGRADE_COST);
+    EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST);
+    EXPECT_EQ(laserTower->max_hp(), Constants::LASERTOWER_MAX_HP);
+    EXPECT_EQ(laserTower->remove_value(), Constants::LASERTOWER_UPGRADE_REMOVE_VALUE);
+    EXPECT_EQ(laserTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(laserTower->get_vector_pos(), -1);
+    EXPECT_TRUE(laserTower->is_upgraded());
+    EXPECT_TRUE(laserTower->is_friendly());
+}
+
+TEST_F(LaserTowerFixture, DieTest) {
+    laserTower->take_damage(Constants::LASERTOWER_MAX_HP);
+    EXPECT_EQ(cb->die_calls, 1);
+}
+
+TEST_F(LaserTowerFixture, BaseProduceTest) {
+    for (int i = 0; i < Constants::LASERTOWER_BASE_ATTACKSPEED; ++i) {
+        EXPECT_EQ(cb->att_calls, 0);
+        laserTower->update();
+    }
+    EXPECT_EQ(cb->att_calls, 1);
+}
+
+TEST_F(LaserTowerFixture, UpgradeProduceTest) {
+    laserTower->upgrade();
+    for (int i = 0; i < Constants::LASERTOWER_UPGRADE_ATTACKSPEED; ++i) {
+        EXPECT_EQ(cb->att_calls, 0);
+        laserTower->update();
+    }
+    EXPECT_EQ(cb->att_calls, 1);
+}
+
+class SniperTowerFixture : public ::testing::Test {
+protected:
+    std::shared_ptr<MockCallback> cb;
+    std::shared_ptr<SniperTower> sniperTower;
+    SniperTowerFixture() : cb(new MockCallback()), sniperTower(new SniperTower({0, 0}, cb)) {}
+};
+
+TEST_F(SniperTowerFixture, InitTest) {
+    EXPECT_EQ(sniperTower->attack_speed(), Constants::SNIPERTOWER_BASE_ATTACKSPEED);
+    EXPECT_EQ(sniperTower->damage(), Constants::SNIPERTOWER_BASE_DAMAGE);
+    EXPECT_EQ(sniperTower->cost(), Constants::SNIPERTOWER_BASE_COST);
+    EXPECT_EQ(sniperTower->remove_value(), Constants::SNIPERTOWER_BASE_REMOVE_VALUE);
+    EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST);
+    EXPECT_EQ(sniperTower->max_hp(), Constants::SNIPERTOWER_MAX_HP);
+    EXPECT_EQ(sniperTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(sniperTower->get_vector_pos(), -1);
+    EXPECT_FALSE(sniperTower->is_upgraded());
+    EXPECT_TRUE(sniperTower->is_friendly());
+}
+
+TEST_F(SniperTowerFixture, UpgradeTest) {
+    sniperTower->upgrade();
+    EXPECT_EQ(sniperTower->attack_speed(), Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED);
+    EXPECT_EQ(sniperTower->cost(), Constants::SNIPERTOWER_UPGRADE_COST);
+    EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST);
+    EXPECT_EQ(sniperTower->max_hp(), Constants::SNIPERTOWER_MAX_HP);
+    EXPECT_EQ(sniperTower->remove_value(), Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE);
+    EXPECT_EQ(sniperTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(sniperTower->get_vector_pos(), -1);
+    EXPECT_TRUE(sniperTower->is_upgraded());
+    EXPECT_TRUE(sniperTower->is_friendly());
+}
+
+TEST_F(SniperTowerFixture, DieTest) {
+    sniperTower->take_damage(Constants::SNIPERTOWER_MAX_HP);
+    EXPECT_EQ(cb->die_calls, 1);
+}
+
+TEST_F(SniperTowerFixture, BaseProduceTest) {
+    for (int i = 0; i < Constants::SNIPERTOWER_BASE_ATTACKSPEED; ++i) {
+        EXPECT_EQ(cb->att_calls, 0);
+        sniperTower->update();
+    }
+    EXPECT_EQ(cb->att_calls, 1);
+}
+
+TEST_F(SniperTowerFixture, UpgradeProduceTest) {
+    sniperTower->upgrade();
+    for (int i = 0; i < Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED; ++i) {
+        EXPECT_EQ(cb->att_calls, 0);
+        sniperTower->update();
+    }
+    EXPECT_EQ(cb->att_calls, 1);
+}
+
+class TeslaCoilFixture : public ::testing::Test {
+protected:
+    std::shared_ptr<MockCallback> cb;
+    std::shared_ptr<TeslaCoil> teslaCoil;
+    TeslaCoilFixture() : cb(new MockCallback()), teslaCoil(new TeslaCoil({0, 0}, cb)) {}
+};
+
+TEST_F(TeslaCoilFixture, InitTest) {
+    EXPECT_EQ(teslaCoil->attack_speed(), Constants::TESLACOIL_BASE_ATTACKSPEED);
+    EXPECT_EQ(teslaCoil->damage(), Constants::TESLACOIL_BASE_DAMAGE);
+    EXPECT_EQ(teslaCoil->cost(), Constants::TESLACOIL_BASE_COST);
+    EXPECT_EQ(teslaCoil->remove_value(), Constants::TESLACOIL_BASE_REMOVE_VALUE);
+    EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST);
+    EXPECT_EQ(teslaCoil->max_hp(), Constants::TESLACOIL_MAX_HP);
+    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(teslaCoil->get_vector_pos(), -1);
+    EXPECT_FALSE(teslaCoil->is_upgraded());
+    EXPECT_TRUE(teslaCoil->is_friendly());
+}
+
+TEST_F(TeslaCoilFixture, UpgradeTest) {
+    teslaCoil->upgrade();
+    EXPECT_EQ(teslaCoil->attack_speed(), Constants::TESLACOIL_UPGRADE_ATTACKSPEED);
+    EXPECT_EQ(teslaCoil->cost(), Constants::TESLACOIL_UPGRADE_COST);
+    EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST);
+    EXPECT_EQ(teslaCoil->max_hp(), Constants::TESLACOIL_MAX_HP);
+    EXPECT_EQ(teslaCoil->remove_value(), Constants::TESLACOIL_UPGRADE_REMOVE_VALUE);
+    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(teslaCoil->get_vector_pos(), -1);
+    EXPECT_TRUE(teslaCoil->is_upgraded());
+    EXPECT_TRUE(teslaCoil->is_friendly());
+}
+
+TEST_F(TeslaCoilFixture, DieTest) {
+    teslaCoil->take_damage(Constants::TESLACOIL_MAX_HP);
+    EXPECT_EQ(cb->die_calls, 1);
+}
+
+TEST_F(TeslaCoilFixture, BaseProduceTest) {
+    for (int i = 0; i < Constants::TESLACOIL_BASE_ATTACKSPEED; ++i) {
+        EXPECT_EQ(cb->att_calls, 0);
+        teslaCoil->update();
+    }
+    EXPECT_EQ(cb->att_calls, 1);
+}
+
+TEST_F(TeslaCoilFixture, UpgradeProduceTest) {
+    teslaCoil->upgrade();
+    for (int i = 0; i < Constants::TESLACOIL_UPGRADE_ATTACKSPEED; ++i) {
+        EXPECT_EQ(cb->att_calls, 0);
+        teslaCoil->update();
+    }
+    EXPECT_EQ(cb->att_calls, 1);
+}
+
 #pragma clang diagnostic pop
