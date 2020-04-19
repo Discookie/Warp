@@ -4,20 +4,20 @@
 #include "../FieldEntity.h"
 
 class Unstable : public FieldEntity {
-    int vectorPosition;
+    int vector_position;
 public:
-    Unstable(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback, int vectorPos) :
-        FieldEntity(position, gameModelCallback) {
-        this->vectorPosition = vectorPos;
+    Unstable(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback, int vector_pos) :
+        FieldEntity(position, game_model_callback) {
+        this->vector_position = vector_pos;
     }
     ~Unstable() override = default;
-    virtual int moveSpeed() = 0;
+    virtual int move_speed() = 0;
     void move() { callback->move(shared_from_this()); }
-    void doActions() final {
-        if(timeCounter % attackSpeed() == 0){
+    void do_actions() final {
+        if(time_counter % attack_speed() == 0){
             attack();
         }
-        if(timeCounter % moveSpeed() == 0){
+        if(time_counter % move_speed() == 0){
             move();
         }
     }

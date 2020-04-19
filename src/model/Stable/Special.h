@@ -9,26 +9,26 @@
 class Special : public Stable{
 public:
     Special(Coordinate position,
-        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
-            Stable(position, gameModelCallback) {
+        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
+            Stable(position, game_model_callback) {
         this->upgraded = true;
-        this->hp = CONSTANTS::SPECIAL_MAX_HP;
+        this->hp = Constants::SPECIAL_MAX_HP;
     }
 
-    int maxHp() override { return CONSTANTS::SPECIAL_MAX_HP; }
-    int cost() override { return CONSTANTS::SPECIAL_BASE_COST; }
-    int upgradeCost() override { return CONSTANTS::SPECIAL_UPGRADE_COST; }
-    int attackSpeed() override { return CONSTANTS::SPECIAL_ATTACKSPEED; }
-    int damage() override { return CONSTANTS::SPECIAL_DAMAGE; }
+    int max_hp() override { return Constants::SPECIAL_MAX_HP; }
+    int cost() override { return Constants::SPECIAL_BASE_COST; }
+    int upgrade_cost() override { return Constants::SPECIAL_UPGRADE_COST; }
+    int attack_speed() override { return Constants::SPECIAL_ATTACKSPEED; }
+    int damage() override { return Constants::SPECIAL_DAMAGE; }
 
-    void doActions() override {
-        if(timeCounter % attackSpeed() == 0){
+    void do_actions() override {
+        if(time_counter % attack_speed() == 0){
             attack();
             die();
         }
     }
-    int removeValue() override { return CONSTANTS::SPECIAL_REMOVE_VALUE; }
-    void takeDamage(int amount) override {}
+    int remove_value() override { return Constants::SPECIAL_REMOVE_VALUE; }
+    void take_damage(int amount) override {}
     // void getStats() override;
 };
 

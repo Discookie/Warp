@@ -1,7 +1,7 @@
 #ifndef WARP_CONSTANTS_H
 #define WARP_CONSTANTS_H
 
-namespace CONSTANTS {
+namespace Constants {
 // Stable
 /// Factory
     static const int FACTORY_BASE_COST                  = 100;

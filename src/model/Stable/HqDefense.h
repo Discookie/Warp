@@ -9,23 +9,23 @@
 class HqDefense : public Hq {
 public:
     HqDefense(Coordinate position,
-        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
-            Hq(position, gameModelCallback){
-        this->hp = CONSTANTS::HQDEFENSE_MAX_HP;
+        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
+            Hq(position, game_model_callback){
+        this->hp = Constants::HQDEFENSE_MAX_HP;
     }
 
-    int maxHp() override { return CONSTANTS::HQDEFENSE_MAX_HP; }
-    int cost() override { return  CONSTANTS::HQDEFENSE_BASE_COST; }
-    int upgradeCost() override { return CONSTANTS::HQDEFENSE_UPGRADE_COST; }
-    int attackSpeed() override { return CONSTANTS::HQDEFENSE_ATTACKSPEED; }
-    int damage() override { return CONSTANTS::HQDEFENSE_DAMAGE; }
-    void doActions() override{
-        if(timeCounter % attackSpeed() == 0){
+    int max_hp() override { return Constants::HQDEFENSE_MAX_HP; }
+    int cost() override { return  Constants::HQDEFENSE_BASE_COST; }
+    int upgrade_cost() override { return Constants::HQDEFENSE_UPGRADE_COST; }
+    int attack_speed() override { return Constants::HQDEFENSE_ATTACKSPEED; }
+    int damage() override { return Constants::HQDEFENSE_DAMAGE; }
+    void do_actions() override{
+        if(time_counter % attack_speed() == 0){
             attack();
         }
     }
 
-    int removeValue() override { return CONSTANTS::HQDEFENSE_REMOVE_VALUE; }
+    int remove_value() override { return Constants::HQDEFENSE_REMOVE_VALUE; }
     // void getStats() override;
 };
 

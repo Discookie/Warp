@@ -8,27 +8,27 @@
 
 class LaserTower : public Stable{
 public:
-    LaserTower(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &gameModelCallback)
-            : Stable(position, gameModelCallback) {
+    LaserTower(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback)
+            : Stable(position, game_model_callback) {
         this->upgraded = false;
-        this->hp = CONSTANTS::LASERTOWER_MAX_HP;
+        this->hp = Constants::LASERTOWER_MAX_HP;
     }
 
-    int maxHp() override { return CONSTANTS::LASERTOWER_MAX_HP; }
-    int cost() override { return CONSTANTS::LASERTOWER_BASE_COST; }
-    int upgradeCost() override { return CONSTANTS::LASERTOWER_UPGRADE_COST; }
-    int attackSpeed() override { return !upgraded ?
-                                        CONSTANTS::LASERTOWER_BASE_ATTACKSPEED : CONSTANTS::LASERTOWER_UPGRADE_ATTACKSPEED; }
+    int max_hp() override { return Constants::LASERTOWER_MAX_HP; }
+    int cost() override { return Constants::LASERTOWER_BASE_COST; }
+    int upgrade_cost() override { return Constants::LASERTOWER_UPGRADE_COST; }
+    int attack_speed() override { return !upgraded ?
+                                         Constants::LASERTOWER_BASE_ATTACKSPEED : Constants::LASERTOWER_UPGRADE_ATTACKSPEED; }
     int damage() override { return !upgraded ?
-                                   CONSTANTS::LASERTOWER_BASE_DAMAGE : CONSTANTS::LASERTOWER_UPGRADE_DAMAGE;}
+                                   Constants::LASERTOWER_BASE_DAMAGE : Constants::LASERTOWER_UPGRADE_DAMAGE;}
 
-    void doActions() override {
-        if(timeCounter % attackSpeed() == 0){
+    void do_actions() override {
+        if(time_counter % attack_speed() == 0){
             attack();
         }
     }
-    int removeValue() override { return !upgraded ?
-                                       CONSTANTS::LASERTOWER_BASE_REMOVE_VALUE : CONSTANTS::LASERTOWER_UPGRADE_REMOVE_VALUE; }
+    int remove_value() override { return !upgraded ?
+                                         Constants::LASERTOWER_BASE_REMOVE_VALUE : Constants::LASERTOWER_UPGRADE_REMOVE_VALUE; }
     // void getStats() override;
 };
 

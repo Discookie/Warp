@@ -9,32 +9,32 @@
 class Factory : public Stable {
 public:
     Factory(Coordinate position,
-        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
-        Stable(position, gameModelCallback){
+        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
+        Stable(position, game_model_callback){
             this->upgraded = false;
-            this->hp = CONSTANTS::FACTORY_MAX_HP;
+            this->hp = Constants::FACTORY_MAX_HP;
     }
 
-    int maxHp() override { return CONSTANTS::FACTORY_MAX_HP; }
-    int cost()  override { return CONSTANTS::FACTORY_BASE_COST; }
-    int upgradeCost() override { return CONSTANTS::FACTORY_UPGRADE_COST; }
-    int attackSpeed() override { return CONSTANTS::FACTORY_ATTACK_SPEED; }
-    int damage() override { return CONSTANTS::FACTORY_DAMAGE; }
+    int max_hp() override { return Constants::FACTORY_MAX_HP; }
+    int cost()  override { return Constants::FACTORY_BASE_COST; }
+    int upgrade_cost() override { return Constants::FACTORY_UPGRADE_COST; }
+    int attack_speed() override { return Constants::FACTORY_ATTACK_SPEED; }
+    int damage() override { return Constants::FACTORY_DAMAGE; }
 
-    int productionAmount() { return !upgraded ?
-                             CONSTANTS::FACTORY_BASE_PRODUCTION : CONSTANTS::FACTORY_UPGRADE_PRODUCTION; }
-    int productionSpeed()  { return !upgraded ?
-                             CONSTANTS::FACTORY_BASE_PRODUCTION_SPEED : CONSTANTS::FACTORY_UPGRADE_PRODUCTION_SPEED; }
+    int production_amount() { return !upgraded ?
+                                     Constants::FACTORY_BASE_PRODUCTION : Constants::FACTORY_UPGRADE_PRODUCTION; }
+    int production_speed()  { return !upgraded ?
+                                     Constants::FACTORY_BASE_PRODUCTION_SPEED : Constants::FACTORY_UPGRADE_PRODUCTION_SPEED; }
 
 
-    void doActions() override {
-        if(timeCounter % productionSpeed() == 0) {
+    void do_actions() override {
+        if(time_counter % production_speed() == 0) {
             produce();
         }
     }
     void produce() { callback->produce(shared_from_this()); }
-    int removeValue() override { return !upgraded ?
-                                CONSTANTS::FACTORY_BASE_REMOVE_VALUE : CONSTANTS::FACTORY_UPGRADE_REMOVE_VALUE; }
+    int remove_value() override { return !upgraded ?
+                                         Constants::FACTORY_BASE_REMOVE_VALUE : Constants::FACTORY_UPGRADE_REMOVE_VALUE; }
     // void getStats() override;
 };
 

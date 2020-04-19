@@ -9,27 +9,27 @@
 class SniperTower : public Stable{
 public:
     SniperTower(Coordinate position,
-        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
-            Stable(position, gameModelCallback){
+        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
+            Stable(position, game_model_callback){
         this->upgraded = false;
-        this->hp = CONSTANTS::SNIPERTOWER_MAX_HP;
+        this->hp = Constants::SNIPERTOWER_MAX_HP;
     }
 
-    int maxHp() override { return CONSTANTS::SNIPERTOWER_MAX_HP; }
-    int cost() override { return CONSTANTS::SNIPERTOWER_BASE_COST; }
-    int upgradeCost() override { return CONSTANTS::SNIPERTOWER_UPGRADE_COST; }
-    int attackSpeed() override { return !upgraded?
-                                 CONSTANTS::SNIPERTOWER_BASE_ATTACKSPEED : CONSTANTS::SNIPERTOWER_UPGRADE_ATTACKSPEED; }
-    int damage() override { return !upgraded?
-                                  CONSTANTS::SNIPERTOWER_BASE_DAMAGE : CONSTANTS::SNIPERTOWER_UPGRADE_DAMAGE; }
+    int max_hp() override { return Constants::SNIPERTOWER_MAX_HP; }
+    int cost() override { return Constants::SNIPERTOWER_BASE_COST; }
+    int upgrade_cost() override { return Constants::SNIPERTOWER_UPGRADE_COST; }
+    int attack_speed() override { return !upgraded ?
+                                         Constants::SNIPERTOWER_BASE_ATTACKSPEED : Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED; }
+    int damage() override { return !upgraded ?
+                                   Constants::SNIPERTOWER_BASE_DAMAGE : Constants::SNIPERTOWER_UPGRADE_DAMAGE; }
 
-    void doActions() override {
-        if(timeCounter % attackSpeed() == 0){
+    void do_actions() override {
+        if(time_counter % attack_speed() == 0){
             attack();
         }
     }
-    int removeValue() override {return !upgraded?
-                                       CONSTANTS::SNIPERTOWER_BASE_REMOVE_VALUE : CONSTANTS::SNIPERTOWER_UPGRADE_REMOVE_VALUE;}
+    int remove_value() override {return !upgraded ?
+                                        Constants::SNIPERTOWER_BASE_REMOVE_VALUE : Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE;}
     // void getStats() override;
 };
 

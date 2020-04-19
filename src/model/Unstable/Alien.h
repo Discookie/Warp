@@ -5,14 +5,14 @@
 
 class Alien : public Enemy{
 public:
-    Alien(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback, int vectorPos) :
-        Enemy(position, gameModelCallback, vectorPos){
-        this->hp = CONSTANTS::ALIEN_MAX_HP;
+    Alien(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback, int vector_pos) :
+        Enemy(position, game_model_callback, vector_pos){
+        this->hp = Constants::ALIEN_MAX_HP;
     }
-    int maxHp() override { return CONSTANTS::ALIEN_MAX_HP; }
-    int moveSpeed() override { return CONSTANTS::ALIEN_MOVESPEED; }
-    int attackSpeed() override { return  CONSTANTS::ALIEN_ATTACKSPEED; }
-    int damage() override { return CONSTANTS::ALIEN_DAMAGE; }
+    int max_hp() override { return Constants::ALIEN_MAX_HP; }
+    int move_speed() override { return Constants::ALIEN_MOVESPEED; }
+    int attack_speed() override { return  Constants::ALIEN_ATTACKSPEED; }
+    int damage() override { return Constants::ALIEN_DAMAGE; }
 };
 
 

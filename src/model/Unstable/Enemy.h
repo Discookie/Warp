@@ -6,10 +6,10 @@
 
 class Enemy : public Unstable{
 public:
-    Enemy(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback, int vectorPos) :
-        Unstable(position, gameModelCallback, vectorPos){}
-    int cost() final { return CONSTANTS::ENEMY_COST; }
-    bool isFriendly() final { return false; }
+    Enemy(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback, int vector_pos) :
+        Unstable(position, game_model_callback, vector_pos){}
+    int cost() final { return Constants::ENEMY_COST; }
+    bool is_friendly() final { return false; }
 };
 
 

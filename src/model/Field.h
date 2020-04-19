@@ -23,27 +23,27 @@ private:
     Coordinate position;
     std::shared_ptr<FieldEntityCallbackClass> callback;
     std::shared_ptr<Stable> tower;
-    std::vector<std::shared_ptr<Unstable>> movingEntities;
-    Team teamStatus = Team::Neutral;
+    std::vector<std::shared_ptr<Unstable>> moving_entities;
+    Team team_status = Team::Neutral;
 public:
     Field() = default;
 
-    explicit Field(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &gameModelCallback);
+    explicit Field(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback);
 
     // Stable
-    void buildTower(EntityType type);
-    void upgradeTower();
-    void removeTower();
-    std::shared_ptr<Stable> getTower();
+    void build_tower(EntityType type);
+    void upgrade_tower();
+    void remove_tower();
+    std::shared_ptr<Stable> get_tower();
 
     // Unstable
     /// This is supposed to be called only by die() callback
-    void removeEntityAt(int ind);
-    std::vector<std::shared_ptr<Unstable>> getMovingEntities();
+    void remove_entity_at(int ind);
+    std::vector<std::shared_ptr<Unstable>> get_moving_entities();
 
     // General
-    Team getTeamStatus() const { return teamStatus; }
-    void updateEntities();
+    Team get_team_status() const { return team_status; }
+    void update_entities();
 };
 
 #endif //WARP_FIELD_H
