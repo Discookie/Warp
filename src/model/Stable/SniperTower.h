@@ -8,18 +8,28 @@
 
 class SniperTower : public Stable{
 public:
-    SniperTower(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
+    SniperTower(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
+            Stable(position, gameModelCallback){
+        this->upgraded = false;
+        this->hp = CONSTANTS::SNIPERTOWER_MAX_HP;
+    }
 
-    int maxHp() override { return CONSTANTS::SNIPERTOWER_BASE_MAX_HP; }
+    int maxHp() override { return CONSTANTS::SNIPERTOWER_MAX_HP; }
     int cost() override { return CONSTANTS::SNIPERTOWER_BASE_COST; }
     int upgradeCost() override { return CONSTANTS::SNIPERTOWER_UPGRADE_COST; }
-    int attackSpeed() override { return 10; }
+    int attackSpeed() override { return !upgraded?
+                                 CONSTANTS::SNIPERTOWER_BASE_ATTACKSPEED : CONSTANTS::SNIPERTOWER_UPGRADE_ATTACKSPEED; }
+    int damage() override { return !upgraded?
+                                  CONSTANTS::SNIPERTOWER_BASE_DAMAGE : CONSTANTS::SNIPERTOWER_UPGRADE_DAMAGE; }
 
-    void update() override;
-    void die() override;
-    void attack() override;
-    int removeValue() override;
-    void takeDamage(int amount) override;
+    void doActions() override {
+        if(timeCounter % attackSpeed() == 0){
+            attack();
+        }
+    }
+    int removeValue() override {return !upgraded?
+                                       CONSTANTS::SNIPERTOWER_BASE_REMOVE_VALUE : CONSTANTS::SNIPERTOWER_UPGRADE_REMOVE_VALUE;}
     // void getStats() override;
 };
 

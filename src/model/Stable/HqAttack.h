@@ -8,18 +8,24 @@
 
 class HqAttack : public Hq {
 public:
-    HqAttack(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
+    HqAttack(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
+            Hq(position, gameModelCallback) {
+            this->hp = CONSTANTS::HQATTACK_MAX_HP;
+    }
 
-    int maxHp() override { return CONSTANTS::HQATTACK_BASE_MAX_HP; }
+    int maxHp() override { return CONSTANTS::HQATTACK_MAX_HP; }
     int cost() override { return CONSTANTS::HQATTACK_BASE_COST; }
     int upgradeCost() override { return CONSTANTS::HQATTACK_UPGRADE_COST; }
-    int attackSpeed() override { return 10; }
+    int attackSpeed() override { return CONSTANTS::HQATTACK_ATTACKSPEED; }
+    int damage() override { return CONSTANTS::HQATTACK_DAMAGE; }
 
-    void update() override;
-    void die() override;
-    void attack() override;
-    int removeValue() override;
-    void takeDamage(int amount) override;
+    void doActions() override {
+        if(timeCounter % attackSpeed() == 0){
+            attack();
+        }
+    }
+    int removeValue() override { return CONSTANTS::HQATTACK_REMOVE_VALUE; }
     // void getStats() override;
 };
 

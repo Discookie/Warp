@@ -7,11 +7,14 @@ class Stable : public FieldEntity {
 protected:
     bool upgraded;
 public:
-    virtual ~Stable() = default;
+    Stable(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
+        FieldEntity(position, gameModelCallback) {}
+    ~Stable() override = default;
 
     bool isFriendly() final { return true; }
     int getVectorPos() final { return -1; }
     void upgrade() { upgraded = true; };
+    virtual int upgradeCost() = 0;
     bool isUpgraded() { return upgraded; };
     virtual int removeValue() = 0;
 };
