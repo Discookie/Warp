@@ -156,30 +156,30 @@ TEST_F(FieldFixture, RemoveEntityTest) {
 class FactoryFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
-    Factory factory;
-    FactoryFixture() : cb(new MockCallback()), factory({0, 0}, cb) {}
+    std::shared_ptr<Factory> factory;
+    FactoryFixture() : cb(new MockCallback()), factory(new Factory({0, 0}, cb)) {}
 };
 
 TEST_F(FactoryFixture, InitTest) {
-    EXPECT_EQ(factory.attack_speed(), Constants::FACTORY_ATTACK_SPEED);
-    EXPECT_EQ(factory.production_speed(), Constants::FACTORY_BASE_PRODUCTION_SPEED);
-    EXPECT_EQ(factory.cost(), Constants::FACTORY_BASE_COST);
-    EXPECT_EQ(factory.upgrade_cost(), Constants::FACTORY_UPGRADE_COST);
-    EXPECT_EQ(factory.max_hp(), Constants::FACTORY_BASE_MAX_HP);
-    EXPECT_EQ(factory.production_amount(), Constants::FACTORY_UPGRADE_PRODUCTION);
-    EXPECT_EQ(factory.remove_value(), Constants::FACTORY_BASE_REMOVE_VALUE);
-    EXPECT_EQ(factory.get_position(), ((Coordinate){0, 0}));
-    EXPECT_EQ(factory.get_damage(), 0);
-    EXPECT_EQ(factory.get_vector_pos(), -1);
-    EXPECT_FALSE(factory.is_upgraded());
-    EXPECT_TRUE(factory.is_friendly());
+    EXPECT_EQ(factory->attack_speed(), Constants::FACTORY_ATTACK_SPEED);
+    EXPECT_EQ(factory->production_speed(), Constants::FACTORY_BASE_PRODUCTION_SPEED);
+    EXPECT_EQ(factory->cost(), Constants::FACTORY_BASE_COST);
+    EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST);
+    EXPECT_EQ(factory->max_hp(), Constants::FACTORY_BASE_MAX_HP);
+    EXPECT_EQ(factory->production_amount(), Constants::FACTORY_BASE_PRODUCTION);
+    EXPECT_EQ(factory->remove_value(), Constants::FACTORY_BASE_REMOVE_VALUE);
+    EXPECT_EQ(factory->get_position(), ((Coordinate){0,0}));
+    EXPECT_EQ(factory->get_damage(), 0);
+    EXPECT_EQ(factory->get_vector_pos(), -1);
+    EXPECT_FALSE(factory->is_upgraded());
+    EXPECT_TRUE(factory->is_friendly());
 }
 
 TEST_F(FactoryFixture, CallBackTest) {
-    factory.produce();
+    factory->produce();
     EXPECT_EQ(cb->pro_calls, 1);
     EXPECT_EQ(cb->die_calls, 0);
-    factory.die();
+    factory->die(); // bad_function_call
     EXPECT_EQ(cb->pro_calls, 1);
     EXPECT_EQ(cb->die_calls, 1);
 }
