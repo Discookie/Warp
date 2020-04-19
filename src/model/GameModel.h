@@ -1,19 +1,20 @@
 #ifndef WARP_GAMEMODEL_H
 #define WARP_GAMEMODEL_H
 
-#include <functional>
 #include <vector>
+#include <functional>
 
-#include "EntityType.h"
 #include "Field.h"
+#include "EntityType.h"
 #include "FieldEntityCallbackClass.h"
+
 #include "Stable/Factory.h"
+#include "model/Stable/LaserTower.h"
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
-#include "Stable/SniperTower.h"
 #include "Stable/Special.h"
 #include "Stable/TeslaCoil.h"
-#include "model/Stable/LaserTower.h"
+#include "Stable/SniperTower.h"
 
 class GameModel {
 private:
@@ -26,9 +27,7 @@ private:
     EntityType selected_tower;
     // Callbacks
     std::shared_ptr<FieldEntityCallbackClass> call_backs;
-
     void init_callbacks();
-
 public:
     // Constructors
     GameModel();
@@ -64,8 +63,7 @@ public:
     int get_wave_number() const { return this->wave_number; }
 
     int get_wave_progress();
-
     bool is_buildable(EntityType type);
 };
 
-#endif  // WARP_GAMEMODEL_H
+#endif //WARP_GAMEMODEL_H

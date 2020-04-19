@@ -3,17 +3,19 @@
 
 #include <memory>
 
-#include "../Constants.h"
 #include "Stable.h"
+#include "../Constants.h"
 
 class Factory : public Stable {
 public:
-    Factory(
-        Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback);
-
-    int max_hp() override {
-        return !upgraded ? Constants::FACTORY_BASE_MAX_HP : Constants::FACTORY_UPGRADE_MAX_HP;
+    Factory(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
+        Stable(position, game_model_callback){
+        this->upgraded = false;
+        this->hp = Constants::FACTORY_MAX_HP;
     }
+
+    int max_hp() override { return Constants::FACTORY_MAX_HP; }
 
     int cost() override { return Constants::FACTORY_BASE_COST; }
 
@@ -21,36 +23,30 @@ public:
 
     int attack_speed() override { return Constants::FACTORY_ATTACK_SPEED; }
 
-    std::vector<FieldEntity>&& collect_atteced_entities(
-        const std::vector<std::vector<Field>>&) override { return std::move(std::vector<FieldEntity>()); }
+    int damage() override { return Constants::FACTORY_DAMAGE; }
 
-    int get_damage() override { return 0; };
+    void attack_entities(const std::vector<std::vector<Field>> &) override {}
 
     int production_amount() {
-        return !upgraded ? Constants::FACTORY_BASE_PRODUCTION
-                         : Constants::FACTORY_UPGRADE_PRODUCTION;
+        return !upgraded ?
+               Constants::FACTORY_BASE_PRODUCTION : Constants::FACTORY_UPGRADE_PRODUCTION;
     }
 
     int production_speed() {
-        return !upgraded ? Constants::FACTORY_BASE_PRODUCTION_SPEED
-                         : Constants::FACTORY_UPGRADE_PRODUCTION_SPEED;
+        return !upgraded ?
+               Constants::FACTORY_BASE_PRODUCTION_SPEED : Constants::FACTORY_UPGRADE_PRODUCTION_SPEED;
     }
 
-    void produce();
-
-    void update() override;
-
-    void die() override;
-
-    void attack() override {}
-
-    int remove_value() override {
-        return !upgraded ? Constants::FACTORY_BASE_REMOVE_VALUE
-                         : Constants::FACTORY_UPGRADE_REMOVE_VALUE;
+    void do_actions() override {
+        if (time_counter % production_speed() == 0) {
+            produce();
+        }
     }
-
-    void take_damage(int amount) override;
+    void produce() { callback->produce(shared_from_this()); }
+    int remove_value() override { return !upgraded ?
+                                         Constants::FACTORY_BASE_REMOVE_VALUE : Constants::FACTORY_UPGRADE_REMOVE_VALUE; }
     // void getStats() override;
 };
 
-#endif  // WARP_FACTORY_H
+
+#endif //WARP_FACTORY_H

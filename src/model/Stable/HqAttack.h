@@ -3,37 +3,38 @@
 
 #include <memory>
 
-#include "../Constants.h"
 #include "Hq.h"
+#include "../Constants.h"
 
 class HqAttack : public Hq {
 public:
-    HqAttack(
-        Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback);
+    HqAttack(Coordinate position,
+        const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
+            Hq(position, game_model_callback) {
+        this->hp = Constants::HQATTACK_MAX_HP;
+    }
 
-    int max_hp() override { return Constants::HQATTACK_BASE_MAX_HP; }
+    int max_hp() override { return Constants::HQATTACK_MAX_HP; }
 
     int cost() override { return Constants::HQATTACK_BASE_COST; }
 
     int upgrade_cost() override { return Constants::HQATTACK_UPGRADE_COST; }
 
-    int attack_speed() override { return 10; }
+    int attack_speed() override { return Constants::HQATTACK_ATTACKSPEED; }
 
-    void update() override;
+    int damage() override { return Constants::HQATTACK_DAMAGE; }
 
-    void die() override;
+    void attack_entities(const std::vector<std::vector<Field>> &) override {}
 
-    void attack() override;
+    void do_actions() override {
+        if (time_counter % attack_speed() == 0) {
+            attack();
+        }
+    }
 
-    std::vector<FieldEntity>&& collect_atteced_entities(
-        const std::vector<std::vector<Field>>& fields) override;
-
-    int get_damage() override;
-
-    int remove_value() override;
-
-    void take_damage(int amount) override;
+    int remove_value() override { return Constants::HQATTACK_REMOVE_VALUE; }
     // void getStats() override;
 };
 
-#endif  // WARP_HQATTACK_H
+
+#endif //WARP_HQATTACK_H

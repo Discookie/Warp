@@ -3,37 +3,47 @@
 
 #include <memory>
 
-#include "../Constants.h"
 #include "Stable.h"
+#include "../Constants.h"
 
-class LaserTower : public Stable {
+class LaserTower : public Stable{
 public:
-    LaserTower(
-        Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback);
+    LaserTower(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback)
+            : Stable(position, game_model_callback) {
+        this->upgraded = false;
+        this->hp = Constants::LASERTOWER_MAX_HP;
+    }
 
-    int max_hp() override { return Constants::LASERTOWER_BASE_MAX_HP; }
+    int max_hp() override { return Constants::LASERTOWER_MAX_HP; }
 
     int cost() override { return Constants::LASERTOWER_BASE_COST; }
 
     int upgrade_cost() override { return Constants::LASERTOWER_UPGRADE_COST; }
 
-    int attack_speed() override { return 10; }
+    int attack_speed() override {
+        return !upgraded ?
+               Constants::LASERTOWER_BASE_ATTACKSPEED : Constants::LASERTOWER_UPGRADE_ATTACKSPEED;
+    }
 
-    std::vector<FieldEntity>&& collect_atteced_entities(
-        const std::vector<std::vector<Field>>& fields) override;
+    int damage() override {
+        return !upgraded ?
+               Constants::LASERTOWER_BASE_DAMAGE : Constants::LASERTOWER_UPGRADE_DAMAGE;
+    }
 
-    int get_damage() override;
+    void attack_entities(const std::vector<std::vector<Field>> &) override {}
 
-    void update() override;
+    void do_actions() override {
+        if (time_counter % attack_speed() == 0) {
+            attack();
+        }
+    }
 
-    void die() override;
-
-    void attack() override;
-
-    int remove_value() override;
-
-    void take_damage(int amount) override;
+    int remove_value() override {
+        return !upgraded ?
+               Constants::LASERTOWER_BASE_REMOVE_VALUE : Constants::LASERTOWER_UPGRADE_REMOVE_VALUE;
+    }
     // void getStats() override;
 };
 
-#endif  // WARP_LASERTOWER_H
+
+#endif //WARP_LASERTOWER_H
