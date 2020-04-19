@@ -3,6 +3,17 @@
 
 #include "Enemy.h"
 
-class Alien : public Enemy {};
+class Alien : public Enemy{
+public:
+    Alien(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback, int vector_pos) :
+        Enemy(position, game_model_callback, vector_pos){
+        this->hp = Constants::ALIEN_MAX_HP;
+    }
+    int max_hp() override { return Constants::ALIEN_MAX_HP; }
+    int move_speed() override { return Constants::ALIEN_MOVESPEED; }
+    int attack_speed() override { return  Constants::ALIEN_ATTACKSPEED; }
+    int damage() override { return Constants::ALIEN_DAMAGE; }
+};
 
-#endif  // WARP_ALIEN_H
+
+#endif //WARP_ALIEN_H

@@ -1,17 +1,17 @@
 #include "GameModel.h"
 
-GameModel::GameModel() {
+GameModel::GameModel(){
     this->fields = std::vector(10, std::vector<Field>(12));
     GameModel::init_callbacks();
     GameModel::new_game();
 }
 
-void GameModel::new_game() {
+void GameModel::new_game(){
     this->fields.clear();
-    this->points         = 0;
-    this->gold           = 0;
-    this->wave_timer     = 2000;
-    this->have_special   = false;
+    this->points = 0;
+    this->gold = 0;
+    this->wave_timer = 2000;
+    this->have_special = false;
     this->selected_tower = EntityType::TypeNone;
     this->construct_fields();
 }
@@ -31,43 +31,52 @@ void GameModel::init_callbacks() {
     };
     // Die Callback
     auto die = [this](const std::shared_ptr<FieldEntity>& obj) {
-        if (obj->get_vector_pos() == -1) {
+        if(obj->get_vector_pos() == -1) {
             this->get_field(obj->get_position()).remove_tower();
-        } else {
+        }
+        else{
             this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
         }
     };
     call_backs = std::make_shared<FieldEntityCallbackClass>(pro, mov, att, die);
 }
 
-void GameModel::load_game() { throw std::logic_error("Unimplemented"); }
+void GameModel::load_game() {
+    throw std::logic_error("Unimplemented");
+}
 
 void GameModel::construct_fields() {
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 12; j++) {
+    for(int i = 0; i < 10; i++) {
+        for(int j = 0; j < 12; j++) {
             this->fields[i][j] = Field({i, j}, this->call_backs);
         }
     }
 }
 
-Field& GameModel::get_field(Coordinate position) {
-    if ((0 <= position.x && position.y < 10) && (0 <= position.x && position.y < 12)) {
+Field &GameModel::get_field(Coordinate position) {
+    if ((0 <= position.x && position.x < 10) &&
+        (0 <= position.y && position.y < 12)) {
         return this->fields[position.x][position.y];
     }
     throw std::exception();
 }
 
-void GameModel::update_model() { this->update_fields(); }
+void GameModel::update_model() {
+    this->update_fields();
+
+}
 
 void GameModel::update_fields() {
-    for (auto& v : this->fields) {
-        for (auto& f : v) {
+    for(auto& v : this->fields){
+        for(auto& f : v){
             f.update_entities();
         }
     }
 }
 
-void GameModel::select_tower(EntityType type) { this->selected_tower = type; }
+void GameModel::select_tower(EntityType type) {
+    this->selected_tower = type;
+}
 
 bool GameModel::is_buildable(EntityType type) {
     switch (type) {
@@ -84,15 +93,17 @@ bool GameModel::is_buildable(EntityType type) {
         case EntityType::TypeHqDefense:
             return this->gold >= Constants::HQDEFENSE_BASE_COST;
         case EntityType::TypeSpecial:
-            return this->gold >= Constants::SPECIAL_BASE_COST && this->have_special;
-        default:
-            return false;
+            return this->gold >= Constants::SPECIAL_BASE_COST &&
+                   this->have_special;
+        default: return false;
     }
 }
 
 void GameModel::build_tower(Coordinate position) {
-    if (is_buildable(selected_tower) && !get_field(position).get_tower()
-        && get_field(position).get_team_status() != Team::Enemy) {
+    if (is_buildable(selected_tower) &&
+        !get_field(position).get_tower() &&
+            get_field(position).get_team_status() != Team::Enemy
+            ) {
         get_field(position).build_tower(selected_tower);
         this->gold -= get_field(position).get_tower()->cost();
         // this->points += 100;
@@ -110,7 +121,9 @@ void GameModel::upgrade_tower(Coordinate position) {
     }
 }
 
-int GameModel::get_wave_progress() { throw std::logic_error("Unimplemented"); }
+int GameModel::get_wave_progress() {
+    throw std::logic_error("Unimplemented");
+}
 
 /*
 void GameModel::pause() {

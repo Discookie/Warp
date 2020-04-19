@@ -1,7 +1,7 @@
 #ifndef WARP_ENTITYTYPE_H
 #define WARP_ENTITYTYPE_H
 
-enum EntityType {
+enum EntityType{
     TypeNone,
     TypeFactory,
     TypeLaserTower,
@@ -12,4 +12,4 @@ enum EntityType {
     TypeSpecial
 };
 
-#endif  // WARP_ENTITYTYPE_H
+#endif //WARP_ENTITYTYPE_H
