@@ -8,18 +8,28 @@
 
 class TeslaCoil : public Stable{
 public:
-    TeslaCoil(std::pair<int, int> position, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback);
+    TeslaCoil(Coordinate position,
+              const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
+            Stable(position, gameModelCallback){
+        this->upgraded = false;
+        this->hp = CONSTANTS::TESLACOIL_MAX_HP;
+    }
 
-    int maxHp() override { return CONSTANTS::TESLACOIL_BASE_MAX_HP; }
+    int maxHp() override { return CONSTANTS::TESLACOIL_MAX_HP; }
     int cost() override { return CONSTANTS::TESLACOIL_BASE_COST; }
     int upgradeCost() override { return CONSTANTS::TESLACOIL_UPGRADE_COST; }
-    int attackSpeed() override { return 10; }
+    int attackSpeed() override { return !upgraded ?
+                                        CONSTANTS::TESLACOIL_BASE_ATTACKSPEED : CONSTANTS::TESLACOIL_UPGRADE_ATTACKSPEED; }
+    int damage() override { return !upgraded ?
+                                   CONSTANTS::TESLACOIL_BASE_DAMAGE : CONSTANTS::TESLACOIL_UPGRADE_DAMAGE; }
+    void doActions() override {
+        if(timeCounter % attackSpeed() == 0){
+            attack();
+        }
+    }
 
-    void update() override;
-    void die() override;
-    void attack() override;
-    int removeValue() override;
-    void takeDamage(int amount) override;
+    int removeValue() override {return !upgraded ?
+                                       CONSTANTS::TESLACOIL_BASE_REMOVE_VALUE: CONSTANTS::TESLACOIL_UPGRADE_REMOVE_VALUE;}
     // void getStats() override;
 };
 

@@ -9,26 +9,32 @@
 class Factory : public Stable {
 public:
     Factory(Coordinate position,
-        const std::shared_ptr<FieldEntityCallbackClass>& callback);
+        const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback) :
+        Stable(position, gameModelCallback){
+            this->upgraded = false;
+            this->hp = CONSTANTS::FACTORY_MAX_HP;
+    }
 
-    int maxHp() override { return !upgraded ?
-                          CONSTANTS::FACTORY_BASE_MAX_HP : CONSTANTS::FACTORY_UPGRADE_MAX_HP; }
-    int cost() override { return CONSTANTS::FACTORY_BASE_COST; }
+    int maxHp() override { return CONSTANTS::FACTORY_MAX_HP; }
+    int cost()  override { return CONSTANTS::FACTORY_BASE_COST; }
     int upgradeCost() override { return CONSTANTS::FACTORY_UPGRADE_COST; }
     int attackSpeed() override { return CONSTANTS::FACTORY_ATTACK_SPEED; }
+    int damage() override { return CONSTANTS::FACTORY_DAMAGE; }
 
     int productionAmount() { return !upgraded ?
-                            CONSTANTS::FACTORY_BASE_PRODUCTION : CONSTANTS::FACTORY_UPGRADE_PRODUCTION; }
+                             CONSTANTS::FACTORY_BASE_PRODUCTION : CONSTANTS::FACTORY_UPGRADE_PRODUCTION; }
     int productionSpeed()  { return !upgraded ?
-                            CONSTANTS::FACTORY_BASE_PRODUCTION_SPEED : CONSTANTS::FACTORY_UPGRADE_PRODUCTION_SPEED; }
+                             CONSTANTS::FACTORY_BASE_PRODUCTION_SPEED : CONSTANTS::FACTORY_UPGRADE_PRODUCTION_SPEED; }
 
-    void produce();
-    void update() override;
-    void die() override;
-    void attack() override {}
+
+    void doActions() override {
+        if(timeCounter % productionSpeed() == 0) {
+            produce();
+        }
+    }
+    void produce() { callback->produce(shared_from_this()); }
     int removeValue() override { return !upgraded ?
                                 CONSTANTS::FACTORY_BASE_REMOVE_VALUE : CONSTANTS::FACTORY_UPGRADE_REMOVE_VALUE; }
-    void takeDamage(int amount) override;
     // void getStats() override;
 };
 

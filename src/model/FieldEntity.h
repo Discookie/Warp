@@ -12,33 +12,30 @@ protected:
     int timeCounter;
     int hp;
 public:
+    FieldEntity(Coordinate pos, const std::shared_ptr<FieldEntityCallbackClass>& gameModelCallback){
+        this->position    = pos;
+        this->callback    = gameModelCallback;
+        this->timeCounter = 0;
+    }
     virtual ~FieldEntity() = default;
     virtual int maxHp() = 0;
     virtual int cost() = 0;
-    virtual int upgradeCost() = 0;
     virtual int attackSpeed() = 0;
+    virtual int damage() = 0;
 
     // Getters
     virtual bool isFriendly() = 0;
     Coordinate getPosition() { return position; }
-    /// Returns the index of a given unstable object inside the MoovingEntities vector or -1 if its a Tower object.
+    /// Returns the index of a given unstable object inside the MovingEntities vector or -1 if its a Tower object.
     virtual int getVectorPos() = 0;
     // virtual void getStats() = 0; // Stats class???
 
     // Action functions
-    virtual void update() = 0;
-    virtual void attack() = 0;
-    virtual void takeDamage(int amount) = 0;
-    virtual void die() = 0;
-
-
-    // Static subclass functions
-    template<class T>
-    static int cost_of();
-    template<class T>
-    static int baseMaxHp_of();
-    template<class T>
-    static int baseAttack_of();
+    void update() { timeCounter++; doActions(); }
+    virtual void doActions() = 0;
+    void attack() { callback->attack(shared_from_this()); }
+    virtual void takeDamage(int amount) { this->hp -= amount; if(hp < 0){ this->die(); }}
+    void die() { callback->die(shared_from_this()); }
 };
 
 #endif //WARP_FIELDENTITY_H
