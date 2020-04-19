@@ -1,7 +1,7 @@
 #include "GameModel.h"
 
 GameModel::GameModel(){
-    this->fields = std::vector(10, std::vector<Field>(12));
+    this->fields = std::vector(12, std::vector<Field>(10));
     GameModel::init_callbacks();
     GameModel::new_game();
 }
@@ -56,16 +56,16 @@ void GameModel::load_game() {
 }
 
 void GameModel::construct_fields() {
-    for(int i = 0; i < 10; i++) {
-        for(int j = 0; j < 12; j++) {
+    for (int i = 0; i < 12; i++) {
+        for (int j = 0; j < 10; j++) {
             this->fields[i][j] = Field({i, j}, this->call_backs);
         }
     }
 }
 
 Field &GameModel::get_field(Coordinate position) {
-    if ((0 <= position.x && position.x < 10) &&
-        (0 <= position.y && position.y < 12)) {
+    if ((0 <= position.x && position.x < 12) &&
+        (0 <= position.y && position.y < 10)) {
         return this->fields[position.x][position.y];
     }
     throw std::exception();
