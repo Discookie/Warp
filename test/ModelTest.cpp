@@ -28,7 +28,7 @@ public:
           die_calls(0),
           FieldEntityCallbackClass(
               [this](const std::shared_ptr<FieldEntity>& obj) { ++pro_calls; },
-              [this](const std::shared_ptr<Unstable>& obj) { ++mov_calls; },
+              [this](const std::shared_ptr<FieldEntity>& obj) { ++mov_calls; },
               [this](const std::shared_ptr<FieldEntity>& obj) { ++att_calls; },
               [this](const std::shared_ptr<FieldEntity>& obj) { ++die_calls; }) {}
 };
@@ -165,11 +165,10 @@ TEST_F(FactoryFixture, InitTest) {
     EXPECT_EQ(factory->production_speed(), Constants::FACTORY_BASE_PRODUCTION_SPEED);
     EXPECT_EQ(factory->cost(), Constants::FACTORY_BASE_COST);
     EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST);
-    EXPECT_EQ(factory->max_hp(), Constants::FACTORY_BASE_MAX_HP);
+    EXPECT_EQ(factory->max_hp(), Constants::FACTORY_MAX_HP);
     EXPECT_EQ(factory->production_amount(), Constants::FACTORY_BASE_PRODUCTION);
     EXPECT_EQ(factory->remove_value(), Constants::FACTORY_BASE_REMOVE_VALUE);
     EXPECT_EQ(factory->get_position(), ((Coordinate){0,0}));
-    EXPECT_EQ(factory->get_damage(), 0);
     EXPECT_EQ(factory->get_vector_pos(), -1);
     EXPECT_FALSE(factory->is_upgraded());
     EXPECT_TRUE(factory->is_friendly());
