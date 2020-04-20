@@ -26,15 +26,15 @@ public:
     int die_calls;
 
     MockCallback()
-            : pro_calls(0),
-              mov_calls(0),
-              att_calls(0),
-              die_calls(0),
-              FieldEntityCallback(
-                      [this](const std::shared_ptr<FieldEntity> &obj) { ++pro_calls; },
-                      [this](const std::shared_ptr<FieldEntity> &obj) { ++mov_calls; },
-                      [this](const std::shared_ptr<FieldEntity> &obj) { ++att_calls; },
-                      [this](const std::shared_ptr<FieldEntity> &obj) { ++die_calls; }) {}
+        : pro_calls(0),
+          mov_calls(0),
+          att_calls(0),
+          die_calls(0),
+          FieldEntityCallback(
+              [this](const std::shared_ptr<FieldEntity> &obj) { ++pro_calls; },
+              [this](const std::shared_ptr<FieldEntity> &obj) { ++mov_calls; },
+              [this](const std::shared_ptr<FieldEntity> &obj) { ++att_calls; },
+              [this](const std::shared_ptr<FieldEntity> &obj) { ++die_calls; }) {}
 };
 
 TEST(TestMockCallback, Test) {
@@ -54,14 +54,15 @@ TEST(TestMockCallback, Test) {
     alien->move();
     EXPECT_EQ(cb->mov_calls, 1);
 }
-/*
+
 class GameModelFixture : public ::testing::Test {
 protected:
-    GameModel game_model;
-    GameModelFixture() : game_model() {}
+    //GameModel game_model;
+    //GameModelFixture() : game_model() {}
 };
 
 TEST_F(GameModelFixture, InitTest) {
+    GameModel game_model = {};
     EXPECT_EQ(game_model.get_points(), 0);
     EXPECT_EQ(game_model.get_wave_number(), 0);
     // EXPECT_EQ(game_model.get_wave_progress(), 0);
@@ -74,7 +75,7 @@ TEST_F(GameModelFixture, InitTest) {
         }
     }
 }
-*/
+
 class FieldFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
