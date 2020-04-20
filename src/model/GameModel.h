@@ -26,6 +26,7 @@ private:
     int wave_number;
     bool have_special;
     EntityType selected_tower;
+    bool game_over;
 
     // Helpers
     void construct_fields();
@@ -37,6 +38,10 @@ private:
     void update_model();
 
     void update_fields();
+
+    bool check_win() const;
+
+    bool check_lose() const;
 
     // Enemy interaction
     void spawn_enemies();
@@ -80,9 +85,11 @@ public:
 
     int get_wave_number() const { return this->wave_number; }
 
-    int get_wave_progress();
+    int get_wave_progress() const { return this->wave_timer; }
 
     bool is_buildable(EntityType type) const;
+
+    bool is_game_over() const { return game_over; }
 };
 
 #endif //WARP_GAMEMODEL_H

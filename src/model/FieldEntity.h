@@ -27,7 +27,7 @@ public:
 
     // Getters
     virtual bool is_friendly() = 0;
-    Coordinate get_position() { return position; }
+    Coordinate get_position() const { return position; }
     /// Returns the index of a given unstable object inside the MovingEntities vector or -1 if its a Tower object.
     virtual int get_vector_pos() = 0;
     // virtual void getStats() = 0; // Stats class???
@@ -38,7 +38,7 @@ public:
     virtual void do_actions() = 0;
     void attack() { callback->attack(shared_from_this()); }
 
-    virtual void attack_entities(const std::vector<std::vector<Field>> &) = 0;
+    virtual void attack_entities(std::vector<std::vector<Field>> &) = 0;
 
     virtual void take_damage(int amount) {
         this->hp -= amount;
