@@ -70,7 +70,7 @@ TEST_F(GameModelFixture, InitTest) {
         for (int j = 0; j < 12; ++j) {
             // EXPECT_FALSE(game_model.get_field({i, j}).get_tower());
             // EXPECT_TRUE(game_model.get_field({i, j}).get_moving_entities().empty());
-            // EXPECT_EQ(game_model.get_field({i, j}).get_team_status(), Team::Neutral);
+            // EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::Neutral);
         }
     }
 }

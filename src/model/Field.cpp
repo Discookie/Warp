@@ -48,6 +48,8 @@ void Field::build_tower(EntityType type) {
 }
 
 void Field::upgrade_tower(){
+    if (!this->tower) { throw std::exception(); }
+    if (this->tower->is_upgraded()) { throw std::exception(); }
     this->tower->upgrade();
 }
 

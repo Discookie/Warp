@@ -2,36 +2,44 @@
 #define WARP_CONSTANTS_H
 
 namespace Constants {
+// Game
+    static const int GOLD_GEN_AMOUNT = 50;
+    static const int GOLD_GEN_SPEED = 100;
+    static const int WAVE_COUNTDOWN_TIME = 2000;
+    static const int WAVE_SPAWN_TIME_START = 0;
+    static const int WAVE_SPAWN_TIME_END = -100;
+    static const int WAVE_OVER_TIME = -100;
+    static const int SPAWN_ENEMIES_TIME = 10;
 // Stable
 /// Factory
-    static const int FACTORY_BASE_COST                  = 100;
-    static const int FACTORY_UPGRADE_COST               = 100;
-    static const int FACTORY_MAX_HP                     = 1000;
-    static const int FACTORY_DAMAGE                     = 0;
-    static const int FACTORY_ATTACK_SPEED               = 0;
-    static const int FACTORY_BASE_PRODUCTION            = 10;
-    static const int FACTORY_UPGRADE_PRODUCTION         = 20;
-    static const int FACTORY_BASE_PRODUCTION_SPEED      = 10;
-    static const int FACTORY_UPGRADE_PRODUCTION_SPEED   = 5;
-    static const int FACTORY_BASE_REMOVE_VALUE          = 50;
-    static const int FACTORY_UPGRADE_REMOVE_VALUE       = 100;
+    static const int FACTORY_BASE_COST = 100;
+    static const int FACTORY_UPGRADE_COST = 100;
+    static const int FACTORY_MAX_HP = 1000;
+    static const int FACTORY_DAMAGE = 0;
+    static const int FACTORY_ATTACK_SPEED = 0;
+    static const int FACTORY_BASE_PRODUCTION = 10;
+    static const int FACTORY_UPGRADE_PRODUCTION = 20;
+    static const int FACTORY_BASE_PRODUCTION_SPEED = 10;
+    static const int FACTORY_UPGRADE_PRODUCTION_SPEED = 5;
+    static const int FACTORY_BASE_REMOVE_VALUE = 50;
+    static const int FACTORY_UPGRADE_REMOVE_VALUE = 100;
 
 /// LaserTower
-    static const int LASERTOWER_BASE_COST    = 100;
+    static const int LASERTOWER_BASE_COST = 100;
     static const int LASERTOWER_UPGRADE_COST = 100;
-    static const int LASERTOWER_MAX_HP  = 1000;
-    static const int LASERTOWER_BASE_DAMAGE  = 100;
-    static const int LASERTOWER_UPGRADE_DAMAGE  = 100;
-    static const int LASERTOWER_BASE_ATTACKSPEED  = 100;
-    static const int LASERTOWER_UPGRADE_ATTACKSPEED  = 100;
-    static const int LASERTOWER_BASE_REMOVE_VALUE          = 50;
-    static const int LASERTOWER_UPGRADE_REMOVE_VALUE       = 100;
+    static const int LASERTOWER_MAX_HP = 1000;
+    static const int LASERTOWER_BASE_DAMAGE = 100;
+    static const int LASERTOWER_UPGRADE_DAMAGE = 100;
+    static const int LASERTOWER_BASE_ATTACKSPEED = 100;
+    static const int LASERTOWER_UPGRADE_ATTACKSPEED = 100;
+    static const int LASERTOWER_BASE_REMOVE_VALUE = 50;
+    static const int LASERTOWER_UPGRADE_REMOVE_VALUE = 100;
 
 
     /// TeslaCoil
-    static const int TESLACOIL_BASE_COST    = 100;
+    static const int TESLACOIL_BASE_COST = 100;
     static const int TESLACOIL_UPGRADE_COST = 100;
-    static const int TESLACOIL_MAX_HP  = 1000;
+    static const int TESLACOIL_MAX_HP = 1000;
     static const int TESLACOIL_BASE_DAMAGE  = 100;
     static const int TESLACOIL_UPGRADE_DAMAGE  = 100;
     static const int TESLACOIL_BASE_ATTACKSPEED  = 100;

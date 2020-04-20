@@ -21,27 +21,46 @@ private:
     std::vector<std::vector<Field>> fields;
     int points;
     int gold;
+    int time_counter;
     int wave_timer;
     int wave_number;
     bool have_special;
     EntityType selected_tower;
+
+    // Helpers
+    void construct_fields();
+
+    bool valid_position(Coordinate position) const;
+
+    Field &get_field(Coordinate position);
+
+    void update_model();
+
+    void update_fields();
+
+    // Enemy interaction
+    void spawn_enemies();
+
+    void spawn_wave();
+
     // Callbacks
     std::shared_ptr<FieldEntityCallback> call_backs;
+
     void init_callbacks();
+
 public:
-    // Constructors
     GameModel();
 
     void new_game();
 
+    // Persistence
     void load_game();
 
-    void construct_fields();
+    void save_game();
 
     // Updates
-    void update_model();
+    void update();
 
-    void update_fields();
 
     // Building (player interaction)
     void select_tower(EntityType type);
@@ -50,11 +69,10 @@ public:
 
     void upgrade_tower(Coordinate position);
 
-    // Enemy interaction
-    void spawn_enemies();
+    void remove_tower(Coordinate position);
 
     // Getters
-    Field &get_field(Coordinate position);
+    const Field &get_field_const(Coordinate position) const;
 
     int get_gold() const { return this->gold; }
 
@@ -63,7 +81,8 @@ public:
     int get_wave_number() const { return this->wave_number; }
 
     int get_wave_progress();
-    bool is_buildable(EntityType type);
+
+    bool is_buildable(EntityType type) const;
 };
 
 #endif //WARP_GAMEMODEL_H
