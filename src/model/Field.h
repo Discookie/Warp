@@ -2,21 +2,19 @@
 #define WARP_FIELD_H
 
 #include <memory>
-#include <vector>
 #include <optional>
+#include <vector>
 
+#include "EntityType.h"
 #include "FieldEntityCallback.h"
-#include "Stable/Stable.h"
 #include "Stable/Factory.h"
-#include "model/Stable/LaserTower.h"
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
 #include "Stable/Special.h"
-
-#include "Unstable/Unstable.h"
-
+#include "Stable/Stable.h"
 #include "Team.h"
-#include "EntityType.h"
+#include "Unstable/Unstable.h"
+#include "model/Stable/LaserTower.h"
 
 class Field {
 private:
@@ -25,10 +23,11 @@ private:
     std::shared_ptr<Stable> tower;
     std::vector<std::shared_ptr<Unstable>> moving_entities;
     Team team_status = Team::Neutral;
+
 public:
     Field() = default;
 
-    Field(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback);
+    explicit Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_model_callback);
 
     // Stable
     void build_tower(EntityType type);
@@ -48,4 +47,4 @@ public:
     void update_entities();
 };
 
-#endif //WARP_FIELD_H
+#endif  // WARP_FIELD_H
