@@ -9,6 +9,8 @@
 
 #include "menu/main_menu.h"
 #include "menu/new_game.h"
+#include "render/game_scene.h"
+#include "model/GameModel.h"
 #include "scene/scene_manager.h"
 #include "utils/deleters.hpp"
 
@@ -49,6 +51,7 @@ int main() {
     al_register_event_source(main_queue.get(), al_get_timer_event_source(frame_timer.get()));
 
     SceneManager scene_manager = SceneManager();
+    GameModel game_model = GameModel();
 
     const auto try_add_scene = [&](auto new_scene_opt, auto& scene_name){
         new_scene_opt
@@ -68,6 +71,8 @@ int main() {
     try_add_scene(NewGameScene::create([](int x){
         std::cout << "Selected diff: " << x << std::endl;
     }), "new_game");
+    try_add_scene(GameScene::create(game_model), "in_game");
+    scene_manager.set_scene("main_menu");
     
 
     ALLEGRO_EVENT event;

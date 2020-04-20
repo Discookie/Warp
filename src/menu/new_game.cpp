@@ -55,7 +55,6 @@ NewGameScene::NewGameScene(std::unique_ptr<MenuDifficulty>&& difficulty, std::sh
         "Start", font,
         [&](){ clicked_scene = "in_game"; }
     );
-    start_button.disable();
     back_button = MenuButton(
         110, 230,
         BUTTON_WIDTH, 20,
