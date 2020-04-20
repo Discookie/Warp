@@ -3,7 +3,10 @@
 void GameModel::construct_fields() {
     for (int i = 0; i < 12; i++) {
         for (int j = 0; j < 10; j++) {
-            this->fields[i][j] = Field({i, j}, this->call_backs);
+            Field f = Field({i, j}, this->call_backs);
+            auto ff = fields[i];
+            auto fff = ff[j];
+            this->fields[i][j] = fff;
         }
     }
 }
@@ -91,8 +94,8 @@ void GameModel::init_callbacks() {
 }
 
 
-GameModel::GameModel() {
-    this->fields = std::vector(12, std::vector<Field>(10));
+GameModel::GameModel()
+    : fields(std::vector(12, std::vector<Field>(10))) {
     GameModel::init_callbacks();
     GameModel::new_game();
 }
