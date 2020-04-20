@@ -5,7 +5,7 @@
 
 class Robot : public Enemy {
 public:
-    Robot(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback, int vector_pos) :
+    Robot(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos) :
             Enemy(position, game_model_callback, vector_pos) {
         this->hp = Constants::ROBOT_MAX_HP;
     }

@@ -5,7 +5,7 @@
 #include <vector>
 #include <optional>
 
-#include "FieldEntityCallbackClass.h"
+#include "FieldEntityCallback.h"
 #include "Stable/Stable.h"
 #include "Stable/Factory.h"
 #include "model/Stable/LaserTower.h"
@@ -20,15 +20,15 @@
 
 class Field {
 private:
-    Coordinate position;
-    std::shared_ptr<FieldEntityCallbackClass> callback;
+    Coordinate position{};
+    std::shared_ptr<FieldEntityCallback> callback;
     std::shared_ptr<Stable> tower;
     std::vector<std::shared_ptr<Unstable>> moving_entities;
     Team team_status = Team::Neutral;
 public:
     Field() = default;
 
-    explicit Field(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback);
+    Field(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback);
 
     // Stable
     void build_tower(EntityType type);

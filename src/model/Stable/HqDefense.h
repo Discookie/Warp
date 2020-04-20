@@ -9,7 +9,7 @@
 class HqDefense : public Hq {
 public:
     HqDefense(Coordinate position,
-              const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) :
+              const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
             Hq(position, game_model_callback) {
         this->hp = Constants::HQDEFENSE_MAX_HP;
     }

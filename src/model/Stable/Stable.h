@@ -7,8 +7,8 @@ class Stable : public FieldEntity {
 protected:
     bool upgraded;
 public:
-    Stable(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback) :
-        FieldEntity(position, game_model_callback) {}
+    Stable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
+            FieldEntity(position, game_model_callback) {}
     ~Stable() override = default;
 
     bool is_friendly() final { return true; }
