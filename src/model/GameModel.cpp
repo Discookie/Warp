@@ -98,7 +98,6 @@ GameModel::GameModel() {
 }
 
 void GameModel::new_game() {
-    this->fields.clear();
     this->points = 0;
     this->gold = 100;
     this->time_counter = 0;
