@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 #include <model/Constants.h>
 #include <model/Field.h>
-#include <model/FieldEntityCallbackClass.h>
+#include <model/FieldEntityCallback.h>
 #include <model/GameModel.h>
 #include <model/Team.h>
 #include <model/Unstable/Alien.h>
@@ -18,7 +18,7 @@
 
 #include <functional>
 
-class MockCallback : public FieldEntityCallbackClass {
+class MockCallback : public FieldEntityCallback {
 public:
     int pro_calls;
     int mov_calls;
@@ -26,15 +26,15 @@ public:
     int die_calls;
 
     MockCallback()
-        : pro_calls(0),
-          mov_calls(0),
-          att_calls(0),
-          die_calls(0),
-          FieldEntityCallbackClass(
-              [this](const std::shared_ptr<FieldEntity>& obj) { ++pro_calls; },
-              [this](const std::shared_ptr<FieldEntity>& obj) { ++mov_calls; },
-              [this](const std::shared_ptr<FieldEntity>& obj) { ++att_calls; },
-              [this](const std::shared_ptr<FieldEntity>& obj) { ++die_calls; }) {}
+            : pro_calls(0),
+              mov_calls(0),
+              att_calls(0),
+              die_calls(0),
+              FieldEntityCallback(
+                      [this](const std::shared_ptr<FieldEntity> &obj) { ++pro_calls; },
+                      [this](const std::shared_ptr<FieldEntity> &obj) { ++mov_calls; },
+                      [this](const std::shared_ptr<FieldEntity> &obj) { ++att_calls; },
+                      [this](const std::shared_ptr<FieldEntity> &obj) { ++die_calls; }) {}
 };
 
 TEST(TestMockCallback, Test) {
