@@ -6,7 +6,7 @@
 
 class Friendly : public Unstable {
 public:
-    Friendly(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback, int vector_pos) :
+    Friendly(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos) :
             Unstable(position, game_model_callback, vector_pos) {
         this->hp = Constants::FRIENDLY_MAX_HP;
     }

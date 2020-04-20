@@ -48,7 +48,7 @@ void GameModel::init_callbacks() {
             this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
         }
     };
-    call_backs = std::make_shared<FieldEntityCallbackClass>(pro, mov, att, die);
+    call_backs = std::make_shared<FieldEntityCallback>(pro, mov, att, die);
 }
 
 void GameModel::load_game() {

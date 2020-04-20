@@ -6,7 +6,7 @@
 
 #include "Field.h"
 #include "EntityType.h"
-#include "FieldEntityCallbackClass.h"
+#include "FieldEntityCallback.h"
 
 #include "Stable/Factory.h"
 #include "model/Stable/LaserTower.h"
@@ -26,7 +26,7 @@ private:
     bool have_special;
     EntityType selected_tower;
     // Callbacks
-    std::shared_ptr<FieldEntityCallbackClass> call_backs;
+    std::shared_ptr<FieldEntityCallback> call_backs;
     void init_callbacks();
 public:
     // Constructors

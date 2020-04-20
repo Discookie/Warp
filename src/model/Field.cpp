@@ -8,7 +8,7 @@
 #include "model/Stable/TeslaCoil.h"
 #include "Stable/SniperTower.h"
 
-Field::Field(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback) {
+Field::Field(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback) {
     this->position = position;
     this->callback = game_model_callback;
     this->team_status = Team::Neutral;
@@ -17,7 +17,8 @@ Field::Field(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass
 }
 
 void Field::build_tower(EntityType type) {
-    if (this->team_status == Team::Enemy) return;
+    if (this->team_status == Team::Enemy) { throw std::exception(); }
+    if (this->tower) { throw std::exception(); }
     switch (type) {
         case EntityType::TypeFactory :
             this->tower = std::make_shared<Factory>(this->position, this->callback);
@@ -51,6 +52,7 @@ void Field::upgrade_tower(){
 }
 
 void Field::remove_tower() {
+    if (!this->tower) { throw std::exception(); }
     this->tower = nullptr;
     if(this->moving_entities.empty()){
         this->team_status = Team::Neutral;
@@ -67,6 +69,9 @@ void Field::add_moving_entity(std::shared_ptr<Unstable> obj) {
 
 void Field::remove_entity_at(int ind) {
     this->moving_entities.erase(this->moving_entities.begin() + ind);
+    for (int i = 0; i < this->moving_entities.size(); i++) {
+        moving_entities[i]->set_vector_pos(i);
+    }
 }
 
 std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities() {

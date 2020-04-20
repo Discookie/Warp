@@ -6,13 +6,17 @@
 class Unstable : public FieldEntity {
     int vector_position;
 public:
-    Unstable(Coordinate position, const std::shared_ptr<FieldEntityCallbackClass> &game_model_callback, int vector_pos)
+    Unstable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos)
             :
             FieldEntity(position, game_model_callback) {
         this->vector_position = vector_pos;
     }
 
     ~Unstable() override = default;
+
+    int get_vector_pos() override { return vector_position; }
+
+    void set_vector_pos(int position) { this->vector_position = position; }
 
     virtual int move_speed() = 0;
 

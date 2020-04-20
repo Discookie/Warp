@@ -6,7 +6,7 @@
 class Hq : public Stable {
 public:
     Hq(Coordinate position,
-       const std::shared_ptr<FieldEntityCallbackClass>& game_model_callback):
+       const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
             Stable(position, game_model_callback){
         this->upgraded = true;
     }
