@@ -15,9 +15,6 @@ public:
         this->vector_position = vector_pos;
     }
 
-    explicit Unstable(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
-        : FieldEntity(game_model_callback) {}
-
     ~Unstable() override = default;
 
     int get_vector_pos() override { return vector_position; }
