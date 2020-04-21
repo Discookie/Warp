@@ -6,7 +6,9 @@
 #include "Stable.h"
 #include "../Constants.h"
 
-class LaserTower : public Stable{
+#include "../Field.h"
+
+class LaserTower : public Stable {
 public:
     LaserTower(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback)
             : Stable(position, game_model_callback) {
@@ -30,7 +32,17 @@ public:
                Constants::LASERTOWER_BASE_DAMAGE : Constants::LASERTOWER_UPGRADE_DAMAGE;
     }
 
-    void attack_entities(std::vector<std::vector<Field>> &fields) override {}
+    void attack_entities(std::vector<std::vector<Field>> &fields) override {
+        for (int i = this->position.x++; i < fields.size(); i++) {
+            if (fields[i][this->position.y].get_team_status() == Team::Enemy) {
+                auto me = fields[i][this->position.y].get_moving_entities();
+                if (!me.empty()) {
+                    me[0]->take_damage(this->damage());
+                    return;
+                }
+            }
+        }
+    }
 
     void do_actions() override {
         if (time_counter % attack_speed() == 0) {

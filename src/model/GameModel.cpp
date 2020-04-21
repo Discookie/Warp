@@ -81,14 +81,12 @@ void GameModel::init_callbacks() {
     auto mov = [this](const std::shared_ptr<FieldEntity> &obj) {
         std::optional<Coordinate> new_pos = std::static_pointer_cast<Unstable>(obj)->move_to(this->fields);
         if (!new_pos) { return; } // Can't move
-        if (!this->valid_position(new_pos.value())) { throw std::invalid_argument("Out-of-range coordinates"); }
-        int vec_pos = obj->get_vector_pos();
-        if (vec_pos == -1) {
-            throw std::invalid_argument("Tower entity can not move");
+        if (obj->get_vector_pos() == -1) { throw std::invalid_argument("Tower entity can not move"); }
+        this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
+        if (new_pos->x != -1 && new_pos->y != -1) {
+            if (!this->valid_position(new_pos.value())) { throw std::invalid_argument("Out-of-range coordinates"); }
+            this->get_field(*new_pos).add_moving_entity(std::static_pointer_cast<Unstable>(obj));
         }
-        Coordinate pos = obj->get_position();
-        this->get_field(pos).remove_entity_at(vec_pos);
-        this->get_field(*new_pos).add_moving_entity(std::static_pointer_cast<Unstable>(obj));
     };
     // Attack Callback
     auto att = [this](const std::shared_ptr<FieldEntity> &obj) {

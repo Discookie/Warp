@@ -18,9 +18,34 @@ public:
 
     int damage() override { return Constants::ROBOT_DAMAGE; }
 
-    std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &) override {}
+    std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
+        // NOT FINAL
+        if (this->position.x-- >= 0) {
+            if (fields[this->position.x--][this->position.y].get_team_status() != Team::Friendly) {
+                return std::optional<Coordinate>({this->position.x--, this->position.y});
+            }
+        } else if (this->position.x-- < 0) {
+            throw std::logic_error("very bad, game already over");
+        }
+        return std::nullopt;
+    }
 
-    void attack_entities(std::vector<std::vector<Field>> &) override {}
+    void attack_entities(std::vector<std::vector<Field>> &fields) override {
+        for (int i = this->position.x--; i >= 0; i--) {
+            if (fields[i][this->position.y].get_team_status() == Team::Friendly) {
+                if (fields[i][this->position.y].get_tower()) {
+                    fields[i][this->position.y].get_tower()->take_damage(this->damage());
+                    return;
+                } else {
+                    auto me = fields[i][this->position.y].get_moving_entities();
+                    if (!me.empty()) {
+                        me[0]->take_damage(this->damage());
+                        return;
+                    }
+                }
+            }
+        }
+    }
 };
 
 #endif //WARP_ROBOT_H

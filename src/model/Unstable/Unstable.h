@@ -5,6 +5,7 @@
 
 class Unstable : public FieldEntity {
     int vector_position;
+
 public:
     Unstable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos)
             :
