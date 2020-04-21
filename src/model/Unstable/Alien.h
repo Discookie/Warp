@@ -29,7 +29,22 @@ public:
         return std::nullopt;
     }
 
-    void attack_entities(std::vector<std::vector<Field>> &fields) override {}
+    void attack_entities(std::vector<std::vector<Field>> &fields) override {
+        if (this->position.x-- >= 0) {
+            if (fields[this->position.x--][this->position.y].get_team_status() == Team::Friendly) {
+                if (fields[this->position.x--][this->position.y].get_tower()) {
+                    fields[this->position.x--][this->position.y].get_tower()->take_damage(this->damage());
+                    return;
+                } else {
+                    auto me = fields[this->position.x--][this->position.y].get_moving_entities();
+                    if (!me.empty()) {
+                        me[0]->take_damage(this->damage());
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     EntityType get_entity_type() const override {
         return EntityType::TypeAlien;

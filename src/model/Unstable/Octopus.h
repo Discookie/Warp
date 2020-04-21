@@ -29,7 +29,44 @@ public:
         return std::nullopt;
     }
 
-    void attack_entities(std::vector<std::vector<Field>> &) override {
+    void attack_entities(std::vector<std::vector<Field>> &fields) override {
+        for (int i = this->position.x--; i >= std::max(this->position.x - 3, 0); i--) {
+            int k = (i - this->position.x--) + 1;
+            if (this->position.y - k >= 0) {
+                if (fields[i][this->position.y - k].get_team_status() == Team::Friendly) {
+                    if (fields[i][this->position.y - k].get_tower()) {
+                        fields[i][this->position.y - k].get_tower()->take_damage(this->damage());
+                    } else {
+                        auto me = fields[i][this->position.y - k].get_moving_entities();
+                        for (auto &m :me) {
+                            m->take_damage(this->damage());
+                        }
+                    }
+                }
+            }
+            if (fields[i][this->position.y].get_team_status() == Team::Friendly) {
+                if (fields[i][this->position.y].get_tower()) {
+                    fields[i][this->position.y].get_tower()->take_damage(this->damage());
+                } else {
+                    auto me = fields[i][this->position.y].get_moving_entities();
+                    for (auto &m :me) {
+                        m->take_damage(this->damage());
+                    }
+                }
+            }
+            if (this->position.y + k < fields.size()) {
+                if (fields[i][this->position.y + k].get_team_status() == Team::Friendly) {
+                    if (fields[i][this->position.y + k].get_tower()) {
+                        fields[i][this->position.y + k].get_tower()->take_damage(this->damage());
+                    } else {
+                        auto me = fields[i][this->position.y + k].get_moving_entities();
+                        for (auto &m :me) {
+                            m->take_damage(this->damage());
+                        }
+                    }
+                }
+            }
+        }
 
     }
     EntityType get_entity_type() const override {
