@@ -20,7 +20,7 @@ public:
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &) override {}
 
-    void attack_entities(const std::vector<std::vector<Field>> &) override {}
+    void attack_entities(std::vector<std::vector<Field>> &) override {}
 };
 
 

@@ -9,13 +9,19 @@ protected:
 public:
     Stable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
             FieldEntity(position, game_model_callback) {}
+
     ~Stable() override = default;
 
     bool is_friendly() final { return true; }
+
     int get_vector_pos() final { return -1; }
-    void upgrade() { upgraded = true; };
+
+    void upgrade() { upgraded = true; }
+
     virtual int upgrade_cost() = 0;
-    bool is_upgraded() { return upgraded; };
+
+    bool is_upgraded() { return upgraded; }
+
     virtual int remove_value() = 0;
 };
 
