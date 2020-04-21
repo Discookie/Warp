@@ -1,6 +1,8 @@
 #ifndef WARP_STABLE_H
 #define WARP_STABLE_H
 
+#include <iostream>
+
 #include "../FieldEntity.h"
 
 class Stable : public FieldEntity {
@@ -26,6 +28,22 @@ public:
     bool is_upgraded() { return upgraded; }
 
     virtual int remove_value() = 0;
+
+    friend std::ostream &operator<<(std::ostream &os, const Stable &stable) {
+        os << stable.position << "\n"
+           << stable.time_counter << "\n"
+           << stable.hp << "\n"
+           << stable.upgraded;
+        return os;
+    }
+
+    friend std::istream &operator>>(std::istream &is, Stable &stable) {
+        is >> stable.position
+           >> stable.time_counter
+           >> stable.hp
+           >> stable.upgraded;
+        return is;
+    }
 };
 
 
