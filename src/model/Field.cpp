@@ -1,14 +1,14 @@
 #include "Field.h"
 
-#include <utility>
 #include <iostream>
+#include <utility>
 
 #include "Stable/Factory.h"
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
+#include "Stable/LaserTower.h"
 #include "Stable/SniperTower.h"
 #include "Stable/Special.h"
-#include "Stable/LaserTower.h"
 #include "Stable/TeslaCoil.h"
 #include "Unstable/Alien.h"
 #include "Unstable/Friendly.h"
@@ -25,8 +25,8 @@ Field::Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_mode
 int Field::add_unstable(EntityType et) {
     switch (et) {
         case TypeAlien:
-            moving_entities.push_back(std::make_shared<Alien>(
-                Alien(position, callback, moving_entities.size())));
+            moving_entities.push_back(
+                std::make_shared<Alien>(Alien(position, callback, moving_entities.size())));
             break;
         case TypeOctopus:
             moving_entities.push_back(
@@ -132,8 +132,7 @@ void Field::update_entities() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Field &field) {
-    os << field.position << "\n"
-       << field.team_status << "\n";
+    os << field.position << "\n" << field.team_status << "\n";
 
     if (field.get_tower()) {
         os << field.get_tower()->get_entity_type() << " " << field.tower << "\n";
@@ -142,7 +141,7 @@ std::ostream &operator<<(std::ostream &os, const Field &field) {
     }
 
     os << field.moving_entities.size() << "\n";
-    for (const std::shared_ptr<Unstable>& me : field.moving_entities) {
+    for (const std::shared_ptr<Unstable> &me : field.moving_entities) {
         os << me->get_entity_type() << " " << me << " ";
     }
     return os;
@@ -170,3 +169,16 @@ std::istream &operator>>(std::istream &is, Field &field) {
     }
     return is;
 }
+
+bool Field::operator==(const Field &rhs) const {
+    bool all_moving_entities_equals = moving_entities.size() == rhs.moving_entities.size();
+    if (!all_moving_entities_equals) return false;
+    for (int i = 0; i < moving_entities.size(); ++i) {
+        all_moving_entities_equals =
+            all_moving_entities_equals && *moving_entities[i] == *rhs.moving_entities[i];
+    }
+    return position == rhs.position && *tower == *rhs.tower && all_moving_entities_equals
+           && team_status == rhs.team_status;
+}
+
+bool Field::operator!=(const Field &rhs) const { return !(rhs == *this); }

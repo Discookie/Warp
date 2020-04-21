@@ -1,9 +1,9 @@
 #ifndef WARP_FIELD_H
 #define WARP_FIELD_H
 
+#include <iostream>
 #include <memory>
 #include <optional>
-#include <iostream>
 #include <vector>
 
 #include "EntityType.h"
@@ -21,6 +21,7 @@ private:
     Team team_status = Team::TeamNeutral;
 
     int add_unstable(EntityType et);
+
 public:
     Field() = default;
 
@@ -54,7 +55,11 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Field& field);
 
-    friend std::istream &operator>>(std::istream &is, Field& field);
+    friend std::istream& operator>>(std::istream& is, Field& field);
+
+    bool operator==(const Field& rhs) const;
+
+    bool operator!=(const Field& rhs) const;
 };
 
 #endif  // WARP_FIELD_H

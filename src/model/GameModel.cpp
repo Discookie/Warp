@@ -251,3 +251,12 @@ std::istream &operator>>(std::istream &is, GameModel &model) {
     }
     return is;
 }
+
+bool GameModel::operator==(const GameModel &rhs) const {
+    return fields == rhs.fields && points == rhs.points && gold == rhs.gold
+           && time_counter == rhs.time_counter && wave_timer == rhs.wave_timer
+           && wave_number == rhs.wave_number && have_special == rhs.have_special
+           && selected_tower == rhs.selected_tower && game_over == rhs.game_over;
+}
+
+bool GameModel::operator!=(const GameModel &rhs) const { return !(rhs == *this); }
