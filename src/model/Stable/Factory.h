@@ -46,6 +46,9 @@ public:
     int remove_value() override { return !upgraded ?
                                          Constants::FACTORY_BASE_REMOVE_VALUE : Constants::FACTORY_UPGRADE_REMOVE_VALUE; }
     // void getStats() override;
+     EntityType get_entity_type() const override {
+         return EntityType::TypeFactory;
+     }
 };
 
 

@@ -1,20 +1,13 @@
 #ifndef WARP_GAMEMODEL_H
 #define WARP_GAMEMODEL_H
 
-#include <vector>
 #include <functional>
+#include <iostream>
+#include <vector>
 
-#include "Field.h"
 #include "EntityType.h"
+#include "Field.h"
 #include "FieldEntityCallback.h"
-
-#include "Stable/Factory.h"
-#include "model/Stable/LaserTower.h"
-#include "Stable/HqAttack.h"
-#include "Stable/HqDefense.h"
-#include "Stable/Special.h"
-#include "Stable/TeslaCoil.h"
-#include "Stable/SniperTower.h"
 
 class GameModel {
 private:
@@ -43,7 +36,7 @@ private:
 
     bool check_lose() const;
 
-    // Enemy interaction
+    // TeamEnemy interaction
     void spawn_enemies();
 
     void spawn_wave();
@@ -90,6 +83,10 @@ public:
     bool is_buildable(EntityType type) const;
 
     bool is_game_over() const { return game_over; }
+
+    friend std::ostream &operator<<(std::ostream &os, const GameModel &model);
+
+    friend std::istream &operator>>(std::istream &is, GameModel &model);
 };
 
 #endif //WARP_GAMEMODEL_H

@@ -10,7 +10,6 @@ public:
             Stable(position, game_model_callback){
         this->upgraded = true;
     }
-
 };
 
 

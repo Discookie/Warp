@@ -3,13 +3,14 @@
 
 #include <memory>
 #include <optional>
+#include <iostream>
 #include <vector>
 
 #include "EntityType.h"
 #include "FieldEntityCallback.h"
+#include "Stable/Stable.h"
 #include "Team.h"
 #include "Unstable/Unstable.h"
-#include "Stable/Stable.h"
 
 class Field {
 private:
@@ -17,8 +18,9 @@ private:
     std::shared_ptr<FieldEntityCallback> callback;
     std::shared_ptr<Stable> tower;
     std::vector<std::shared_ptr<Unstable>> moving_entities;
-    Team team_status = Team::Neutral;
+    Team team_status = Team::TeamNeutral;
 
+    int add_unstable(EntityType et);
 public:
     Field() = default;
 
@@ -47,7 +49,12 @@ public:
 
     // General
     Team get_team_status() const { return team_status; }
+
     void update_entities();
+
+    friend std::ostream& operator<<(std::ostream& os, const Field& field);
+
+    friend std::istream &operator>>(std::istream &is, Field& field);
 };
 
 #endif  // WARP_FIELD_H

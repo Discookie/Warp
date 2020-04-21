@@ -21,7 +21,7 @@ public:
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
         // NOT FINAL
         if (this->position.x-- >= 0) {
-            if (fields[this->position.x--][this->position.y].get_team_status() != Team::Friendly) {
+            if (fields[this->position.x--][this->position.y].get_team_status() != Team::TeamFriendly) {
                 return std::optional<Coordinate>({this->position.x--, this->position.y});
             }
         } else if (this->position.x-- < 0) {
@@ -32,7 +32,7 @@ public:
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (int i = this->position.x--; i >= 0; i--) {
-            if (fields[i][this->position.y].get_team_status() == Team::Friendly) {
+            if (fields[i][this->position.y].get_team_status() == Team::TeamFriendly) {
                 if (fields[i][this->position.y].get_tower()) {
                     fields[i][this->position.y].get_tower()->take_damage(this->damage());
                     return;
@@ -45,6 +45,10 @@ public:
                 }
             }
         }
+    }
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeRobot;
     }
 };
 

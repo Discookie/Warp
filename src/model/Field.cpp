@@ -1,24 +1,53 @@
 #include "Field.h"
 
 #include <utility>
+#include <iostream>
 
 #include "Stable/Factory.h"
 #include "Stable/HqAttack.h"
 #include "Stable/HqDefense.h"
 #include "Stable/SniperTower.h"
 #include "Stable/Special.h"
-#include "model/Stable/LaserTower.h"
-#include "model/Stable/TeslaCoil.h"
+#include "Stable/LaserTower.h"
+#include "Stable/TeslaCoil.h"
+#include "Unstable/Alien.h"
+#include "Unstable/Friendly.h"
+#include "Unstable/Octopus.h"
+#include "Unstable/Robot.h"
 
 Field::Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_model_callback)
     : position(position),
       callback(std::move(game_model_callback)),
-      team_status(Team::Neutral),
+      team_status(Team::TeamNeutral),
       tower(nullptr),
       moving_entities(std::vector<std::shared_ptr<Unstable>>()) {}
 
+int Field::add_unstable(EntityType et) {
+    switch (et) {
+        case TypeAlien:
+            moving_entities.push_back(std::make_shared<Alien>(
+                Alien(position, callback, moving_entities.size())));
+            break;
+        case TypeOctopus:
+            moving_entities.push_back(
+                std::make_shared<Octopus>(Octopus(position, callback, moving_entities.size())));
+            break;
+        case TypeRobot:
+            moving_entities.push_back(
+                std::make_shared<Robot>(Robot(position, callback, moving_entities.size())));
+            break;
+        case TypeFriendly:
+            moving_entities.push_back(
+                std::make_shared<Friendly>(Friendly(position, callback, moving_entities.size())));
+            break;
+        default:
+            throw std::invalid_argument("Illegal entity type");
+    }
+    return moving_entities.size() - 1;
+}
+
 void Field::build_tower(EntityType type) {
-    if (this->team_status == Team::Enemy) {
+    if (this->team_status == Team::TeamEnemy) {
         throw std::exception();
     }
     if (this->tower) {
@@ -49,7 +78,7 @@ void Field::build_tower(EntityType type) {
         default:
             return;
     }
-    this->team_status = Team::Friendly;
+    this->team_status = Team::TeamFriendly;
 }
 
 void Field::upgrade_tower() {
@@ -68,7 +97,7 @@ void Field::remove_tower() {
     }
     this->tower = nullptr;
     if (this->moving_entities.empty()) {
-        this->team_status = Team::Neutral;
+        this->team_status = Team::TeamNeutral;
     }
 }
 
@@ -100,4 +129,44 @@ void Field::update_entities() {
     for (auto &me : this->moving_entities) {
         me->update();
     }
+}
+
+std::ostream &operator<<(std::ostream &os, const Field &field) {
+    os << field.position << "\n"
+       << field.team_status << "\n";
+
+    if (field.get_tower()) {
+        os << field.get_tower()->get_entity_type() << " " << field.tower << "\n";
+    } else {
+        os << EntityType::TypeNone << "\n";
+    }
+
+    os << field.moving_entities.size() << "\n";
+    for (const std::shared_ptr<Unstable>& me : field.moving_entities) {
+        os << me->get_entity_type() << " " << me << " ";
+    }
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, Field &field) {
+    int team_status_buffer, entity_type_buffer;
+    size_t s;
+
+    is >> field.position >> team_status_buffer;
+
+    is >> entity_type_buffer;
+    if ((EntityType)entity_type_buffer != EntityType::TypeNone) {
+        field.build_tower((EntityType)entity_type_buffer);
+        is >> *field.tower;
+    }
+
+    is >> s;
+    field.moving_entities = std::vector<std::shared_ptr<Unstable>>();
+    field.moving_entities.reserve(s);
+    for (size_t i = 0; i < s; ++i) {
+        is >> entity_type_buffer;
+        int index = field.add_unstable((EntityType)entity_type_buffer);
+        is >> *field.moving_entities[index];
+    }
+    return is;
 }

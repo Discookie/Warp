@@ -1,6 +1,8 @@
 #ifndef WARP_UNSTABLE_H
 #define WARP_UNSTABLE_H
 
+#include <iostream>
+
 #include "../FieldEntity.h"
 
 class Unstable : public FieldEntity {
@@ -35,6 +37,22 @@ public:
         if (time_counter % move_speed() == 0) {
             move();
         }
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const Unstable &unstable) {
+        os << unstable.position << "\n"
+           << unstable.time_counter << "\n"
+           << unstable.hp << "\n"
+           << unstable.vector_position;
+        return os;
+    }
+
+    friend std::istream &operator>>(std::istream &is, Unstable &unstable) {
+        is >> unstable.position
+           >> unstable.time_counter
+           >> unstable.hp
+           >> unstable.vector_position;
+        return is;
     }
 };
 

@@ -10,6 +10,13 @@
 #include <model/Field.h>
 #include <model/FieldEntityCallback.h>
 #include <model/GameModel.h>
+#include <model/Stable/Factory.h>
+#include <model/Stable/HqAttack.h>
+#include <model/Stable/HqDefense.h>
+#include <model/Stable/LaserTower.h>
+#include <model/Stable/SniperTower.h>
+#include <model/Stable/Special.h>
+#include <model/Stable/TeslaCoil.h>
 #include <model/Team.h>
 #include <model/Unstable/Alien.h>
 #include <model/Unstable/Friendly.h>
@@ -17,6 +24,7 @@
 #include <model/Unstable/Robot.h>
 
 #include <functional>
+#include <sstream>
 
 class MockCallback : public FieldEntityCallback {
 public:
@@ -55,23 +63,52 @@ TEST(TestMockCallback, Test) {
     EXPECT_EQ(cb->mov_calls, 1);
 }
 
+TEST(CoordinateTest, eqTest) {
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            Coordinate c1 = {i,j};
+            for (int ii = 0; ii < 12; ++ii) {
+                for (int jj = 0; jj < 10; ++jj) {
+                    Coordinate c2 = {ii,jj};
+                    if (ii == i && jj == j)
+                        EXPECT_EQ(c1, c2);
+                    else
+                        EXPECT_NE(c1, c2);
+                }
+            }
+        }
+    }
+}
+
+TEST(CoordinateTest, ioTest) {
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            std::stringstream s;
+            Coordinate c1 = {i,j};
+            Coordinate c2 = {0,0};
+            s << c1;
+            s >> c2;
+            EXPECT_EQ(c1, c2);
+        }
+    }
+}
+
 class GameModelFixture : public ::testing::Test {
 protected:
-    //GameModel game_model;
-    //GameModelFixture() : game_model() {}
+    GameModel game_model;
+    GameModelFixture() : game_model() {}
 };
 
 TEST_F(GameModelFixture, InitTest) {
-    GameModel game_model = {};
     EXPECT_EQ(game_model.get_points(), 0);
     EXPECT_EQ(game_model.get_wave_number(), 0);
-    // EXPECT_EQ(game_model.get_wave_progress(), 0);
-    EXPECT_EQ(game_model.get_gold(), 0);
-    for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < 12; ++j) {
-            // EXPECT_FALSE(game_model.get_field({i, j}).get_tower());
-            // EXPECT_TRUE(game_model.get_field({i, j}).get_moving_entities().empty());
-            // EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::Neutral);
+    //EXPECT_EQ(game_model.get_wave_progress(), 0);
+    EXPECT_EQ(game_model.get_gold(), Constants::STARTING_GOLD);
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            // EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower());
+            // EXPECT_TRUE(game_model.get_field_const({i, j}).get_moving_entities().empty());
+            EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::TeamNeutral);
         }
     }
 }
@@ -85,14 +122,14 @@ protected:
 
 TEST_F(FieldFixture, InitTest) {
     EXPECT_FALSE(field.get_tower());
-    EXPECT_EQ(field.get_team_status(), Team::Neutral);
+    EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
 
 TEST_F(FieldFixture, BuildTest) {
     field.build_tower(EntityType::TypeFactory);
 
-    EXPECT_EQ(field.get_team_status(), Team::Friendly);
+    EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
     ASSERT_TRUE(field.get_tower());
 
     EXPECT_ANY_THROW(field.build_tower(EntityType::TypeFactory))
@@ -157,7 +194,7 @@ TEST_F(FieldFixture, RemoveTowerTest) {
     field.remove_tower();
 
     EXPECT_FALSE(field.get_tower());
-    EXPECT_EQ(field.get_team_status(), Team::Neutral);
+    EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
 
@@ -171,7 +208,7 @@ TEST_F(FieldFixture, UpgradeTest) {
     field.upgrade_tower();
 
     EXPECT_TRUE(field.get_tower()->is_upgraded());
-    EXPECT_EQ(field.get_team_status(), Team::Friendly);
+    EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
     EXPECT_TRUE(field.get_moving_entities().empty());
 
     EXPECT_ANY_THROW(field.upgrade_tower()) << "Double upgrade should throw exception";

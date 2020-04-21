@@ -2,9 +2,9 @@
 #define WARP_TEAM_H
 
 enum Team {
-    Friendly,
-    Enemy,
-    Neutral,
+    TeamFriendly,
+    TeamEnemy,
+    TeamNeutral,
 };
 
 #endif  // WARP_TEAM_H
