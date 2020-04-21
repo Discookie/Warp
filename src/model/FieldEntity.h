@@ -19,6 +19,8 @@ public:
         this->callback = game_model_callback;
         this->time_counter = 0;
     }
+    explicit FieldEntity(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : callback(game_model_callback) {}
     virtual ~FieldEntity() = default;
     virtual int max_hp() = 0;
     virtual int cost() = 0;

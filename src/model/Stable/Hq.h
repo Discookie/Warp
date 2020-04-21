@@ -10,6 +10,8 @@ public:
             Stable(position, game_model_callback){
         this->upgraded = true;
     }
+    explicit Hq(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Stable(game_model_callback) {}
     EntityType get_entity_type() const override {
         return EntityType::TypeHq;
     }

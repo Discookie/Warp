@@ -15,6 +15,9 @@ public:
         this->hp = Constants::SNIPERTOWER_MAX_HP;
     }
 
+    explicit SniperTower(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Stable(game_model_callback) {}
+
     int max_hp() override { return Constants::SNIPERTOWER_MAX_HP; }
 
     int cost() override { return Constants::SNIPERTOWER_BASE_COST; }

@@ -15,6 +15,9 @@ public:
         this->hp = Constants::SPECIAL_MAX_HP;
     }
 
+    explicit Special(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Stable(game_model_callback) {}
+
     int max_hp() override { return Constants::SPECIAL_MAX_HP; }
 
     int cost() override { return Constants::SPECIAL_BASE_COST; }

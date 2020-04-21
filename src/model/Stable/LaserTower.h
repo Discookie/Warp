@@ -16,6 +16,9 @@ public:
         this->hp = Constants::LASERTOWER_MAX_HP;
     }
 
+    explicit LaserTower(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Stable(game_model_callback) {}
+
     int max_hp() override { return Constants::LASERTOWER_MAX_HP; }
 
     int cost() override { return Constants::LASERTOWER_BASE_COST; }

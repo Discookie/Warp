@@ -11,6 +11,9 @@ public:
         this->hp = Constants::FRIENDLY_MAX_HP;
     }
 
+    explicit Friendly(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Unstable(game_model_callback) {}
+
     bool is_friendly() final { return true; }
 
     int max_hp() override { return Constants::FRIENDLY_MAX_HP; }

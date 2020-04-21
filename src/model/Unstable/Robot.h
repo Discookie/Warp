@@ -10,6 +10,9 @@ public:
         this->hp = Constants::ROBOT_MAX_HP;
     }
 
+    explicit Robot(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Enemy(game_model_callback) {}
+
     int max_hp() override { return Constants::ROBOT_MAX_HP; }
 
     int move_speed() override { return Constants::ROBOT_MOVESPEED; }

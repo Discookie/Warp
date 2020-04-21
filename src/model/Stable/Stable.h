@@ -10,6 +10,9 @@ public:
     Stable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
             FieldEntity(position, game_model_callback) {}
 
+    explicit Stable(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : FieldEntity(game_model_callback) {}
+
     ~Stable() override = default;
 
     bool is_friendly() final { return true; }

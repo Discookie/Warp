@@ -10,6 +10,9 @@ public:
         this->hp = Constants::ALIEN_MAX_HP;
     }
 
+    explicit Alien(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
+        : Enemy(game_model_callback) {}
+
     int max_hp() override { return Constants::ALIEN_MAX_HP; }
 
     int move_speed() override { return Constants::ALIEN_MOVESPEED; }
