@@ -135,14 +135,14 @@ std::ostream &operator<<(std::ostream &os, const Field &field) {
     os << field.position << "\n" << field.team_status << "\n";
 
     if (field.get_tower()) {
-        os << field.get_tower()->get_entity_type() << " " << field.tower << "\n";
+        os << field.get_tower()->get_entity_type() << " " << *field.tower << "\n";
     } else {
         os << EntityType::TypeNone << "\n";
     }
 
     os << field.moving_entities.size() << "\n";
     for (const std::shared_ptr<Unstable> &me : field.moving_entities) {
-        os << me->get_entity_type() << " " << me << " ";
+        os << me->get_entity_type() << " " << *me << " ";
     }
     return os;
 }
@@ -172,12 +172,14 @@ std::istream &operator>>(std::istream &is, Field &field) {
 
 bool Field::operator==(const Field &rhs) const {
     bool all_moving_entities_equals = moving_entities.size() == rhs.moving_entities.size();
+    bool towers_equals = tower ? (rhs.tower ? *tower == *rhs.tower : false) : !rhs.tower;
     if (!all_moving_entities_equals) return false;
     for (int i = 0; i < moving_entities.size(); ++i) {
         all_moving_entities_equals =
             all_moving_entities_equals && *moving_entities[i] == *rhs.moving_entities[i];
     }
-    return position == rhs.position && *tower == *rhs.tower && all_moving_entities_equals
+
+    return position == rhs.position && towers_equals && all_moving_entities_equals
            && team_status == rhs.team_status;
 }
 
