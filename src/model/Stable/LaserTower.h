@@ -34,7 +34,7 @@ public:
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (int i = this->position.x; i < fields.size(); i++) {
-            fields[i][this->position.y].get_movind_entities();
+            fields[i][this->position.y].get_moving_entities();
         }
     }
 
