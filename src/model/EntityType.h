@@ -9,7 +9,6 @@ enum EntityType{
     TypeSniperTower,
     TypeHqAttack,
     TypeHqDefense,
-    TypeHq,
     TypeSpecial,
     TypeAlien,
     TypeOctopus,

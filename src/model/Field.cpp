@@ -13,12 +13,12 @@
 Field::Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_model_callback)
     : position(position),
       callback(std::move(game_model_callback)),
-      team_status(Team::Neutral),
+      team_status(Team::TeamNeutral),
       tower(nullptr),
       moving_entities(std::vector<std::shared_ptr<Unstable>>()) {}
 
 void Field::build_tower(EntityType type) {
-    if (this->team_status == Team::Enemy) {
+    if (this->team_status == Team::TeamEnemy) {
         throw std::exception();
     }
     if (this->tower) {
@@ -49,7 +49,7 @@ void Field::build_tower(EntityType type) {
         default:
             return;
     }
-    this->team_status = Team::Friendly;
+    this->team_status = Team::TeamFriendly;
 }
 
 void Field::upgrade_tower() {
@@ -68,7 +68,7 @@ void Field::remove_tower() {
     }
     this->tower = nullptr;
     if (this->moving_entities.empty()) {
-        this->team_status = Team::Neutral;
+        this->team_status = Team::TeamNeutral;
     }
 }
 

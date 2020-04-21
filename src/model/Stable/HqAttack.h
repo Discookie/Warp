@@ -26,7 +26,7 @@ public:
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (int i = this->position.x++; i < fields.size(); i++) {
-            if (fields[i][this->position.y].get_team_status() == Team::Enemy) {
+            if (fields[i][this->position.y].get_team_status() == Team::TeamEnemy) {
                 auto me = fields[i][this->position.y].get_moving_entities();
                 for (auto &m : me) {
                     m->take_damage(this->damage());

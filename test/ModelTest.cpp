@@ -116,14 +116,14 @@ protected:
 
 TEST_F(FieldFixture, InitTest) {
     EXPECT_FALSE(field.get_tower());
-    EXPECT_EQ(field.get_team_status(), Team::Neutral);
+    EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
 
 TEST_F(FieldFixture, BuildTest) {
     field.build_tower(EntityType::TypeFactory);
 
-    EXPECT_EQ(field.get_team_status(), Team::Friendly);
+    EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
     ASSERT_TRUE(field.get_tower());
 
     EXPECT_ANY_THROW(field.build_tower(EntityType::TypeFactory))
@@ -188,7 +188,7 @@ TEST_F(FieldFixture, RemoveTowerTest) {
     field.remove_tower();
 
     EXPECT_FALSE(field.get_tower());
-    EXPECT_EQ(field.get_team_status(), Team::Neutral);
+    EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
 
@@ -202,7 +202,7 @@ TEST_F(FieldFixture, UpgradeTest) {
     field.upgrade_tower();
 
     EXPECT_TRUE(field.get_tower()->is_upgraded());
-    EXPECT_EQ(field.get_team_status(), Team::Friendly);
+    EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
     EXPECT_TRUE(field.get_moving_entities().empty());
 
     EXPECT_ANY_THROW(field.upgrade_tower()) << "Double upgrade should throw exception";

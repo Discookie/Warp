@@ -18,7 +18,7 @@ private:
     std::shared_ptr<FieldEntityCallback> callback;
     std::shared_ptr<Stable> tower;
     std::vector<std::shared_ptr<Unstable>> moving_entities;
-    Team team_status = Team::Neutral;
+    Team team_status = Team::TeamNeutral;
 
 public:
     Field() = default;
