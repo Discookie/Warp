@@ -10,6 +10,13 @@
 #include <model/Field.h>
 #include <model/FieldEntityCallback.h>
 #include <model/GameModel.h>
+#include <model/Stable/Factory.h>
+#include <model/Stable/HqAttack.h>
+#include <model/Stable/HqDefense.h>
+#include <model/Stable/LaserTower.h>
+#include <model/Stable/SniperTower.h>
+#include <model/Stable/Special.h>
+#include <model/Stable/TeslaCoil.h>
 #include <model/Team.h>
 #include <model/Unstable/Alien.h>
 #include <model/Unstable/Friendly.h>
@@ -78,7 +85,7 @@ TEST(CoordinateTest, ioTest) {
         for (int j = 0; j < 10; ++j) {
             std::stringstream s;
             Coordinate c1 = {i,j};
-            Coordinate c2;
+            Coordinate c2 = {0,0};
             s << c1;
             s >> c2;
             EXPECT_EQ(c1, c2);
@@ -88,21 +95,20 @@ TEST(CoordinateTest, ioTest) {
 
 class GameModelFixture : public ::testing::Test {
 protected:
-    //GameModel game_model;
-    //GameModelFixture() : game_model() {}
+    GameModel game_model;
+    GameModelFixture() : game_model() {}
 };
 
 TEST_F(GameModelFixture, InitTest) {
-    GameModel game_model = {};
     EXPECT_EQ(game_model.get_points(), 0);
     EXPECT_EQ(game_model.get_wave_number(), 0);
-    // EXPECT_EQ(game_model.get_wave_progress(), 0);
-    EXPECT_EQ(game_model.get_gold(), 0);
-    for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < 12; ++j) {
-            // EXPECT_FALSE(game_model.get_field({i, j}).get_tower());
-            // EXPECT_TRUE(game_model.get_field({i, j}).get_moving_entities().empty());
-            // EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::Neutral);
+    //EXPECT_EQ(game_model.get_wave_progress(), 0);
+    EXPECT_EQ(game_model.get_gold(), 100);
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            // EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower());
+            // EXPECT_TRUE(game_model.get_field_const({i, j}).get_moving_entities().empty());
+            EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::TeamNeutral);
         }
     }
 }
