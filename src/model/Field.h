@@ -20,6 +20,7 @@ private:
     std::vector<std::shared_ptr<Unstable>> moving_entities;
     Team team_status = Team::TeamNeutral;
 
+    int add_unstable(EntityType et);
 public:
     Field() = default;
 

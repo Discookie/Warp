@@ -7,8 +7,12 @@
 #include "Stable/HqDefense.h"
 #include "Stable/SniperTower.h"
 #include "Stable/Special.h"
-#include "model/Stable/LaserTower.h"
-#include "model/Stable/TeslaCoil.h"
+#include "Stable/LaserTower.h"
+#include "Stable/TeslaCoil.h"
+#include "Unstable/Alien.h"
+#include "Unstable/Friendly.h"
+#include "Unstable/Octopus.h"
+#include "Unstable/Robot.h"
 
 Field::Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_model_callback)
     : position(position),
@@ -16,6 +20,30 @@ Field::Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_mode
       team_status(Team::TeamNeutral),
       tower(nullptr),
       moving_entities(std::vector<std::shared_ptr<Unstable>>()) {}
+
+int Field::add_unstable(EntityType et) {
+    switch (et) {
+        case TypeAlien:
+            moving_entities.push_back(std::make_shared<Alien>(
+                Alien(position, callback, moving_entities.size())));
+            break;
+        case TypeOctopus:
+            moving_entities.push_back(
+                std::make_shared<Octopus>(Octopus(position, callback, moving_entities.size())));
+            break;
+        case TypeRobot:
+            moving_entities.push_back(
+                std::make_shared<Robot>(Robot(position, callback, moving_entities.size())));
+            break;
+        case TypeFriendly:
+            moving_entities.push_back(
+                std::make_shared<Friendly>(Friendly(position, callback, moving_entities.size())));
+            break;
+        default:
+            throw std::invalid_argument("Illegal entity type");
+    }
+    return moving_entities.size() - 1;
+}
 
 void Field::build_tower(EntityType type) {
     if (this->team_status == Team::TeamEnemy) {
