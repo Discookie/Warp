@@ -118,7 +118,7 @@ void GameModel::new_game() {
     this->points         = 0;
     this->gold           = Constants::STARTING_GOLD;
     this->time_counter   = 0;
-    this->wave_number    = 1;
+    this->wave_number    = 0;
     this->wave_timer     = Constants::WAVE_COUNTDOWN_TIME;
     this->have_special   = false;
     this->selected_tower = EntityType::TypeNone;

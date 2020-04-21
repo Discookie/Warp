@@ -32,7 +32,7 @@ public:
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (int i = this->position.x--; i >= 0; i--) {
-            if (fields[i][this->position.y].get_team_status() == Team::Friendly) {
+            if (fields[i][this->position.y].get_team_status() == Team::TeamFriendly) {
                 if (fields[i][this->position.y].get_tower()) {
                     fields[i][this->position.y].get_tower()->take_damage(this->damage());
                     return;

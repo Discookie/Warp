@@ -33,7 +33,7 @@ public:
         for (int i = this->position.x--; i >= std::max(this->position.x - 3, 0); i--) {
             int k = (i - this->position.x--) + 1;
             if (this->position.y - k >= 0) {
-                if (fields[i][this->position.y - k].get_team_status() == Team::Friendly) {
+                if (fields[i][this->position.y - k].get_team_status() == Team::TeamFriendly) {
                     if (fields[i][this->position.y - k].get_tower()) {
                         fields[i][this->position.y - k].get_tower()->take_damage(this->damage());
                     } else {
@@ -44,7 +44,7 @@ public:
                     }
                 }
             }
-            if (fields[i][this->position.y].get_team_status() == Team::Friendly) {
+            if (fields[i][this->position.y].get_team_status() == Team::TeamFriendly) {
                 if (fields[i][this->position.y].get_tower()) {
                     fields[i][this->position.y].get_tower()->take_damage(this->damage());
                 } else {
@@ -55,7 +55,7 @@ public:
                 }
             }
             if (this->position.y + k < fields.size()) {
-                if (fields[i][this->position.y + k].get_team_status() == Team::Friendly) {
+                if (fields[i][this->position.y + k].get_team_status() == Team::TeamFriendly) {
                     if (fields[i][this->position.y + k].get_tower()) {
                         fields[i][this->position.y + k].get_tower()->take_damage(this->damage());
                     } else {

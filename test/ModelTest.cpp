@@ -103,7 +103,7 @@ TEST_F(GameModelFixture, InitTest) {
     EXPECT_EQ(game_model.get_points(), 0);
     EXPECT_EQ(game_model.get_wave_number(), 0);
     //EXPECT_EQ(game_model.get_wave_progress(), 0);
-    EXPECT_EQ(game_model.get_gold(), 100);
+    EXPECT_EQ(game_model.get_gold(), Constants::STARTING_GOLD);
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {
             // EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower());
