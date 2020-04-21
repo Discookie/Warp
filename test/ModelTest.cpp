@@ -17,6 +17,7 @@
 #include <model/Unstable/Robot.h>
 
 #include <functional>
+#include <sstream>
 
 class MockCallback : public FieldEntityCallback {
 public:
@@ -53,6 +54,36 @@ TEST(TestMockCallback, Test) {
     EXPECT_EQ(cb->att_calls, 1);
     alien->move();
     EXPECT_EQ(cb->mov_calls, 1);
+}
+
+TEST(CoordinateTest, eqTest) {
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            Coordinate c1 = {i,j};
+            for (int ii = 0; ii < 12; ++ii) {
+                for (int jj = 0; jj < 10; ++jj) {
+                    Coordinate c2 = {ii,jj};
+                    if (ii == i && jj == j)
+                        EXPECT_EQ(c1, c2);
+                    else
+                        EXPECT_NE(c1, c2);
+                }
+            }
+        }
+    }
+}
+
+TEST(CoordinateTest, ioTest) {
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            std::stringstream s;
+            Coordinate c1 = {i,j};
+            Coordinate c2;
+            s << c1;
+            s >> c2;
+            EXPECT_EQ(c1, c2);
+        }
+    }
 }
 
 class GameModelFixture : public ::testing::Test {
