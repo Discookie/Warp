@@ -66,10 +66,10 @@ TEST(TestMockCallback, Test) {
 TEST(CoordinateTest, eqTest) {
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {
-            Coordinate c1 = {i,j};
+            Coordinate c1 = {i, j};
             for (int ii = 0; ii < 12; ++ii) {
                 for (int jj = 0; jj < 10; ++jj) {
-                    Coordinate c2 = {ii,jj};
+                    Coordinate c2 = {ii, jj};
                     if (ii == i && jj == j)
                         EXPECT_EQ(c1, c2);
                     else
@@ -84,8 +84,8 @@ TEST(CoordinateTest, ioTest) {
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {
             std::stringstream s;
-            Coordinate c1 = {i,j};
-            Coordinate c2 = {0,0};
+            Coordinate c1 = {i, j};
+            Coordinate c2 = {0, 0};
             s << c1;
             s >> c2;
             EXPECT_EQ(c1, c2);
@@ -102,7 +102,7 @@ protected:
 TEST_F(GameModelFixture, InitTest) {
     EXPECT_EQ(game_model.get_points(), 0);
     EXPECT_EQ(game_model.get_wave_number(), 0);
-    //EXPECT_EQ(game_model.get_wave_progress(), 0);
+    // EXPECT_EQ(game_model.get_wave_progress(), 0);
     EXPECT_EQ(game_model.get_gold(), Constants::STARTING_GOLD);
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {
@@ -134,14 +134,15 @@ TEST_F(FieldFixture, BuildTest) {
 
     EXPECT_ANY_THROW(field.build_tower(EntityType::TypeFactory))
         << "Double build should throw exception";
+    field.get_tower()->die();
+    EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
 }
 
 TEST_F(FieldFixture, BuildFactoryTest) {
     field.build_tower(EntityType::TypeFactory);
     EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeFactory);
 
-    auto a = std::dynamic_pointer_cast<Factory>(field.get_tower());
-    a->produce();
+    std::dynamic_pointer_cast<Factory>(field.get_tower())->produce();
     EXPECT_EQ(cb->pro_calls, 1);
     field.get_tower()->die();
     EXPECT_EQ(cb->die_calls, 1);
@@ -226,6 +227,16 @@ TEST_F(FieldFixture, AddEntityTest) {
     EXPECT_EQ(field.get_moving_entities().size(), 2);
     field.add_moving_entity(std::make_shared<Robot>(Robot({0, 0}, cb, 0)));
     EXPECT_EQ(field.get_moving_entities().size(), 3);
+    EXPECT_EQ(field.get_team_status(), Team::TeamEnemy);
+    EXPECT_ANY_THROW(field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0))));
+    EXPECT_ANY_THROW(field.build_tower(EntityType::TypeTeslaCoil));
+}
+
+TEST_F(FieldFixture, AddFriendlyTest) {
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
+    EXPECT_ANY_THROW(field.add_moving_entity(std::make_shared<Robot>(Robot({0, 0}, cb, 0))));
+    EXPECT_NO_THROW(field.build_tower(EntityType::TypeTeslaCoil));
 }
 
 TEST_F(FieldFixture, RemoveEntityTest) {
@@ -234,10 +245,45 @@ TEST_F(FieldFixture, RemoveEntityTest) {
     field.add_moving_entity(std::make_shared<Robot>(Robot({0, 0}, cb, 0)));
     field.remove_entity_at(0);
     EXPECT_EQ(field.get_moving_entities().size(), 2);
+    EXPECT_EQ(field.get_team_status(), Team::TeamEnemy);
     field.remove_entity_at(0);
     EXPECT_EQ(field.get_moving_entities().size(), 1);
+    EXPECT_EQ(field.get_team_status(), Team::TeamEnemy);
     field.remove_entity_at(0);
     EXPECT_EQ(field.get_moving_entities().size(), 0);
+    EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
+}
+
+TEST_F(FieldFixture, EqTest) {
+    Field field1({1, 1}, cb);
+    EXPECT_NE(field, field1);  // coord
+    Field field2({0, 0}, cb);
+    field2.build_tower(EntityType::TypeSniperTower);
+    EXPECT_NE(field, field2);  // tower
+    Field field3({0, 0}, cb);
+    field3.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    EXPECT_NE(field, field3);  // moving_entity && teamstatus
+    Field field4({0, 0}, cb);
+    field4.add_moving_entity(std::make_shared<Alien>(Alien({0, 0}, cb, 0)));
+    EXPECT_NE(field, field3);  // moving_entity && teamstatus
+    Field field5({0, 0}, cb);
+    EXPECT_EQ(field, field5);
+}
+
+TEST_F(FieldFixture, IOTest) {
+    std::stringstream ss;
+    Field field1({0, 0}, cb);
+
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 1)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 2)));
+    field.build_tower(EntityType::TypeSniperTower);
+    field.upgrade_tower();
+
+    ASSERT_NE(field, field1);
+    ss << field;
+    ss >> field1;
+    EXPECT_EQ(field, field1);
 }
 
 class FactoryFixture : public ::testing::Test {
