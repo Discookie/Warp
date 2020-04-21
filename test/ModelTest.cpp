@@ -138,7 +138,7 @@ TEST_F(FieldFixture, BuildTest) {
 
 TEST_F(FieldFixture, BuildFactoryTest) {
     field.build_tower(EntityType::TypeFactory);
-    EXPECT_EQ(typeid(*field.get_tower()), typeid(Factory));
+    EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeFactory);
 
     auto a = std::dynamic_pointer_cast<Factory>(field.get_tower());
     a->produce();
@@ -149,7 +149,7 @@ TEST_F(FieldFixture, BuildFactoryTest) {
 
 TEST_F(FieldFixture, BuildLaserTowerTest) {
     field.build_tower(EntityType::TypeLaserTower);
-    EXPECT_EQ(typeid(*field.get_tower()), typeid(LaserTower));
+    EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeLaserTower);
 
     field.get_tower()->attack();
     EXPECT_EQ(cb->att_calls, 1);
@@ -159,7 +159,7 @@ TEST_F(FieldFixture, BuildLaserTowerTest) {
 
 TEST_F(FieldFixture, BuildTeslaCoilTest) {
     field.build_tower(EntityType::TypeTeslaCoil);
-    EXPECT_EQ(typeid(*field.get_tower()), typeid(TeslaCoil));
+    EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeTeslaCoil);
 
     field.get_tower()->attack();
     EXPECT_EQ(cb->att_calls, 1);
@@ -169,7 +169,7 @@ TEST_F(FieldFixture, BuildTeslaCoilTest) {
 
 TEST_F(FieldFixture, BuildSniperTowerTest) {
     field.build_tower(EntityType::TypeSniperTower);
-    EXPECT_EQ(typeid(*field.get_tower()), typeid(SniperTower));
+    EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeSniperTower);
 
     field.get_tower()->attack();
     EXPECT_EQ(cb->att_calls, 1);
@@ -179,7 +179,7 @@ TEST_F(FieldFixture, BuildSniperTowerTest) {
 
 TEST_F(FieldFixture, BuildSpecialTest) {
     field.build_tower(EntityType::TypeSpecial);
-    EXPECT_EQ(typeid(*field.get_tower()), typeid(Special));
+    EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeSpecial);
 
     field.get_tower()->attack();
     EXPECT_EQ(cb->att_calls, 1);
