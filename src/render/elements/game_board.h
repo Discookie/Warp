@@ -21,7 +21,7 @@ class GameBoard {
         GameBoardCallbacks callback_list
     ) : x(center_x), y(center_y), sprites(std::move(sprite_list)), callbacks(callback_list) {}
 public:
-    static neither::Either<std::string, GameBoard> create(
+    static neither::Either<std::string, std::unique_ptr<GameBoard>> create(
         int center_x, int center_y,
         GameBoardCallbacks callback_list
     );

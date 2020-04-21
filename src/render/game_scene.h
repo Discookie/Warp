@@ -13,15 +13,15 @@ private:
     // GameStatusText gold_text;
     // GameStatusBar wave_bar;
 
-    GameBoard board;
-    // GameBuyMenu buy_menu;
+    std::unique_ptr<GameBoard> board;
+    std::unique_ptr<GameBuyMenu> buy_menu;
     // GameUpgradeMenu upgrade_menu;
 
     GameModel& model;
 
     //std::optional<GameTooltip> tooltip;
 
-    GameScene(GameModel& _model, GameBoard&& _board) : model(_model), board(std::move(_board)) {}
+    GameScene(GameModel& _model, std::unique_ptr<GameBoard>&& _board, std::unique_ptr<GameBuyMenu>&& _buy_menu);
 public:
     static neither::Either<std::string, std::unique_ptr<GameScene>> create(GameModel& model);
 

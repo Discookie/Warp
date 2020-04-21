@@ -14,11 +14,11 @@ const std::vector<std::string> sprite_names = {
     "multiple"
 };
 
-neither::Either<std::string, GameBoard> GameBoard::create(
+neither::Either<std::string, std::unique_ptr<GameBoard>> GameBoard::create(
     int center_x, int center_y,
     GameBoardCallbacks callback_list
 ) {
-    using ret_ty = neither::Either<std::string, GameBoard>;
+    using ret_ty = neither::Either<std::string, std::unique_ptr<GameBoard>>;
     using vec_opt = neither::Either<std::string, std::vector<GameSprite>>;
     using sprite_opt = neither::Either<std::string, GameSprite>;
 
@@ -34,9 +34,11 @@ neither::Either<std::string, GameBoard> GameBoard::create(
         }
     }
 
-    GameBoard board(center_x, center_y, std::move(sprites), callback_list);
+    auto is_empty = sprites[0].has_value();
 
-    return ret_ty::rightOf(std::move(board));
+    return ret_ty::rightOf(std::unique_ptr<GameBoard>(
+        new GameBoard(center_x, center_y, std::move(sprites), callback_list))
+    );
 }
 
 /// Each board `field` is effectively 8x8 - a 1px border around a 7px * 7px empty space.  
@@ -74,8 +76,6 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
         al_draw_line(left, y_pos, right, y_pos, grid_color, 1);
     }
 
-    // Create const alias for minimal perf gain
-    const std::vector<std::optional<GameSprite>>& sprites = sprites;
     const std::optional<GameSprite>& multiple_sprite = *sprites.rbegin();
 
     int y_pos = top;
@@ -87,15 +87,19 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
             Field& field = callbacks.get_field({idx_x, idx_y});
             EntityType ty = /* TODO: field.getTower().getType()*/ EntityType::TypeNone;
             const std::vector<std::shared_ptr<Unstable>>& entities = field.get_moving_entities();
-            const std::optional<GameSprite>& sprite = sprites[ty];
+            const std::optional<GameSprite>& sprite = sprites[static_cast<int>(ty)];
+            auto jhfdghjdgf = sprite.has_value();
+            auto jhfdghjdgff = this->sprites[static_cast<int>(ty)].has_value();
 
-            if (ty = EntityType::TypeSpecial) {
+            if (ty == EntityType::TypeSpecial) {
                 // TODO: Render special effect bg
             } else {
                 // TODO: Render default bg
             }
 
             if (sprite) {
+                auto is_empty = sprite.has_value();
+                auto& sprite_clone = *sprite;
                 sprite->render_sprite_16px(x_pos, y_pos, event);
 
                 // TODO: Render attacks, such as lasers, depending on attack type
