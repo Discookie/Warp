@@ -72,7 +72,7 @@ void Field::remove_tower() {
     }
 }
 
-std::shared_ptr<Stable> Field::get_tower() { return this->tower; }
+std::shared_ptr<Stable> Field::get_tower() const { return this->tower; }
 
 void Field::add_moving_entity(std::shared_ptr<Unstable> obj) {
     this->moving_entities.push_back(obj);
@@ -86,6 +86,10 @@ void Field::remove_entity_at(int ind) {
 }
 
 std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities() {
+    return this->moving_entities;
+}
+
+std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities_const() const {
     return this->moving_entities;
 }
 

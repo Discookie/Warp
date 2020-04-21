@@ -25,7 +25,21 @@ public:
 
     int damage() override { return Constants::SPECIAL_DAMAGE; }
 
-    void attack_entities(std::vector<std::vector<Field>> &) override {}
+    void attack_entities(std::vector<std::vector<Field>> &fields) override {
+        for (auto &vf:fields) {
+            for (auto &f:vf) {
+                if (abs(f.get_position().x - this->get_position().x) <= Constants::TESLACOIL_ATTACK_RANGE &&
+                    abs(f.get_position().y - this->get_position().y) <= Constants::TESLACOIL_ATTACK_RANGE) {
+                    if (f.get_team_status() == Team::Enemy) {
+                        auto me = f.get_moving_entities();
+                        for (auto &m : me) {
+                            m->take_damage(this->damage());
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     void do_actions() override {
         if (time_counter % attack_speed() == 0) {

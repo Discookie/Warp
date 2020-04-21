@@ -24,18 +24,26 @@ public:
 
     explicit Field(Coordinate position, std::shared_ptr<FieldEntityCallback> game_model_callback);
 
+    Coordinate get_position() const { return position; }
+
     // Stable
     void build_tower(EntityType type);
+
     void upgrade_tower();
+
     void remove_tower();
-    std::shared_ptr<Stable> get_tower();
+
+    std::shared_ptr<Stable> get_tower() const;
 
     // Unstable
     void add_moving_entity(std::shared_ptr<Unstable> obj);
 
     /// This is supposed to be called only by die() callback
     void remove_entity_at(int ind);
+
     std::vector<std::shared_ptr<Unstable>> get_moving_entities();
+
+    std::vector<std::shared_ptr<Unstable>> get_moving_entities_const() const;
 
     // General
     Team get_team_status() const { return team_status; }
