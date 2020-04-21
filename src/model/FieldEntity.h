@@ -46,6 +46,8 @@ public:
     }
 
     void die() { callback->die(shared_from_this()); }
+
+    virtual EntityType get_entity_type() const = 0;
 };
 
 #endif //WARP_FIELDENTITY_H

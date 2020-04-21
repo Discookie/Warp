@@ -55,6 +55,10 @@ public:
                Constants::LASERTOWER_BASE_REMOVE_VALUE : Constants::LASERTOWER_UPGRADE_REMOVE_VALUE;
     }
     // void getStats() override;
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeLaserTower;
+    }
 };
 
 

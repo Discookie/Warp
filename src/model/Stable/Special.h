@@ -52,6 +52,10 @@ public:
 
     void take_damage(int amount) override {}
     // void getStats() override;
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeSpecial;
+    }
 };
 
 

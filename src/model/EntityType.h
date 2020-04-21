@@ -9,7 +9,12 @@ enum EntityType{
     TypeSniperTower,
     TypeHqAttack,
     TypeHqDefense,
-    TypeSpecial
+    TypeHq,
+    TypeSpecial,
+    TypeAlien,
+    TypeOctopus,
+    TypeRobot,
+    TypeFriendly
 };
 
 #endif //WARP_ENTITYTYPE_H

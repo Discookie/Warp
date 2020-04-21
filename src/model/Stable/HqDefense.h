@@ -34,6 +34,10 @@ public:
 
     int remove_value() override { return Constants::HQDEFENSE_REMOVE_VALUE; }
     // void getStats() override;
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeHqDefense;
+    }
 };
 
 

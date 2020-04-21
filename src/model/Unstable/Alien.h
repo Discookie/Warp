@@ -30,6 +30,10 @@ public:
     }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {}
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeAlien;
+    }
 };
 
 

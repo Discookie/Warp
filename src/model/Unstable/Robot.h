@@ -30,6 +30,9 @@ public:
     }
 
     void attack_entities(std::vector<std::vector<Field>> &) override {}
+    EntityType get_entity_type() const override {
+        return EntityType::TypeRobot;
+    }
 };
 
 #endif //WARP_ROBOT_H

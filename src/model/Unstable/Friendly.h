@@ -44,6 +44,9 @@ public:
             }
         }
     }
+    EntityType get_entity_type() const override {
+        return EntityType::TypeFriendly;
+    }
 };
 
 

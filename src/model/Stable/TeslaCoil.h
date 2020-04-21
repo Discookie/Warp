@@ -58,6 +58,10 @@ public:
                Constants::TESLACOIL_BASE_REMOVE_VALUE : Constants::TESLACOIL_UPGRADE_REMOVE_VALUE;
     }
     // void getStats() override;
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeTeslaCoil;
+    }
 };
 
 

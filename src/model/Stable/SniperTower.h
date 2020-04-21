@@ -44,6 +44,10 @@ public:
                Constants::SNIPERTOWER_BASE_REMOVE_VALUE : Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE;
     }
     // void getStats() override;
+
+    EntityType get_entity_type() const override {
+        return EntityType::TypeSniperTower;
+    }
 };
 
 

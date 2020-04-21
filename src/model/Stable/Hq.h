@@ -10,7 +10,9 @@ public:
             Stable(position, game_model_callback){
         this->upgraded = true;
     }
-
+    EntityType get_entity_type() const override {
+        return EntityType::TypeHq;
+    }
 };
 
 

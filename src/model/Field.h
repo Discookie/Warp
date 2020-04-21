@@ -3,13 +3,14 @@
 
 #include <memory>
 #include <optional>
+#include <ostream>
 #include <vector>
 
 #include "EntityType.h"
 #include "FieldEntityCallback.h"
+#include "Stable/Stable.h"
 #include "Team.h"
 #include "Unstable/Unstable.h"
-#include "Stable/Stable.h"
 
 class Field {
 private:
@@ -47,7 +48,12 @@ public:
 
     // General
     Team get_team_status() const { return team_status; }
+
     void update_entities();
+
+    // friend std::ostream& operator<<(std::ostream& os, const Field& field);
+    //
+    // friend std::istream &operator>>(std::istream &is, Field& field);
 };
 
 #endif  // WARP_FIELD_H
