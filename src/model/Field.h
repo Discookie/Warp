@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <optional>
-#include <ostream>
+#include <iostream>
 #include <vector>
 
 #include "EntityType.h"
@@ -52,9 +52,9 @@ public:
 
     void update_entities();
 
-    // friend std::ostream& operator<<(std::ostream& os, const Field& field);
-    //
-    // friend std::istream &operator>>(std::istream &is, Field& field);
+    friend std::ostream& operator<<(std::ostream& os, const Field& field);
+
+    friend std::istream &operator>>(std::istream &is, Field& field);
 };
 
 #endif  // WARP_FIELD_H
