@@ -70,10 +70,11 @@ TEST(CoordinateTest, eqTest) {
             for (int ii = 0; ii < 12; ++ii) {
                 for (int jj = 0; jj < 10; ++jj) {
                     Coordinate c2 = {ii, jj};
-                    if (ii == i && jj == j)
+                    if (ii == i && jj == j) {
                         EXPECT_EQ(c1, c2);
-                    else
+                    } else {
                         EXPECT_NE(c1, c2);
+                    }
                 }
             }
         }
@@ -89,26 +90,6 @@ TEST(CoordinateTest, ioTest) {
             s << c1;
             s >> c2;
             EXPECT_EQ(c1, c2);
-        }
-    }
-}
-
-class GameModelFixture : public ::testing::Test {
-protected:
-    GameModel game_model;
-    GameModelFixture() : game_model() {}
-};
-
-TEST_F(GameModelFixture, InitTest) {
-    EXPECT_EQ(game_model.get_points(), 0);
-    EXPECT_EQ(game_model.get_wave_number(), 0);
-    // EXPECT_EQ(game_model.get_wave_progress(), 0);
-    EXPECT_EQ(game_model.get_gold(), Constants::STARTING_GOLD);
-    for (int i = 0; i < 12; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            // EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower());
-            // EXPECT_TRUE(game_model.get_field_const({i, j}).get_moving_entities().empty());
-            EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::TeamNeutral);
         }
     }
 }
@@ -216,7 +197,17 @@ TEST_F(FieldFixture, UpgradeTest) {
 }
 
 TEST_F(FieldFixture, UpdateTest) {
-    //    TODO
+    field.build_tower(EntityType::TypeFactory);
+    for (int i = 0; i < Constants::FACTORY_BASE_PRODUCTION; ++i) {
+        EXPECT_EQ(cb->pro_calls, 0);
+        field.update_entities();
+    }
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    for (int i = 0; i < Constants::FRIENDLY_MOVESPEED; ++i) {
+        EXPECT_EQ(cb->mov_calls, 0);
+        field.update_entities();
+    }
+    EXPECT_EQ(cb->mov_calls, 1);
 }
 
 TEST_F(FieldFixture, AddEntityTest) {
@@ -507,6 +498,81 @@ TEST_F(TeslaCoilFixture, UpgradeProduceTest) {
         teslaCoil->update();
     }
     EXPECT_EQ(cb->att_calls, 1);
+}
+
+class GameModelFixture : public ::testing::Test {
+protected:
+    GameModel game_model;
+    GameModelFixture() : game_model() {}
+};
+
+TEST_F(GameModelFixture, InitTest) {
+    EXPECT_EQ(game_model.get_points(), 0);
+    EXPECT_EQ(game_model.get_wave_number(), 0);
+    EXPECT_EQ(game_model.get_wave_progress(), Constants::WAVE_COUNTDOWN_TIME);
+    EXPECT_EQ(game_model.get_gold(), Constants::STARTING_GOLD);
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower());
+            EXPECT_TRUE(game_model.get_field_const({i, j}).get_moving_entities_const().empty());
+            EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::TeamNeutral);
+        }
+    }
+}
+
+TEST_F(GameModelFixture, EqTest) {
+    GameModel game_model1 = {};
+    EXPECT_EQ(game_model, game_model1);
+    game_model1.update();
+    EXPECT_NE(game_model, game_model1);
+    game_model.update();
+    EXPECT_EQ(game_model, game_model1);
+}
+
+TEST_F(GameModelFixture, IOTest) {
+    std::stringstream ss;
+    GameModel game_model1 = {};
+    for (int i = 0; i < 100; ++i) {
+        game_model.update();
+    }
+    ASSERT_NE(game_model, game_model1);
+    ss << game_model;
+    ss >> game_model1;
+    EXPECT_EQ(game_model, game_model1);
+}
+
+TEST_F(GameModelFixture, NewGameTest) {
+    GameModel game_model1;
+    for (int i = 0; i < 100; ++i) {
+        game_model.update();
+    }
+    ASSERT_NE(game_model, game_model1);
+    game_model.new_game();
+    EXPECT_EQ(game_model, game_model1);
+}
+
+TEST_F(GameModelFixture, BuildTest1) {
+    for (int i = 0; i < 12; ++i) {
+        game_model.select_tower((EntityType)i);
+        if (game_model.is_buildable((EntityType)i)) {
+            EXPECT_NO_THROW(game_model.build_tower({i, 0}));
+        } else {
+            EXPECT_ANY_THROW(game_model.build_tower({i, 0}));
+        }
+    }
+}
+
+TEST_F(GameModelFixture, BuildTest2) {
+    game_model.select_tower(TypeFactory);
+    while (!game_model.is_buildable(TypeFactory)) {
+        game_model.update();
+    }
+    game_model.build_tower({0, 0});
+    EXPECT_EQ(game_model.get_field_const({0, 0}).get_team_status(), Team::TeamFriendly);
+    while (!game_model.is_buildable(TypeFactory)) {
+        game_model.update();
+    }
+    EXPECT_ANY_THROW(game_model.build_tower({0, 0}));
 }
 
 #pragma clang diagnostic pop
