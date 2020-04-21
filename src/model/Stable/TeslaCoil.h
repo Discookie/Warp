@@ -15,9 +15,6 @@ public:
         this->hp = Constants::TESLACOIL_MAX_HP;
     }
 
-    explicit TeslaCoil(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
-        : Stable(game_model_callback) {}
-
     int max_hp() override { return Constants::TESLACOIL_MAX_HP; }
 
     int cost() override { return Constants::TESLACOIL_BASE_COST; }

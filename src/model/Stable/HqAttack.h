@@ -14,9 +14,6 @@ public:
         this->hp = Constants::HQATTACK_MAX_HP;
     }
 
-    explicit HqAttack(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
-        : Hq(game_model_callback) {}
-
     int max_hp() override { return Constants::HQATTACK_MAX_HP; }
 
     int cost() override { return Constants::HQATTACK_BASE_COST; }

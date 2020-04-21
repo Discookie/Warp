@@ -10,9 +10,6 @@ public:
         this->hp = Constants::OCTOPUS_MAX_HP;
     }
 
-    explicit Octopus(const std::shared_ptr<FieldEntityCallback> &game_model_callback)
-        : Enemy(game_model_callback) {}
-
     int max_hp() override { return Constants::OCTOPUS_MAX_HP; }
 
     int move_speed() override { return Constants::OCTOPUS_MOVESPEED; }
