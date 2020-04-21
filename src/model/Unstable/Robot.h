@@ -19,13 +19,56 @@ public:
     int damage() override { return Constants::ROBOT_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
-        // NOT FINAL
-        if (this->position.x-- >= 0) {
-            if (fields[this->position.x--][this->position.y].get_team_status() != Team::TeamFriendly) {
+        if (this->position.x-- < 0) { throw std::logic_error("very bad, game already over"); }
+        bool in_row_av = fields[this->position.x--][this->position.y].get_team_status() != Team::TeamFriendly;
+        bool above_av = false;
+        bool below_av = false;
+        if (this->position.y++ < 12) {
+            above_av = fields[this->position.x--][this->position.y++].get_team_status() != Team::TeamFriendly;
+        }
+        if (this->position.y-- >= 0) {
+            below_av = fields[this->position.x--][this->position.y--].get_team_status() != Team::TeamFriendly;
+        }
+        int in_row = 10000;
+        int above = 10000;
+        int below = 10000;
+        if (in_row_av) {
+            for (int i = this->position.x--; i >= 0; i--) {
+                if (fields[i][position.y].get_team_status() == Team::TeamFriendly) {
+                    in_row++;
+                }
+            }
+        }
+        if (above_av) {
+            above = 0;
+            for (int i = this->position.x--; i >= 0; i--) {
+                if (fields[i][position.y++].get_team_status() == Team::TeamFriendly) {
+                    above++;
+                }
+            }
+        }
+        if (below_av) {
+            below = 0;
+            for (int i = this->position.x--; i >= 0; i--) {
+                if (fields[i][position.y++].get_team_status() == Team::TeamFriendly) {
+                    below++;
+                }
+            }
+        }
+        if (in_row_av) {
+            if (in_row <= above && in_row <= below) {
                 return std::optional<Coordinate>({this->position.x--, this->position.y});
             }
-        } else if (this->position.x-- < 0) {
-            throw std::logic_error("very bad, game already over");
+        }
+        if (above_av) {
+            if (above < in_row && above < below) {
+                return std::optional<Coordinate>({this->position.x--, this->position.y++});
+            }
+        }
+        if (below_av) {
+            if (below < in_row && below <= above) {
+                return std::optional<Coordinate>({this->position.x--, this->position.y--});
+            }
         }
         return std::nullopt;
     }
