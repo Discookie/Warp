@@ -3,7 +3,7 @@
 
 namespace Constants {
 // Game
-    static const int STARTING_GOLD = 100;
+    static const int STARTING_GOLD = 0;
     static const int GOLD_GEN_AMOUNT = 50;
     static const int GOLD_GEN_SPEED = 100;
     static const int WAVE_COUNTDOWN_TIME = 10000;
@@ -50,8 +50,9 @@ namespace Constants {
     static const int TESLACOIL_MAX_HP = 1000;
     static const int TESLACOIL_BASE_DAMAGE  = 100;
     static const int TESLACOIL_UPGRADE_DAMAGE  = 100;
-    static const int TESLACOIL_BASE_ATTACKSPEED  = 100;
-    static const int TESLACOIL_UPGRADE_ATTACKSPEED  = 100;
+    static const int TESLACOIL_BASE_ATTACKSPEED = 100;
+    static const int TESLACOIL_ATTACK_RANGE = 1;
+    static const int TESLACOIL_UPGRADE_ATTACKSPEED = 100;
     static const int TESLACOIL_BASE_REMOVE_VALUE          = 50;
     static const int TESLACOIL_UPGRADE_REMOVE_VALUE       = 100;
 
@@ -87,7 +88,8 @@ namespace Constants {
     static const int SPECIAL_UPGRADE_COST = 0;
     static const int SPECIAL_MAX_HP  = 0;
     static const int SPECIAL_DAMAGE  = 100;
-    static const int SPECIAL_ATTACKSPEED  = 100;
+    static const int SPECIAL_ATTACKSPEED = 100;
+    static const int SPECIAL_ATTACK_RANGE = 5;
     static const int SPECIAL_REMOVE_VALUE = 0;
 
 // Unstable
