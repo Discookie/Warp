@@ -83,6 +83,10 @@ public:
     bool is_buildable(EntityType type) const;
 
     bool is_game_over() const { return game_over; }
+
+    friend std::ostream &operator<<(std::ostream &os, const GameModel &model);
+
+    friend std::istream &operator>>(std::istream &is, GameModel &model);
 };
 
 #endif //WARP_GAMEMODEL_H

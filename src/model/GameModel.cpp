@@ -211,3 +211,43 @@ void GameModel::remove_tower(Coordinate position) {
     this->get_field(position).remove_tower();
     this->points -= Constants::POINTS_FOR_TOWER_REMOVE;
 }
+
+std::ostream &operator<<(std::ostream &os, const GameModel &model) {
+    os << "\n"
+       << model.points << "\n"
+       << model.gold << "\n"
+       << model.time_counter << "\n"
+       << model.wave_timer << "\n"
+       << model.wave_number << "\n"
+       << model.have_special << "\n"
+       << model.selected_tower << "\n"
+       << model.game_over;
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            os << model.fields[i][j] << " ";
+        }
+    }
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, GameModel &model) {
+    int selected_tower_buffer;
+    model.fields = std::vector(12, std::vector<Field>(10));
+    model.init_callbacks();
+    model.construct_fields();
+    is >> model.points
+       >> model.gold
+       >> model.time_counter
+       >> model.wave_timer
+       >> model.wave_number
+       >> model.have_special
+       >> selected_tower_buffer
+       >> model.game_over;
+    model.selected_tower = (EntityType)selected_tower_buffer;
+    for (int i = 0; i < 12; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            is >> model.fields[i][j];
+        }
+    }
+    return is;
+}
