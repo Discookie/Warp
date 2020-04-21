@@ -7,14 +7,9 @@
 
 #include "EntityType.h"
 #include "FieldEntityCallback.h"
-#include "Stable/Factory.h"
-#include "Stable/HqAttack.h"
-#include "Stable/HqDefense.h"
-#include "Stable/Special.h"
-#include "Stable/Stable.h"
 #include "Team.h"
 #include "Unstable/Unstable.h"
-#include "model/Stable/LaserTower.h"
+#include "Stable/Stable.h"
 
 class Field {
 private:
