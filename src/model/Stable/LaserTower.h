@@ -30,7 +30,7 @@ public:
                Constants::LASERTOWER_BASE_DAMAGE : Constants::LASERTOWER_UPGRADE_DAMAGE;
     }
 
-    void attack_entities(const std::vector<std::vector<Field>> &) override {}
+    void attack_entities(std::vector<std::vector<Field>> &fields) override {}
 
     void do_actions() override {
         if (time_counter % attack_speed() == 0) {

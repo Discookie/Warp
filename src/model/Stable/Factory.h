@@ -25,7 +25,7 @@ public:
 
     int damage() override { return Constants::FACTORY_DAMAGE; }
 
-    void attack_entities(const std::vector<std::vector<Field>> &) override {}
+    void attack_entities(std::vector<std::vector<Field>> &) override {}
 
     int production_amount() {
         return !upgraded ?

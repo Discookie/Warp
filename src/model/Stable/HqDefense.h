@@ -24,7 +24,7 @@ public:
 
     int damage() override { return Constants::HQDEFENSE_DAMAGE; }
 
-    void attack_entities(const std::vector<std::vector<Field>> &) override {}
+    void attack_entities(std::vector<std::vector<Field>> &) override {}
 
     void do_actions() override {
         if (time_counter % attack_speed() == 0) {

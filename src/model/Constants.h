@@ -3,14 +3,22 @@
 
 namespace Constants {
 // Game
+    static const int STARTING_GOLD = 100;
     static const int GOLD_GEN_AMOUNT = 50;
     static const int GOLD_GEN_SPEED = 100;
-    static const int WAVE_COUNTDOWN_TIME = 2000;
+    static const int WAVE_COUNTDOWN_TIME = 10000;
     static const int WAVE_SPAWN_TIME_START = 0;
-    static const int WAVE_SPAWN_TIME_END = -100;
-    static const int WAVE_OVER_TIME = -100;
+    static const int WAVE_SPAWN_TIME_END = -500;
+    static const int WAVE_OVER_TIME = -1000;
     static const int SPAWN_ENEMIES_TIME = 10;
-// Stable
+    static const int FINAL_WAVE_NUMBER = 5;
+
+/// Points
+    static const int POINTS_FOR_TOWER_BUILD = 10;
+    static const int POINTS_FOR_TOWER_UPGRADE = 5;
+    static const int POINTS_FOR_TOWER_REMOVE = 10;
+
+    // Stable
 /// Factory
     static const int FACTORY_BASE_COST = 100;
     static const int FACTORY_UPGRADE_COST = 100;
