@@ -44,12 +44,12 @@ void GameBuyButton::render_button() {
         );
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
-            x, y - font_height * 3 / 2, ALLEGRO_ALIGN_CENTRE,
+            x, y - 10, ALLEGRO_ALIGN_CENTRE,
             name.c_str()
         );
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
-            x + 10, y + font_height / 2, ALLEGRO_ALIGN_CENTRE,
+            x + 20, y - 1, ALLEGRO_ALIGN_RIGHT,
             std::to_string(price).c_str()
         );
     } else {
@@ -63,12 +63,12 @@ void GameBuyButton::render_button() {
             al_map_rgb(175, 175, 175), 1);
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
-            x, y - font_height * 3 / 2, ALLEGRO_ALIGN_CENTRE,
+            x, y - 10, ALLEGRO_ALIGN_CENTRE,
             name.c_str()
         );
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
-            x + 10, y + font_height / 2, ALLEGRO_ALIGN_CENTRE,
+            x + 20, y - 1, ALLEGRO_ALIGN_RIGHT,
             std::to_string(price).c_str()
         );
     }
@@ -83,9 +83,9 @@ const std::vector<std::string> item_names = {
     "Laser Tower",
     "Tesla Coil",
     "Sniper Tower",
-    "HQ Module: Attack",
-    "HQ Module: Defense",
-    "Special Ability",
+    "HQ: Attack",
+    "HQ: Defense",
+    "Special",
 };
 const std::vector<int> item_costs = {
     0, // skipped
@@ -106,13 +106,13 @@ neither::Either<std::string, menu_ptr> GameBuyMenu::create(
     using ret_ty = neither::Either<std::string, menu_ptr>;
 
     std::vector<GameBuyButton> buy_buttons;
-    const int offset = 24;
+    const int offset = 22;
     const int center_top_y = center_y - offset * (item_names.size() - 1) / 2;
 
     // Intentionally shorter
     for (int i = 0; i < item_names.size() - 1; i++) {
         buy_buttons.push_back(GameBuyButton(
-            center_x, center_top_y + offset * i, 100, 20,
+            center_x, center_top_y + offset * i, 70, offset - 4,
             item_names[i+1], item_costs[i+1], button_font,
             std::nullopt, std::nullopt
         ));

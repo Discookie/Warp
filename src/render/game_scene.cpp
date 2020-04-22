@@ -1,5 +1,6 @@
-// OLD
 #include "game_scene.h"
+
+#include <allegro5/allegro_ttf.h>
 
 #include <functional>
 
@@ -7,7 +8,7 @@ using scene_ptr = std::unique_ptr<GameScene>;
 using font_ptr = std::shared_ptr<ALLEGRO_FONT>;
 
 neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
-    font_ptr font = font_ptr(al_create_builtin_font(), FontDeleter());
+    font_ptr font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -10, 0), FontDeleter());
 
     auto board_click = [](Coordinate _c) {};
     auto board_drag_end = [](Coordinate _c) {};
@@ -23,9 +24,9 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     };
 
     return 
-        GameBoard::create(105, 123, board_callbacks)
+        GameBoard::create(124, 135, board_callbacks)
         .rightFlatMap([&](auto&& board_ptr) {
-            return GameBuyMenu::create(263, 135, font, buy_callbacks)
+            return GameBuyMenu::create(283, 121, font, buy_callbacks)
                 .rightMap([&board_ptr](auto&& buymenu_ptr) {
                     return std::make_tuple(std::move(board_ptr), std::move(buymenu_ptr));
                 });

@@ -1,5 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
@@ -28,6 +29,8 @@ int main() {
     not_null(al_install_mouse(), "initializing mouse");
     not_null(al_init_image_addon(), "initializing image formats");
     not_null(al_init_primitives_addon(), "initializing primitives");
+    not_null(al_init_font_addon(), "initializing fonts");
+    not_null(al_init_ttf_addon(), "initializing TTF fonts");
 
     std::shared_ptr<ALLEGRO_TIMER> frame_timer = std::shared_ptr<ALLEGRO_TIMER>(
         al_create_timer(1.0 / 30.0), [](auto* timer) { al_destroy_timer(timer); });
