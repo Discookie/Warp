@@ -107,12 +107,12 @@ std::shared_ptr<Stable> Field::get_tower() { return this->tower; }
 std::shared_ptr<const Stable> Field::get_tower_const() const { return this->tower; }
 
 void Field::spawn_moving_entity(EntityType type) {
-    if (this->team_status != Team::TeamFriendly) {
+    if (this->team_status != Team::TeamFriendly && type != EntityType::TypeFriendly) {
         add_unstable(type);
         this->team_status = Team::TeamEnemy;
         return;
     }
-    if (this->team_status != Team::TeamEnemy) {
+    if (this->team_status != Team::TeamEnemy && type == EntityType::TypeFriendly) {
         this->moving_entities.push_back(std::make_shared<Friendly>
                                                 (this->position, this->callback, this->get_moving_entities().size()));
         this->team_status = Team::TeamFriendly;
