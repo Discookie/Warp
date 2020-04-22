@@ -28,8 +28,7 @@ public:
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (auto &vf:fields) {
             for (auto &f:vf) {
-                if (abs(f.get_position().x - this->get_position().x) <= Constants::TESLACOIL_ATTACK_RANGE &&
-                    abs(f.get_position().y - this->get_position().y) <= Constants::TESLACOIL_ATTACK_RANGE) {
+                if (distance(this->get_position(), f.get_position()) <= Constants::SPECIAL_ATTACK_RANGE) {
                     if (f.get_team_status() == Team::TeamEnemy) {
                         auto me = f.get_moving_entities();
                         for (auto &m : me) {
