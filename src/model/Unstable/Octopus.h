@@ -10,13 +10,13 @@ public:
         this->hp = Constants::OCTOPUS_MAX_HP;
     }
 
-    int max_hp() override { return Constants::OCTOPUS_MAX_HP; }
+    int max_hp() const override { return Constants::OCTOPUS_MAX_HP; }
 
-    int move_speed() override { return Constants::OCTOPUS_MOVESPEED; }
+    int move_speed() const override { return Constants::OCTOPUS_MOVESPEED; }
 
-    int attack_speed() override { return Constants::OCTOPUS_ATTACKSPEED; }
+    int attack_speed() const override { return Constants::OCTOPUS_ATTACKSPEED; }
 
-    int damage() override { return Constants::OCTOPUS_DAMAGE; }
+    int damage() const override { return Constants::OCTOPUS_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
         if (this->position.x - 1 >= 0) {
