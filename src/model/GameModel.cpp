@@ -213,18 +213,17 @@ void GameModel::remove_tower(Coordinate position) {
 }
 
 std::ostream &operator<<(std::ostream &os, const GameModel &model) {
-    os << "\n"
-       << model.points << "\n"
+    os << model.points << "\n"
        << model.gold << "\n"
        << model.time_counter << "\n"
        << model.wave_timer << "\n"
        << model.wave_number << "\n"
        << model.have_special << "\n"
        << model.selected_tower << "\n"
-       << model.game_over;
+       << model.game_over << "\n";
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {
-            os << model.fields[i][j] << " ";
+            os << model.fields[i][j] << "\n";
         }
     }
     return os;
@@ -251,3 +250,12 @@ std::istream &operator>>(std::istream &is, GameModel &model) {
     }
     return is;
 }
+
+bool GameModel::operator==(const GameModel &rhs) const {
+    return fields == rhs.fields && points == rhs.points && gold == rhs.gold
+           && time_counter == rhs.time_counter && wave_timer == rhs.wave_timer
+           && wave_number == rhs.wave_number && have_special == rhs.have_special
+           && selected_tower == rhs.selected_tower && game_over == rhs.game_over;
+}
+
+bool GameModel::operator!=(const GameModel &rhs) const { return !(rhs == *this); }

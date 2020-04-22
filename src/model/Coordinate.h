@@ -4,7 +4,7 @@
 #include <iostream>
 
 struct Coordinate {
-    friend std::ostream& operator<<(std::ostream& os,const Coordinate& coordinate) {
+    friend std::ostream& operator<<(std::ostream& os, const Coordinate& coordinate) {
         os << coordinate.x << " " << coordinate.y;
         return os;
     }
@@ -14,16 +14,12 @@ struct Coordinate {
         return is;
     }
 
+    bool operator==(const Coordinate& rhs) const { return x == rhs.x && y == rhs.y; }
+
+    bool operator!=(const Coordinate& rhs) const { return !(rhs == *this); }
+
     int x;
     int y;
 };
-
-inline bool operator==(const Coordinate& lhs, const Coordinate& rhs) {
-    return lhs.x == rhs.x && lhs.y == rhs.y;
-}
-
-inline bool operator!=(const Coordinate& lhs, const Coordinate& rhs) {
-    return lhs.x != rhs.x || lhs.y != rhs.y;
-}
 
 #endif  // WARP_COORDINATE_H

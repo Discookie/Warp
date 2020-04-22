@@ -9,9 +9,10 @@ class Unstable : public FieldEntity {
     int vector_position;
 
 public:
-    Unstable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos)
-            :
-            FieldEntity(position, game_model_callback) {
+    Unstable(
+        Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback,
+        int vector_pos)
+        : FieldEntity(position, game_model_callback) {
         this->vector_position = vector_pos;
     }
 
@@ -48,13 +49,15 @@ public:
     }
 
     friend std::istream &operator>>(std::istream &is, Unstable &unstable) {
-        is >> unstable.position
-           >> unstable.time_counter
-           >> unstable.hp
-           >> unstable.vector_position;
+        is >> unstable.position >> unstable.time_counter >> unstable.hp >> unstable.vector_position;
         return is;
+    }
+
+    bool operator==(const Unstable &rhs) const {
+        return position == rhs.position && time_counter == rhs.time_counter && hp == rhs.hp
+               && vector_position == rhs.vector_position
+               && get_entity_type() == rhs.get_entity_type();
     }
 };
 
-
-#endif //WARP_UNSTABLE_H
+#endif  // WARP_UNSTABLE_H

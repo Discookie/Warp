@@ -87,6 +87,10 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const GameModel &model);
 
     friend std::istream &operator>>(std::istream &is, GameModel &model);
+
+    bool operator==(const GameModel &rhs) const;
+
+    bool operator!=(const GameModel &rhs) const;
 };
 
 #endif //WARP_GAMEMODEL_H
