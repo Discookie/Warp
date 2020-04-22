@@ -48,10 +48,10 @@ int Field::add_unstable(EntityType et) {
 
 void Field::build_tower(EntityType type) {
     if (this->team_status == Team::TeamEnemy) {
-        throw std::exception();
+        throw std::invalid_argument("TeamEnemy territory");
     }
     if (this->tower) {
-        throw std::exception();
+        throw std::invalid_argument("Tower space occupied");
     }
     switch (type) {
         case EntityType::TypeFactory:
@@ -83,17 +83,17 @@ void Field::build_tower(EntityType type) {
 
 void Field::upgrade_tower() {
     if (!this->tower) {
-        throw std::exception();
+        throw std::invalid_argument("No tower to upgrade");
     }
     if (this->tower->is_upgraded()) {
-        throw std::exception();
+        throw std::invalid_argument("Tower already upgraded");
     }
-    if (tower) this->tower->upgrade();
+    if (this->tower) this->tower->upgrade();
 }
 
 void Field::remove_tower() {
     if (!this->tower) {
-        throw std::exception();
+        throw std::invalid_argument("No tower to remove");
     }
     this->tower = nullptr;
     if (this->moving_entities.empty()) {

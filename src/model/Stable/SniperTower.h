@@ -6,27 +6,35 @@
 #include "Stable.h"
 #include "../Constants.h"
 
-class SniperTower : public Stable{
+class SniperTower : public Stable {
+private:
+    // Actions
+    void do_actions() override {
+        if (time_counter % attack_speed() == 0) {
+            attack();
+        }
+    }
+
 public:
     SniperTower(Coordinate position,
                 const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
-            Stable(position, game_model_callback){
+            Stable(position, game_model_callback) {
         this->upgraded = false;
         this->hp = Constants::SNIPERTOWER_MAX_HP;
     }
 
-    int max_hp() override { return Constants::SNIPERTOWER_MAX_HP; }
+    int max_hp() const override { return Constants::SNIPERTOWER_MAX_HP; }
 
-    int cost() override { return Constants::SNIPERTOWER_BASE_COST; }
+    int cost() const override { return Constants::SNIPERTOWER_BASE_COST; }
 
-    int upgrade_cost() override { return Constants::SNIPERTOWER_UPGRADE_COST; }
+    int upgrade_cost() const override { return Constants::SNIPERTOWER_UPGRADE_COST; }
 
-    int attack_speed() override {
+    int attack_speed() const override {
         return !upgraded ?
                Constants::SNIPERTOWER_BASE_ATTACKSPEED : Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED;
     }
 
-    int damage() override {
+    int damage() const override {
         return !upgraded ?
                Constants::SNIPERTOWER_BASE_DAMAGE : Constants::SNIPERTOWER_UPGRADE_DAMAGE;
     }
@@ -52,13 +60,7 @@ public:
         }
     }
 
-    void do_actions() override {
-        if (time_counter % attack_speed() == 0) {
-            attack();
-        }
-    }
-
-    int remove_value() override {
+    int remove_value() const override {
         return !upgraded ?
                Constants::SNIPERTOWER_BASE_REMOVE_VALUE : Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE;
     }

@@ -15,17 +15,17 @@ public:
 
     ~Stable() override = default;
 
-    bool is_friendly() final { return true; }
+    bool is_friendly() const final { return true; }
 
-    int get_vector_pos() final { return -1; }
+    int get_vector_pos() const final { return -1; }
 
     void upgrade() { upgraded = true; }
 
-    virtual int upgrade_cost() = 0;
+    virtual int upgrade_cost() const = 0;
 
-    bool is_upgraded() { return upgraded; }
+    bool is_upgraded() const { return upgraded; }
 
-    virtual int remove_value() = 0;
+    virtual int remove_value() const = 0;
 
     friend std::ostream &operator<<(std::ostream &os, const Stable &stable) {
         os << stable.position << "\n"

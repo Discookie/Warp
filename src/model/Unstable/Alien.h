@@ -10,13 +10,13 @@ public:
         this->hp = Constants::ALIEN_MAX_HP;
     }
 
-    int max_hp() override { return Constants::ALIEN_MAX_HP; }
+    int max_hp() const override { return Constants::ALIEN_MAX_HP; }
 
-    int move_speed() override { return Constants::ALIEN_MOVESPEED; }
+    int move_speed() const override { return Constants::ALIEN_MOVESPEED; }
 
-    int attack_speed() override { return Constants::ALIEN_ATTACKSPEED; }
+    int attack_speed() const override { return Constants::ALIEN_ATTACKSPEED; }
 
-    int damage() override { return Constants::ALIEN_DAMAGE; }
+    int damage() const override { return Constants::ALIEN_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
         if (this->position.x - 1 >= 0) {

@@ -11,17 +11,17 @@ public:
         this->hp = Constants::FRIENDLY_MAX_HP;
     }
 
-    bool is_friendly() final { return true; }
+    bool is_friendly() const final { return true; }
 
-    int max_hp() override { return Constants::FRIENDLY_MAX_HP; }
+    int max_hp() const override { return Constants::FRIENDLY_MAX_HP; }
 
-    int move_speed() override { return Constants::FRIENDLY_MOVESPEED; }
+    int move_speed() const override { return Constants::FRIENDLY_MOVESPEED; }
 
-    int cost() override { return Constants::FRIENDLY_COST; }
+    int cost() const override { return Constants::FRIENDLY_COST; }
 
-    int attack_speed() override { return Constants::FRIENDLY_ATTACKSPEED; }
+    int attack_speed() const override { return Constants::FRIENDLY_ATTACKSPEED; }
 
-    int damage() override { return Constants::FRIENDLY_DAMAGE; }
+    int damage() const override { return Constants::FRIENDLY_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
         if (this->position.x + 1 < fields.size()) {

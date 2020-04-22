@@ -9,6 +9,14 @@
 #include "../Field.h"
 
 class LaserTower : public Stable {
+private:
+    // Actions
+    void do_actions() override {
+        if (time_counter % attack_speed() == 0) {
+            attack();
+        }
+    }
+
 public:
     LaserTower(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback)
             : Stable(position, game_model_callback) {
@@ -16,18 +24,18 @@ public:
         this->hp = Constants::LASERTOWER_MAX_HP;
     }
 
-    int max_hp() override { return Constants::LASERTOWER_MAX_HP; }
+    int max_hp() const override { return Constants::LASERTOWER_MAX_HP; }
 
-    int cost() override { return Constants::LASERTOWER_BASE_COST; }
+    int cost() const override { return Constants::LASERTOWER_BASE_COST; }
 
-    int upgrade_cost() override { return Constants::LASERTOWER_UPGRADE_COST; }
+    int upgrade_cost() const override { return Constants::LASERTOWER_UPGRADE_COST; }
 
-    int attack_speed() override {
+    int attack_speed() const override {
         return !upgraded ?
                Constants::LASERTOWER_BASE_ATTACKSPEED : Constants::LASERTOWER_UPGRADE_ATTACKSPEED;
     }
 
-    int damage() override {
+    int damage() const override {
         return !upgraded ?
                Constants::LASERTOWER_BASE_DAMAGE : Constants::LASERTOWER_UPGRADE_DAMAGE;
     }
@@ -44,13 +52,7 @@ public:
         }
     }
 
-    void do_actions() override {
-        if (time_counter % attack_speed() == 0) {
-            attack();
-        }
-    }
-
-    int remove_value() override {
+    int remove_value() const override {
         return !upgraded ?
                Constants::LASERTOWER_BASE_REMOVE_VALUE : Constants::LASERTOWER_UPGRADE_REMOVE_VALUE;
     }
