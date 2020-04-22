@@ -108,25 +108,7 @@ std::shared_ptr<const Stable> Field::get_tower_const() const { return this->towe
 
 void Field::spawn_moving_entity(EntityType type) {
     if (this->team_status != Team::TeamFriendly) {
-        switch (type) {
-            case EntityType::TypeAlien:
-                this->moving_entities.push_back(std::make_shared<Alien>
-                                                        (this->position, this->callback,
-                                                         this->get_moving_entities().size()));
-                break;
-            case EntityType::TypeOctopus:
-                this->moving_entities.push_back(std::make_shared<Octopus>
-                                                        (this->position, this->callback,
-                                                         this->get_moving_entities().size()));
-                break;
-            case EntityType::TypeRobot:
-                this->moving_entities.push_back(std::make_shared<Robot>
-                                                        (this->position, this->callback,
-                                                         this->get_moving_entities().size()));
-                break;
-            default:
-                return;
-        }
+        add_unstable(type);
         this->team_status = Team::TeamEnemy;
         return;
     }
