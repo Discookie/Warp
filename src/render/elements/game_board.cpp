@@ -5,12 +5,12 @@
 const std::vector<std::string> sprite_names = {
     "none",
     "factory",
-    "laser_tower",
+    "laser",
     "tesla_coil",
     "sniper_tower",
-    "hq_attack",
-    "hq_defense",
-    "none",
+    "hs_attac",
+    "hq_deffense",
+    "special",
     "alien",
     "octopus",
     "robot",
@@ -143,4 +143,35 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
             }
         }
     }
+}
+
+void GameBoard::on_click(const ALLEGRO_MOUSE_EVENT& event) {
+    const auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
+
+    const int field_size = 20; // px
+
+    // FIXME: Ask for the active board size here
+    const int width = 12;
+    const int height = 10;
+
+    const int left = x - width * field_size / 2;
+    const int right = x + width * field_size / 2;
+    const int top = y - height * field_size / 2;
+    const int bottom = y + height * field_size / 2;
+
+    if (is_between(event.x, left, right) && is_between(event.y, top, bottom)) {
+        Coordinate field = {
+            (event.x - left) / field_size,
+            (event.y - top) / field_size
+        };
+
+        // Defaults to 'true' return value
+        if (!callbacks.on_select_field || (*callbacks.on_select_field)(field)) {
+            selected_field = field;
+        }
+    }
+}
+
+void GameBoard::on_release(const ALLEGRO_MOUSE_EVENT& event) {
+    
 }

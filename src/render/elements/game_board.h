@@ -4,14 +4,16 @@
 #include "../../model/GameModel.h"
 
 struct GameBoardCallbacks {
-    std::function<void(Coordinate)> on_click;
-    std::function<void(Coordinate)> on_drag_end;
+    /// Returns whether the board should mark the field as selected.
+    std::optional<std::function<bool(Coordinate)>> on_select_field;
+    std::optional<std::function<void(Coordinate)>> on_drag_end;
     std::function<const Field&(Coordinate)> get_field;
 };
 
 class GameBoard {
     std::vector<std::optional<GameSprite>> sprites;
     int x, y;
+    std::optional<Coordinate> selected_field;
 
     GameBoardCallbacks callbacks;
 
@@ -26,6 +28,10 @@ public:
         GameBoardCallbacks callback_list
     );
     
+    GameBoardCallbacks& modify_callbacks() { return callbacks; }
+    void clear_selection() { selected_field = std::nullopt; }
+    std::optional<Coordinate> get_selected_field() { return selected_field; }
+
     void on_click(const ALLEGRO_MOUSE_EVENT& event);
     void on_release(const ALLEGRO_MOUSE_EVENT& event);
     void render_board(const ALLEGRO_EVENT& event);

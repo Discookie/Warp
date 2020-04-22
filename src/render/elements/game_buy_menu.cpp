@@ -7,7 +7,7 @@
 const auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
 
 bool GameBuyButton::update_buyable(int money) {
-    enabled = money <= price;
+    enabled = money >= price;
     return enabled;
 }
 
@@ -79,7 +79,7 @@ using menu_ptr = std::unique_ptr<GameBuyMenu>;
 
 // {name, type, cost}
 const std::vector<std::tuple<std::string, EntityType, int>> item_infos = {
-    {"Factory",      EntityType::TypeFactory,     0},
+    {"Factory",      EntityType::TypeFactory,     Constants::FACTORY_BASE_COST},
     {"Laser Tower",  EntityType::TypeLaserTower,  Constants::LASERTOWER_BASE_COST},
     {"Tesla Coil",   EntityType::TypeTeslaCoil,   Constants::TESLACOIL_BASE_COST},
     {"Sniper Tower", EntityType::TypeSniperTower, Constants::SNIPERTOWER_BASE_COST},
@@ -183,10 +183,7 @@ void GameBuyMenu::on_release(const ALLEGRO_MOUSE_EVENT& event) {
         for (auto& button : items) {
             button.on_release(event);
         }
-
     }
-
-    selected_item = -1;
 }
 
 void GameBuyMenu::render_selector() {

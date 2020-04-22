@@ -13,8 +13,8 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     auto board_click = [](Coordinate _c) {};
     auto board_drag_end = [](Coordinate _c) {};
     GameBoardCallbacks board_callbacks = {
-        [](Coordinate pos) {},
-        [](Coordinate pos) {},
+        std::nullopt,
+        std::nullopt,
         std::bind(&GameModel::get_field_const, model, std::placeholders::_1)
     };
     GameBuyCallbacks buy_callbacks = {
@@ -40,15 +40,52 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
 GameScene::GameScene(GameModel& _model, std::unique_ptr<GameBoard>&& _board, std::unique_ptr<GameBuyMenu>&& _buy_menu) 
     : model(_model), board(std::move(_board)), buy_menu(std::move(_buy_menu))
 {
+    GameBoardCallbacks& board_callbacks = board->modify_callbacks();
+    
+    board_callbacks.on_select_field = [&](Coordinate pos) {
+        bool building_tower = buy_menu->get_selected_item() >= 0;
+        if (building_tower) {
+            model.build_tower(pos);
+            buy_menu->clear_selection();
+        }
+        return !building_tower;
+    };
+
+    GameBuyCallbacks& buy_callbacks = buy_menu->modify_callbacks();
+
+    buy_callbacks.select_callback = [&](EntityType type) {
+        model.select_tower(type);
+    };
 }
 
 void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
+    // Tick the model
+    // FIXME: Move this to a better location
+    // FIXME: Reset the model on scene leave/enter
+    // TODO: Track previous frame for frameskips
+    model.update();
+    buy_menu->update_buyable(model.get_gold());
+
     board->render_board(event);
     buy_menu->render_selector();
 }
 
 void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
-    // unimplemented!();
+    switch (event.type) {
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            board->on_click(event.mouse);
+            buy_menu->on_click(event.mouse);
+            break;
+        
+        case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+            board->on_release(event.mouse);
+            buy_menu->on_release(event.mouse);
+            break;
+
+        // Mouse move
+        case ALLEGRO_EVENT_MOUSE_AXES:
+            break;
+    }
 }
 
 void GameScene::on_keyboard_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
