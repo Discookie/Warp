@@ -102,7 +102,7 @@ protected:
 };
 
 TEST_F(FieldFixture, InitTest) {
-    EXPECT_FALSE(field.get_tower());
+    EXPECT_FALSE(field.get_tower_const());
     EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
@@ -175,7 +175,7 @@ TEST_F(FieldFixture, RemoveTowerTest) {
     field.build_tower(EntityType::TypeFactory);
     field.remove_tower();
 
-    EXPECT_FALSE(field.get_tower());
+    EXPECT_FALSE(field.get_tower_const());
     EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
     EXPECT_TRUE(field.get_moving_entities().empty());
 }
@@ -185,11 +185,11 @@ TEST_F(FieldFixture, UpgradeTest) {
 
     field.build_tower(EntityType::TypeFactory);
 
-    EXPECT_FALSE(field.get_tower()->is_upgraded());
+    EXPECT_FALSE(field.get_tower_const()->is_upgraded());
 
     field.upgrade_tower();
 
-    EXPECT_TRUE(field.get_tower()->is_upgraded());
+    EXPECT_TRUE(field.get_tower_const()->is_upgraded());
     EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
     EXPECT_TRUE(field.get_moving_entities().empty());
 
@@ -513,7 +513,7 @@ TEST_F(GameModelFixture, InitTest) {
     EXPECT_EQ(game_model.get_gold(), Constants::STARTING_GOLD);
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {
-            EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower());
+            EXPECT_FALSE(game_model.get_field_const({i, j}).get_tower_const());
             EXPECT_TRUE(game_model.get_field_const({i, j}).get_moving_entities_const().empty());
             EXPECT_EQ(game_model.get_field_const({i, j}).get_team_status(), Team::TeamNeutral);
         }
