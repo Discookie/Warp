@@ -8,29 +8,7 @@
 class Unstable : public FieldEntity {
     int vector_position;
 
-public:
-    Unstable(
-        Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback,
-        int vector_pos)
-        : FieldEntity(position, game_model_callback) {
-        this->vector_position = vector_pos;
-    }
-
-    ~Unstable() override = default;
-
-    int get_vector_pos() override { return vector_position; }
-
-    void set_vector_pos(int position) { this->vector_position = position; }
-
-    virtual int move_speed() = 0;
-
-    void move() { callback->move(shared_from_this()); }
-
-    // should set this->position to the new position, and return it
-    // should only be called by move callback
-    // if cant move, should return {}
-    virtual std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &) = 0;
-
+    // Actions
     void do_actions() final {
         if (time_counter % attack_speed() == 0) {
             attack();
@@ -39,6 +17,31 @@ public:
             move();
         }
     }
+
+    void move() { callback->move(shared_from_this()); }
+
+public:
+    Unstable(
+            Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback,
+            int vector_pos)
+            : FieldEntity(position, game_model_callback) {
+        this->vector_position = vector_pos;
+    }
+
+    ~Unstable() override = default;
+
+    int get_vector_pos() const final { return vector_position; }
+
+    void set_vector_pos(int position) { this->vector_position = position; }
+
+    virtual int move_speed() const = 0;
+
+
+    // should set this->position to the new position, and return it
+    // should only be called by move callback
+    // if cant move, should return {}
+    virtual std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &) = 0;
+
 
     friend std::ostream &operator<<(std::ostream &os, const Unstable &unstable) {
         os << unstable.position << "\n"

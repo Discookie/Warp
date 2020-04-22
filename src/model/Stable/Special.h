@@ -6,7 +6,16 @@
 #include "Stable.h"
 #include "../Constants.h"
 
-class Special : public Stable{
+class Special : public Stable {
+private:
+    // Actions
+    void do_actions() override {
+        if (time_counter % attack_speed() == 0) {
+            attack();
+            die();
+        }
+    }
+
 public:
     Special(Coordinate position,
             const std::shared_ptr<FieldEntityCallback> &game_model_callback) :
@@ -15,15 +24,15 @@ public:
         this->hp = Constants::SPECIAL_MAX_HP;
     }
 
-    int max_hp() override { return Constants::SPECIAL_MAX_HP; }
+    int max_hp() const override { return Constants::SPECIAL_MAX_HP; }
 
-    int cost() override { return Constants::SPECIAL_BASE_COST; }
+    int cost() const override { return Constants::SPECIAL_BASE_COST; }
 
-    int upgrade_cost() override { return Constants::SPECIAL_UPGRADE_COST; }
+    int upgrade_cost() const override { return Constants::SPECIAL_UPGRADE_COST; }
 
-    int attack_speed() override { return Constants::SPECIAL_ATTACKSPEED; }
+    int attack_speed() const override { return Constants::SPECIAL_ATTACKSPEED; }
 
-    int damage() override { return Constants::SPECIAL_DAMAGE; }
+    int damage() const override { return Constants::SPECIAL_DAMAGE; }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (auto &vf:fields) {
@@ -40,14 +49,8 @@ public:
         }
     }
 
-    void do_actions() override {
-        if (time_counter % attack_speed() == 0) {
-            attack();
-            die();
-        }
-    }
 
-    int remove_value() override { return Constants::SPECIAL_REMOVE_VALUE; }
+    int remove_value() const override { return Constants::SPECIAL_REMOVE_VALUE; }
 
     void take_damage(int amount) override {}
     // void getStats() override;

@@ -94,32 +94,38 @@ namespace Constants {
 
 // Unstable
 /// Friendly
-    static const int FRIENDLY_COST    = 100;
-    static const int FRIENDLY_MAX_HP  = 1000;
-    static const int FRIENDLY_DAMAGE  = 100;
-    static const int FRIENDLY_ATTACKSPEED  = 100;
-    static const int FRIENDLY_MOVESPEED  = 100;
+    static const int FRIENDLY_COST = 100;
+    static const int FRIENDLY_MAX_HP = 1000;
+    static const int FRIENDLY_DAMAGE = 100;
+    static const int FRIENDLY_ATTACKSPEED = 100;
+    static const int FRIENDLY_MOVESPEED = 100;
 
 /// Enemy
     static const int ENEMY_COST = 0;
 
 /// Alien
-    static const int ALIEN_MAX_HP  = 1000;
-    static const int ALIEN_DAMAGE  = 100;
-    static const int ALIEN_ATTACKSPEED  = 100;
-    static const int ALIEN_MOVESPEED  = 100;
+    static const int ALIEN_MAX_HP = 1000;
+    static const int ALIEN_DAMAGE = 100;
+    static const int ALIEN_ATTACKSPEED = 100;
+    static const int ALIEN_MOVESPEED = 100;
+    static const int ALIEN_SPWN_BASE_FREQUENCY = 200;
+    static const int ALIEN_SPWN_WAVE_FREQUENCY = 100;
 
 /// Octopus
-    static const int OCTOPUS_MAX_HP  = 1000;
-    static const int OCTOPUS_DAMAGE  = 100;
-    static const int OCTOPUS_ATTACKSPEED  = 100;
-    static const int OCTOPUS_MOVESPEED  = 100;
+    static const int OCTOPUS_MAX_HP = 1000;
+    static const int OCTOPUS_DAMAGE = 100;
+    static const int OCTOPUS_ATTACKSPEED = 100;
+    static const int OCTOPUS_MOVESPEED = 100;
+    static const int OCTOPUS_SPWN_BASE_FREQUENCY = 600;
+    static const int OCTOPUS_SPWN_WAVE_FREQUENCY = 300;
 
 /// Robot
-    static const int ROBOT_MAX_HP  = 1000;
-    static const int ROBOT_DAMAGE  = 100;
-    static const int ROBOT_ATTACKSPEED  = 100;
-    static const int ROBOT_MOVESPEED  = 100;
+    static const int ROBOT_MAX_HP = 1000;
+    static const int ROBOT_DAMAGE = 100;
+    static const int ROBOT_ATTACKSPEED = 100;
+    static const int ROBOT_MOVESPEED = 100;
+    static const int ROBOT_SPWN_BASE_FREQUENCY = 1000;
+    static const int ROBOT_SPWN_WAVE_FREQUENCY = 500;
 
 }
 #endif //WARP_CONSTANTS_H

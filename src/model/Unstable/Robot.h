@@ -10,13 +10,13 @@ public:
         this->hp = Constants::ROBOT_MAX_HP;
     }
 
-    int max_hp() override { return Constants::ROBOT_MAX_HP; }
+    int max_hp() const override { return Constants::ROBOT_MAX_HP; }
 
-    int move_speed() override { return Constants::ROBOT_MOVESPEED; }
+    int move_speed() const override { return Constants::ROBOT_MOVESPEED; }
 
-    int attack_speed() override { return Constants::ROBOT_ATTACKSPEED; }
+    int attack_speed() const override { return Constants::ROBOT_ATTACKSPEED; }
 
-    int damage() override { return Constants::ROBOT_DAMAGE; }
+    int damage() const override { return Constants::ROBOT_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
         if (this->position.x - 1 < 0) { throw std::logic_error("very bad, game already over"); }

@@ -46,12 +46,13 @@ int Field::add_unstable(EntityType et) {
     return moving_entities.size() - 1;
 }
 
+
 void Field::build_tower(EntityType type) {
     if (this->team_status == Team::TeamEnemy) {
-        throw std::exception();
+        throw std::invalid_argument("TeamEnemy territory");
     }
     if (this->tower) {
-        throw std::exception();
+        throw std::invalid_argument("Tower space occupied");
     }
     switch (type) {
         case EntityType::TypeFactory:
@@ -83,17 +84,17 @@ void Field::build_tower(EntityType type) {
 
 void Field::upgrade_tower() {
     if (!this->tower) {
-        throw std::exception();
+        throw std::invalid_argument("No tower to upgrade");
     }
     if (this->tower->is_upgraded()) {
-        throw std::exception();
+        throw std::invalid_argument("Tower already upgraded");
     }
-    if (tower) this->tower->upgrade();
+    if (this->tower) this->tower->upgrade();
 }
 
 void Field::remove_tower() {
     if (!this->tower) {
-        throw std::exception();
+        throw std::invalid_argument("No tower to remove");
     }
     this->tower = nullptr;
     if (this->moving_entities.empty()) {
@@ -101,9 +102,28 @@ void Field::remove_tower() {
     }
 }
 
-std::shared_ptr<Stable> Field::get_tower() const { return this->tower; }
+std::shared_ptr<Stable> Field::get_tower() { return this->tower; }
+
+std::shared_ptr<const Stable> Field::get_tower_const() const { return this->tower; }
+
+void Field::spawn_moving_entity(EntityType type) {
+    if (this->team_status != Team::TeamFriendly && type != EntityType::TypeFriendly) {
+        add_unstable(type);
+        this->team_status = Team::TeamEnemy;
+        return;
+    }
+    if (this->team_status != Team::TeamEnemy && type == EntityType::TypeFriendly) {
+        this->moving_entities.push_back(std::make_shared<Friendly>
+                                                (this->position, this->callback, this->get_moving_entities().size()));
+        this->team_status = Team::TeamFriendly;
+        return;
+    }
+}
 
 void Field::add_moving_entity(std::shared_ptr<Unstable> obj) {
+    if (this->team_status == Team::TeamNeutral) {
+        this->team_status = obj->is_friendly() ? Team::TeamFriendly : Team::TeamEnemy;
+    }
     this->moving_entities.push_back(obj);
 }
 
@@ -112,14 +132,24 @@ void Field::remove_entity_at(int ind) {
     for (int i = 0; i < this->moving_entities.size(); i++) {
         moving_entities[i]->set_vector_pos(i);
     }
+    if (this->get_moving_entities().empty() && !this->get_tower_const()) {
+        this->team_status = Team::TeamNeutral;
+    }
 }
 
 std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities() {
     return this->moving_entities;
 }
 
-std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities_const() const {
-    return this->moving_entities;
+std::vector<std::shared_ptr<const Unstable>> Field::get_moving_entities_const() const {
+    std::vector<std::shared_ptr<const Unstable>> copy;
+    std::transform(
+            this->moving_entities.begin(), this->moving_entities.end(),
+            std::back_inserter(copy),
+            [](std::shared_ptr<Unstable> u) -> std::shared_ptr<const Unstable> {
+                return std::const_pointer_cast<const Unstable>(u);
+            });
+    return copy;
 }
 
 void Field::update_entities() {
@@ -134,8 +164,8 @@ void Field::update_entities() {
 std::ostream &operator<<(std::ostream &os, const Field &field) {
     os << field.position << "\n" << field.team_status << "\n";
 
-    if (field.get_tower()) {
-        os << field.get_tower()->get_entity_type() << " " << *field.tower << "\n";
+    if (field.get_tower_const()) {
+        os << field.get_tower_const()->get_entity_type() << " " << *field.tower << "\n";
     } else {
         os << EntityType::TypeNone << "\n";
     }
