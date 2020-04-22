@@ -26,7 +26,7 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     return 
         GameBoard::create(124, 135, board_callbacks)
         .rightFlatMap([&](auto&& board_ptr) {
-            return GameBuyMenu::create(283, 121, font, buy_callbacks)
+            return GameBuyMenu::create(283, 123, font, buy_callbacks)
                 .rightMap([&board_ptr](auto&& buymenu_ptr) {
                     return std::make_tuple(std::move(board_ptr), std::move(buymenu_ptr));
                 });

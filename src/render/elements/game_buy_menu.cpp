@@ -49,7 +49,7 @@ void GameBuyButton::render_button() {
         );
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
-            x + 20, y - 1, ALLEGRO_ALIGN_RIGHT,
+            x + 20, y - 2, ALLEGRO_ALIGN_RIGHT,
             std::to_string(price).c_str()
         );
     } else {
@@ -68,7 +68,7 @@ void GameBuyButton::render_button() {
         );
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
-            x + 20, y - 1, ALLEGRO_ALIGN_RIGHT,
+            x + 20, y - 2, ALLEGRO_ALIGN_RIGHT,
             std::to_string(price).c_str()
         );
     }
@@ -77,25 +77,16 @@ void GameBuyButton::render_button() {
 
 using menu_ptr = std::unique_ptr<GameBuyMenu>;
 
-const std::vector<std::string> item_names = {
-    "none", // skipped
-    "Factory",
-    "Laser Tower",
-    "Tesla Coil",
-    "Sniper Tower",
-    "HQ: Attack",
-    "HQ: Defense",
-    "Special",
-};
-const std::vector<int> item_costs = {
-    0, // skipped
-    Constants::FACTORY_BASE_COST,
-    Constants::LASERTOWER_BASE_COST,
-    Constants::TESLACOIL_BASE_COST,
-    Constants::SNIPERTOWER_BASE_COST,
-    Constants::HQATTACK_BASE_COST,
-    Constants::HQDEFENSE_BASE_COST,
-    Constants::SPECIAL_BASE_COST,
+// {name, type, cost}
+const std::vector<std::tuple<std::string, EntityType, int>> item_infos = {
+    {"Factory",      EntityType::TypeFactory,     0},
+    {"Laser Tower",  EntityType::TypeLaserTower,  Constants::LASERTOWER_BASE_COST},
+    {"Tesla Coil",   EntityType::TypeTeslaCoil,   Constants::TESLACOIL_BASE_COST},
+    {"Sniper Tower", EntityType::TypeSniperTower, Constants::SNIPERTOWER_BASE_COST},
+    {"HQ: Attack",   EntityType::TypeHqAttack,    Constants::HQATTACK_BASE_COST},
+    {"HQ: Defense",  EntityType::TypeHqDefense,   Constants::HQDEFENSE_BASE_COST},
+    {"Unit",         EntityType::TypeFriendly,    Constants::FRIENDLY_COST},
+    {"Special",      EntityType::TypeSpecial,     Constants::SPECIAL_BASE_COST},
 };
 
 neither::Either<std::string, menu_ptr> GameBuyMenu::create(
@@ -106,14 +97,14 @@ neither::Either<std::string, menu_ptr> GameBuyMenu::create(
     using ret_ty = neither::Either<std::string, menu_ptr>;
 
     std::vector<GameBuyButton> buy_buttons;
-    const int offset = 22;
-    const int center_top_y = center_y - offset * (item_names.size() - 1) / 2;
+    const int offset = 20;
+    const int center_top_y = center_y - offset * item_infos.size() / 2;
 
     // Intentionally shorter
-    for (int i = 0; i < item_names.size() - 1; i++) {
+    for (int i = 0; i < item_infos.size(); i++) {
         buy_buttons.push_back(GameBuyButton(
             center_x, center_top_y + offset * i, 70, offset - 4,
-            item_names[i+1], item_costs[i+1], button_font,
+            std::get<0>(item_infos[i]), std::get<2>(item_infos[i]), button_font,
             std::nullopt, std::nullopt
         ));
     }
@@ -131,14 +122,16 @@ GameBuyMenu::GameBuyMenu(int cx, int cy, std::vector<GameBuyButton>&& buy_items,
         button.set_click_callback([&, i](){
             selected_item = i;
             if (callbacks.drag_callback) {
-                (*callbacks.drag_callback)(static_cast<EntityType>(i+1));
+                EntityType ent = std::get<1>(item_infos[i]);
+                (*callbacks.drag_callback)(ent);
             }
         });
         
         button.set_release_callback([&, i](){
             if (selected_item == i) {
                 if (callbacks.select_callback) {
-                    (*callbacks.select_callback)(static_cast<EntityType>(i+1));
+                    EntityType ent = std::get<1>(item_infos[i]);
+                    (*callbacks.select_callback)(ent);
                 }
             }
         });
@@ -164,8 +157,8 @@ void GameBuyMenu::on_click(const ALLEGRO_MOUSE_EVENT& event) {
 
     const int left = center_x - 42;
     const int right = center_x + 42;
-    const int top = center_y - offset * item_names.size() / 2;
-    const int bot = center_y + offset * item_names.size() / 2;
+    const int top = center_y - offset * item_infos.size() / 2;
+    const int bot = center_y + offset * item_infos.size() / 2;
 
     auto is_between = [](int num, int bot, int top) { return num >= bot && num <= top; };
 
@@ -181,8 +174,8 @@ void GameBuyMenu::on_release(const ALLEGRO_MOUSE_EVENT& event) {
 
     const int left = center_x - 42;
     const int right = center_x + 42;
-    const int top = center_y - offset * item_names.size() / 2;
-    const int bot = center_y + offset * item_names.size() / 2;
+    const int top = center_y - offset * item_infos.size() / 2;
+    const int bot = center_y + offset * item_infos.size() / 2;
 
     auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
 
