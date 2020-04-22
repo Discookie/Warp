@@ -33,7 +33,7 @@ public:
     }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
-        for (int i = this->position.x++; i < fields.size(); i++) {
+        for (int i = this->position.x + 1; i < fields.size(); i++) {
             if (fields[i][this->position.y].get_team_status() == Team::TeamEnemy) {
                 auto me = fields[i][this->position.y].get_moving_entities();
                 if (!me.empty()) {

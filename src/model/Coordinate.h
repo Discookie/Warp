@@ -22,4 +22,8 @@ struct Coordinate {
     int y;
 };
 
+inline int distance(const Coordinate &lhs, const Coordinate &rhs) {
+    return abs(lhs.x - rhs.x) + abs(lhs.y - rhs.y);
+}
+
 #endif  // WARP_COORDINATE_H

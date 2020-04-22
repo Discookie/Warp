@@ -19,24 +19,24 @@ public:
     int damage() override { return Constants::ALIEN_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
-        if (this->position.x-- >= 0) {
-            if (fields[this->position.x--][this->position.y].get_team_status() != Team::TeamFriendly) {
-                return std::optional<Coordinate>({this->position.x--, this->position.y});
+        if (this->position.x - 1 >= 0) {
+            if (fields[this->position.x - 1][this->position.y].get_team_status() != Team::TeamFriendly) {
+                return std::optional<Coordinate>({this->position.x - 1, this->position.y});
             }
-        } else if (this->position.x-- < 0) {
+        } else if (this->position.x - 1 < 0) {
             throw std::logic_error("very bad, game already over");
         }
         return std::nullopt;
     }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
-        if (this->position.x-- >= 0) {
-            if (fields[this->position.x--][this->position.y].get_team_status() == Team::TeamFriendly) {
-                if (fields[this->position.x--][this->position.y].get_tower()) {
-                    fields[this->position.x--][this->position.y].get_tower()->take_damage(this->damage());
+        if (this->position.x - 1 >= 0) {
+            if (fields[this->position.x - 1][this->position.y].get_team_status() == Team::TeamFriendly) {
+                if (fields[this->position.x - 1][this->position.y].get_tower()) {
+                    fields[this->position.x - 1][this->position.y].get_tower()->take_damage(this->damage());
                     return;
                 } else {
-                    auto me = fields[this->position.x--][this->position.y].get_moving_entities();
+                    auto me = fields[this->position.x - 1][this->position.y].get_moving_entities();
                     if (!me.empty()) {
                         me[0]->take_damage(this->damage());
                         return;

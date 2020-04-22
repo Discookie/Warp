@@ -19,19 +19,19 @@ public:
     int damage() override { return Constants::OCTOPUS_DAMAGE; }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
-        if (this->position.x-- >= 0) {
-            if (fields[this->position.x--][this->position.y].get_team_status() != Team::TeamFriendly) {
-                return std::optional<Coordinate>({this->position.x--, this->position.y});
+        if (this->position.x - 1 >= 0) {
+            if (fields[this->position.x - 1][this->position.y].get_team_status() != Team::TeamFriendly) {
+                return std::optional<Coordinate>({this->position.x - 1, this->position.y});
             }
-        } else if (this->position.x-- < 0) {
+        } else if (this->position.x - 1 < 0) {
             throw std::logic_error("very bad, game already over");
         }
         return std::nullopt;
     }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
-        for (int i = this->position.x--; i >= std::max(this->position.x - 3, 0); i--) {
-            int k = (i - this->position.x--) + 1;
+        for (int i = this->position.x - 1; i >= std::max(this->position.x - 3, 0); i--) {
+            int k = (i - this->position.x - 1) + 1;
             if (this->position.y - k >= 0) {
                 if (fields[i][this->position.y - k].get_team_status() == Team::TeamFriendly) {
                     if (fields[i][this->position.y - k].get_tower()) {
