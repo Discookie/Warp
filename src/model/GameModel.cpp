@@ -1,5 +1,9 @@
 #include "GameModel.h"
 
+#include <windows.h>
+
+#include <fstream>
+
 #include "Stable/Factory.h"
 
 void GameModel::construct_fields() {
@@ -122,12 +126,66 @@ void GameModel::new_game() {
     this->wave_timer     = Constants::WAVE_COUNTDOWN_TIME;
     this->have_special   = false;
     this->selected_tower = EntityType::TypeNone;
+    this->game_over      = false;
     this->construct_fields();
 }
 
-void GameModel::load_game() { throw std::logic_error("Unimplemented"); }
+void GameModel::load_game(const std::string &file_name) {
+    std::fstream fs;
+    fs.open(file_name, std::fstream::in);
 
-void GameModel::save_game() { throw std::logic_error("Unimplemented"); }
+    fs >> *this;
+
+    fs.close();
+}
+
+void GameModel::save_game(const std::string &file_name) const {
+    std::fstream fs;
+    fs.open(file_name, std::fstream::out | std::fstream::trunc);
+
+    fs << *this;
+
+    fs.close();
+}
+
+std::string GameModel::get_file_name() const {
+    char filename[MAX_PATH];
+
+    OPENFILENAME ofn;
+    ZeroMemory(&filename, sizeof(filename));
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner   = nullptr;  // If you have a window to center over, put its HANDLE here
+    ofn.lpstrFilter = "Text Files\0*.txt\0Any File\0*.*\0";
+    ofn.lpstrFile   = filename;
+    ofn.nMaxFile    = MAX_PATH;
+    ofn.lpstrTitle  = "Select a File, yo!";
+    ofn.Flags       = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
+
+    if (GetOpenFileNameA(&ofn)) {
+        return std::string(filename);
+    } else {
+        throw std::invalid_argument("Error during file open");
+    }
+}
+
+void GameModel::load_game() {
+    try {
+        load_game(get_file_name());
+    }
+    catch (std::exception& e) {
+
+    }
+}
+
+void GameModel::save_game() const {
+    try {
+        save_game(get_file_name());
+    }
+    catch (std::exception& e) {
+
+    }
+}
 
 const Field &GameModel::get_field_const(Coordinate position) const {
     if (!this->valid_position(position)) {
@@ -234,14 +292,8 @@ std::istream &operator>>(std::istream &is, GameModel &model) {
     model.fields = std::vector(12, std::vector<Field>(10));
     model.init_callbacks();
     model.construct_fields();
-    is >> model.points
-       >> model.gold
-       >> model.time_counter
-       >> model.wave_timer
-       >> model.wave_number
-       >> model.have_special
-       >> selected_tower_buffer
-       >> model.game_over;
+    is >> model.points >> model.gold >> model.time_counter >> model.wave_timer >> model.wave_number
+        >> model.have_special >> selected_tower_buffer >> model.game_over;
     model.selected_tower = (EntityType)selected_tower_buffer;
     for (int i = 0; i < 12; ++i) {
         for (int j = 0; j < 10; ++j) {

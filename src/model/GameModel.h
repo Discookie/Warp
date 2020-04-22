@@ -52,10 +52,15 @@ public:
     void new_game();
 
     // Persistence
+    void load_game(const std::string &file_name);
+
+    void save_game(const std::string &file_name) const;
+
+    std::string get_file_name() const;
+
     void load_game();
 
-    void save_game();
-
+    void save_game() const;
     // Updates
     void update();
 
