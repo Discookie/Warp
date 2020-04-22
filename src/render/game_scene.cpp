@@ -1,3 +1,4 @@
+// OLD
 #include "game_scene.h"
 
 #include <functional>
@@ -13,7 +14,7 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     GameBoardCallbacks board_callbacks = {
         [](Coordinate pos) {},
         [](Coordinate pos) {},
-        std::bind(&GameModel::get_field, model, std::placeholders::_1)
+        std::bind(&GameModel::get_field_const, model, std::placeholders::_1)
     };
     GameBuyCallbacks buy_callbacks = {
         std::nullopt,

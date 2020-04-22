@@ -11,6 +11,10 @@ const std::vector<std::string> sprite_names = {
     "hq_attack",
     "hq_defense",
     "none",
+    "alien",
+    "octopus",
+    "robot",
+    "friendly",
     "multiple"
 };
 
@@ -46,7 +50,7 @@ neither::Either<std::string, std::unique_ptr<GameBoard>> GameBoard::create(
 /// so the left and top borders are inside the sprite.  
 /// This way, we can fit more tiles on the screen while keeping an effectively 8x8 grid.
 void GameBoard::render_board(const ALLEGRO_EVENT& event) {
-    const int field_size = 16; // px
+    const int field_size = 20; // px
 
     // FIXME: Ask for the active board size here
     const int width = 12;
@@ -80,16 +84,18 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
 
     int y_pos = top;
 
-    for (int idx_y = 0; idx_y < height; idx_y++) {
+    for (int idx_y = 0; idx_y < height; idx_y++, y_pos += field_size) {
         int x_pos = left;
 
-        for (int idx_x = 0; idx_x < width; idx_x++) {
-            Field& field = callbacks.get_field({idx_x, idx_y});
-            EntityType ty = /* TODO: field.getTower().getType()*/ EntityType::TypeNone;
-            const std::vector<std::shared_ptr<Unstable>>& entities = field.get_moving_entities();
+        for (int idx_x = 0; idx_x < width; idx_x++, x_pos += field_size) {
+            const Field& field = callbacks.get_field({idx_x, idx_y});
+
+            std::shared_ptr<Stable> tower = field.get_tower();
+            // This is an int instead of EntityType for easier arithmetics
+            int ty = tower ? tower->get_entity_type() : EntityType::TypeNone;
+
+            const std::vector<std::shared_ptr<Unstable>> entities = field.get_moving_entities_const();
             const std::optional<GameSprite>& sprite = sprites[static_cast<int>(ty)];
-            auto jhfdghjdgf = sprite.has_value();
-            auto jhfdghjdgff = this->sprites[static_cast<int>(ty)].has_value();
 
             if (ty == EntityType::TypeSpecial) {
                 // TODO: Render special effect bg
@@ -97,6 +103,13 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
                 // TODO: Render default bg
             }
 
+            // Count the entities by type
+            std::vector<int> entities_found(sprite_names.size(), 0);
+            for (const auto& entity : entities) {
+                entities_found[entity->get_entity_type()] += 1;
+            }
+
+            // If there's a building, render it
             if (sprite) {
                 auto is_empty = sprite.has_value();
                 auto& sprite_clone = *sprite;
@@ -105,16 +118,25 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
                 // TODO: Render attacks, such as lasers, depending on attack type
                 // TODO: Render HP bars
 
-                // Multiple objects on same tile
+                // For the entities, render the ribbon
                 if (!entities.empty()) {
                     multiple_sprite->render_sprite_16px(x_pos, y_pos, event);
                 }
+            // If there's no building, render the highest-priority entity
+            // Priorities: Friendly > Robot > Octopus > Alien
             } else if (!entities.empty()) {
-                // TODO: Render monster
-                
+                for (
+                    ty = EntityType::TypeFriendly;
+                    ty >= EntityType::TypeAlien; ty--
+                ) {
+                    if (entities_found[ty] > 0) {
+                        sprites[ty]->render_sprite_16px(x_pos, y_pos, event);
+                        break;
+                    }
+                }
                 // TODO: Render HP bars
 
-                // Multiple objects on same tile
+                // For the rest of the objects, render the ribbon
                 if (entities.size() > 1) {
                     multiple_sprite->render_sprite_16px(x_pos, y_pos, event);
                 }

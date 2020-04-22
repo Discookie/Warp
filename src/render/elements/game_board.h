@@ -6,7 +6,7 @@
 struct GameBoardCallbacks {
     std::function<void(Coordinate)> on_click;
     std::function<void(Coordinate)> on_drag_end;
-    std::function<Field&(Coordinate)> get_field;
+    std::function<const Field&(Coordinate)> get_field;
 };
 
 class GameBoard {
