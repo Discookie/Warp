@@ -4,6 +4,8 @@ project ("Warp")
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_GENERATOR_PLATFORM=x64)
 
+# Statically link libstd - important for CI
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 
 # Dependencies
 add_subdirectory (libs/googletest)

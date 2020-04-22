@@ -1,0 +1,33 @@
+image: ubuntu:18.04
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  WINEPATH: /usr/lib/gcc/x86_64-w64-mingw32/7.3-win32/
+
+before_script:
+  - apt update --yes
+  - apt install --yes git
+  - git submodule sync --recursive
+  - git submodule update --init --recursive
+
+build:
+  stage: build
+  artifacts:
+    paths:
+      - build/
+  script:
+    - apt install --yes cmake mingw-w64
+    - cmake -H. -Bbuild -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_RC_COMPILER=
+    - cmake --build build --config Debug --target Warp -- -j4
+    - cmake --build build --config Debug --target Google_Tests -- -j4
+
+test:
+  stage: test
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - build/
+  script:
+    - apt install --yes mingw-w64 wine64
+    - wine64 ./build/bin/Google_Tests
