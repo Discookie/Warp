@@ -4,12 +4,12 @@ neither::Either<std::string, GameSprite> GameSprite::create(const std::string& s
     using uptr = std::unique_ptr<ALLEGRO_BITMAP, BitmapDeleter>;
     using retTy = neither::Either<std::string, GameSprite>;
 
-    std::string small_path = "assets/" + sprite_name + "_small.png";
+    std::string small_path = "assets/" + sprite_name + ".png";
     
     uptr small_sprite = uptr(al_load_bitmap(small_path.c_str()));
 
     if (!small_sprite) {
-        return retTy::leftOf("failed to load sprite '" + sprite_name + "_small'");
+        return retTy::leftOf("failed to load sprite '" + sprite_name + "'");
     }
 
     GameSprite ret = GameSprite(std::move(small_sprite));
