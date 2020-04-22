@@ -36,9 +36,13 @@ public:
 
     void remove_tower();
 
-    std::shared_ptr<Stable> get_tower() const;
+    std::shared_ptr<Stable> get_tower();
+
+    std::shared_ptr<const Stable> get_tower_const() const;
 
     // Unstable
+    void spawn_moving_entity(EntityType type);
+
     void add_moving_entity(std::shared_ptr<Unstable> obj);
 
     /// This is supposed to be called only by die() callback
@@ -46,7 +50,7 @@ public:
 
     std::vector<std::shared_ptr<Unstable>> get_moving_entities();
 
-    std::vector<std::shared_ptr<Unstable>> get_moving_entities_const() const;
+    std::vector<std::shared_ptr<const Unstable>> get_moving_entities_const() const;
 
     // General
     Team get_team_status() const { return team_status; }

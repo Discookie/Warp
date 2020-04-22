@@ -4,6 +4,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 #include "EntityType.h"
 #include "Field.h"

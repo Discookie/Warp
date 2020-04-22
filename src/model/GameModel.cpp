@@ -1,10 +1,9 @@
 #include "GameModel.h"
 
+#include "Constants.h"
 #include <windows.h>
-
 #include <fstream>
-
-#include "Stable/Factory.h"
+#include <model/Stable/Factory.h>
 
 void GameModel::construct_fields() {
     for (int i = 0; i < 12; i++) {
@@ -70,9 +69,37 @@ bool GameModel::check_lose() const {
     return false;
 }
 
-void GameModel::spawn_enemies() {}
+void GameModel::spawn_enemies() {
+    int r = std::rand();
+    if (r % Constants::ALIEN_SPWN_BASE_FREQUENCY == 0) {
+        int y = std::rand() % 10;
+        this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
+    }
+    if (r % Constants::OCTOPUS_SPWN_BASE_FREQUENCY == 0) {
+        int y = std::rand() % 10;
+        this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
+    }
+    if (r % Constants::ROBOT_SPWN_BASE_FREQUENCY == 0) {
+        int y = std::rand() % 10;
+        this->fields[11][y].spawn_moving_entity(EntityType::TypeRobot);
+    }
+}
 
-void GameModel::spawn_wave() {}
+void GameModel::spawn_wave() {
+    int r = std::rand();
+    if (r % Constants::ALIEN_SPWN_WAVE_FREQUENCY == 0) {
+        int y = std::rand() % 10;
+        this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
+    }
+    if (r % Constants::OCTOPUS_SPWN_WAVE_FREQUENCY == 0) {
+        int y = std::rand() % 10;
+        this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
+    }
+    if (r % Constants::ROBOT_SPWN_WAVE_FREQUENCY == 0) {
+        int y = std::rand() % 10;
+        this->fields[11][y].spawn_moving_entity(EntityType::TypeRobot);
+    }
+}
 
 void GameModel::init_callbacks() {
     // Produce Callback
@@ -119,14 +146,15 @@ GameModel::GameModel() {
 }
 
 void GameModel::new_game() {
-    this->points         = 0;
-    this->gold           = Constants::STARTING_GOLD;
-    this->time_counter   = 0;
-    this->wave_number    = 0;
-    this->wave_timer     = Constants::WAVE_COUNTDOWN_TIME;
-    this->have_special   = false;
+    std::srand(std::rand());
+    this->points = 0;
+    this->gold = Constants::STARTING_GOLD;
+    this->time_counter = 0;
+    this->wave_number = 0;
+    this->wave_timer = Constants::WAVE_COUNTDOWN_TIME;
+    this->have_special = false;
     this->selected_tower = EntityType::TypeNone;
-    this->game_over      = false;
+    this->game_over = false;
     this->construct_fields();
 }
 
@@ -223,7 +251,7 @@ void GameModel::build_tower(Coordinate position) {
     if (!this->valid_position(position)) {
         throw std::invalid_argument("Out-of-range coordinates");
     }
-    if (this->get_field(position).get_tower()) {
+    if (this->get_field(position).get_tower_const()) {
         throw std::invalid_argument("Tower space occupied");
     }
     if (!this->is_buildable(selected_tower)) {
@@ -234,7 +262,7 @@ void GameModel::build_tower(Coordinate position) {
     }
 
     this->get_field(position).build_tower(selected_tower);
-    this->gold -= get_field(position).get_tower()->cost();
+    this->gold -= get_field(position).get_tower_const()->cost();
     this->points += Constants::POINTS_FOR_TOWER_BUILD;
 }
 
@@ -242,17 +270,17 @@ void GameModel::upgrade_tower(Coordinate position) {
     if (!this->valid_position(position)) {
         throw std::invalid_argument("Out-of-range coordinates");
     }
-    if (!this->get_field(position).get_tower()) {
+    if (!this->get_field(position).get_tower_const()) {
         throw std::invalid_argument("No tower to upgrade");
     }
-    if (this->get_field(position).get_tower()->is_upgraded()) {
+    if (this->get_field(position).get_tower_const()->is_upgraded()) {
         throw std::invalid_argument("Tower already upgraded");
     }
-    if (this->gold < get_field(position).get_tower()->upgrade_cost()) {
+    if (this->gold < get_field(position).get_tower_const()->upgrade_cost()) {
         throw std::invalid_argument("Insufficient gold");
     }
 
-    this->gold -= get_field(position).get_tower()->upgrade_cost();
+    this->gold -= get_field(position).get_tower_const()->upgrade_cost();
     get_field(position).upgrade_tower();
     this->points += Constants::POINTS_FOR_TOWER_UPGRADE;
 }
@@ -261,11 +289,11 @@ void GameModel::remove_tower(Coordinate position) {
     if (!this->valid_position(position)) {
         throw std::invalid_argument("Out-of-range coordinates");
     }
-    if (!this->get_field(position).get_tower()) {
+    if (!this->get_field(position).get_tower_const()) {
         throw std::invalid_argument("No tower to remove");
     }
 
-    this->gold += this->get_field(position).get_tower()->remove_value();
+    this->gold += this->get_field(position).get_tower_const()->remove_value();
     this->get_field(position).remove_tower();
     this->points -= Constants::POINTS_FOR_TOWER_REMOVE;
 }
