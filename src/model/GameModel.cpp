@@ -121,6 +121,7 @@ void GameModel::init_callbacks() {
             if (!this->valid_position(new_pos.value())) {
                 throw std::invalid_argument("Out-of-range coordinates");
             }
+            obj->set_position(*new_pos);
             this->get_field(*new_pos).add_moving_entity(std::static_pointer_cast<Unstable>(obj));
         }
     };
