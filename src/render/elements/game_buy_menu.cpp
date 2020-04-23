@@ -6,75 +6,6 @@
 
 const auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
 
-bool GameBuyButton::update_buyable(int money) {
-    enabled = money >= price;
-    return enabled;
-}
-
-void GameBuyButton::on_click(const ALLEGRO_MOUSE_EVENT& event) {
-    if (enabled
-        && is_between(event.x, x - w / 2, x + (w + 1) / 2)
-        && is_between(event.y, y - h / 2, y + (h + 1) / 2)
-    ) {
-        if (click_callback) {
-            (*click_callback)();
-        }
-    }
-}
-
-void GameBuyButton::on_release(const ALLEGRO_MOUSE_EVENT& event) {
-    if (enabled
-        && is_between(event.x, x - w / 2, x + (w + 1) / 2)
-        && is_between(event.y, y - h / 2, y + (h + 1) / 2)
-    ) {
-        if (release_callback) {
-            (*release_callback)();
-        }
-    }
-}
-
-void GameBuyButton::render_button() {
-    int font_height = al_get_font_line_height(font.get());
-
-    if (enabled) {
-        al_draw_rectangle(
-            x - w / 2,       y - h / 2,
-            x + (w + 1) / 2, y + (h + 1) / 2,
-            al_map_rgb(203, 214, 137), 1
-        );
-        al_draw_text(
-            font.get(), al_map_rgb(255, 255, 255),
-            x, y - 10, ALLEGRO_ALIGN_CENTRE,
-            name.c_str()
-        );
-        al_draw_text(
-            font.get(), al_map_rgb(255, 255, 255),
-            x + 20, y - 2, ALLEGRO_ALIGN_RIGHT,
-            std::to_string(price).c_str()
-        );
-    } else {
-        al_draw_filled_rectangle(
-            x - w / 2,       y - h / 2,
-            x + (w + 1) / 2, y + (h + 1) / 2,
-            al_map_rgb(99, 99, 99));
-        al_draw_rectangle(
-            x - w / 2,       y - h / 2,
-            x + (w + 1) / 2, y + (h + 1) / 2,
-            al_map_rgb(175, 175, 175), 1);
-        al_draw_text(
-            font.get(), al_map_rgb(255, 255, 255),
-            x, y - 10, ALLEGRO_ALIGN_CENTRE,
-            name.c_str()
-        );
-        al_draw_text(
-            font.get(), al_map_rgb(255, 255, 255),
-            x + 20, y - 2, ALLEGRO_ALIGN_RIGHT,
-            std::to_string(price).c_str()
-        );
-    }
-}
-
-
 using menu_ptr = std::unique_ptr<GameBuyMenu>;
 
 // {name, type, cost}
@@ -96,13 +27,13 @@ neither::Either<std::string, menu_ptr> GameBuyMenu::create(
     // FIXME: Add coin icon loading code here
     using ret_ty = neither::Either<std::string, menu_ptr>;
 
-    std::vector<GameBuyButton> buy_buttons;
+    std::vector<GameButton> buy_buttons;
     const int offset = 20;
     const int center_top_y = center_y - offset * item_infos.size() / 2;
 
     // Intentionally shorter
     for (int i = 0; i < item_infos.size(); i++) {
-        buy_buttons.push_back(GameBuyButton(
+        buy_buttons.push_back(GameButton(
             center_x, center_top_y + offset * i, 70, offset - 4,
             std::get<0>(item_infos[i]), std::get<2>(item_infos[i]), button_font,
             std::nullopt, std::nullopt
@@ -113,11 +44,11 @@ neither::Either<std::string, menu_ptr> GameBuyMenu::create(
     ));
 }
 
-GameBuyMenu::GameBuyMenu(int cx, int cy, std::vector<GameBuyButton>&& buy_items, GameBuyCallbacks callback_list)
+GameBuyMenu::GameBuyMenu(int cx, int cy, std::vector<GameButton>&& buy_items, GameBuyCallbacks callback_list)
     : center_x(cx), center_y(cy), items(std::move(buy_items)), callbacks(callback_list)
 {
     for (int i = 0; i < items.size(); i++) {
-        GameBuyButton& button = items[i];
+        GameButton& button = items[i];
         
         button.set_click_callback([&, i](){
             selected_item = i;
@@ -140,7 +71,7 @@ GameBuyMenu::GameBuyMenu(int cx, int cy, std::vector<GameBuyButton>&& buy_items,
 
 void GameBuyMenu::update_buyable(int money) {
     for (int i = 0; i < items.size(); i++) {
-        GameBuyButton& button = items[i];
+        GameButton& button = items[i];
         bool enabled = button.update_buyable(money);
 
         if (!enabled && selected_item == i) {
