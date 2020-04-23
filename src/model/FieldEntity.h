@@ -43,6 +43,8 @@ public:
 
     Coordinate get_position() const { return position; }
 
+    void set_position(Coordinate pos) { this->position = pos; }
+
     /// Returns the index of a given unstable object inside the MovingEntities vector or -1 if its a Tower object.
     virtual int get_vector_pos() const = 0;
 
