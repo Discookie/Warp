@@ -90,11 +90,11 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
         for (int idx_x = 0; idx_x < width; idx_x++, x_pos += field_size) {
             const Field& field = callbacks.get_field({idx_x, idx_y});
 
-            std::shared_ptr<Stable> tower = field.get_tower();
+            std::shared_ptr<const Stable> tower = field.get_tower_const();
             // This is an int instead of EntityType for easier arithmetics
             int ty = tower ? tower->get_entity_type() : EntityType::TypeNone;
 
-            const std::vector<std::shared_ptr<Unstable>> entities = field.get_moving_entities_const();
+            std::vector<std::shared_ptr<const Unstable>> entities = field.get_moving_entities_const();
             const std::optional<GameSprite>& sprite = sprites[static_cast<int>(ty)];
 
             if (ty == EntityType::TypeSpecial) {
