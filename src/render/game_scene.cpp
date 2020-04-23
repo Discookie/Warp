@@ -15,7 +15,10 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     GameBoardCallbacks board_callbacks = {
         std::nullopt,
         std::nullopt,
-        std::bind(&GameModel::get_field_const, model, std::placeholders::_1)
+        //std::bind(&GameModel::get_field_const, model, std::placeholders::_1)
+        [&model = std::as_const(model)](Coordinate pos) -> const Field& {
+            return model.get_field_const(pos);
+        }
     };
     GameBuyCallbacks buy_callbacks = {
         std::nullopt,
