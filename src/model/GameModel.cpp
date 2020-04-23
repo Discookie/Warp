@@ -143,11 +143,11 @@ void GameModel::init_callbacks() {
 GameModel::GameModel() {
     this->fields = std::vector(12, std::vector<Field>(10));
     GameModel::init_callbacks();
-    change_difficulty(Difficulty::DiffEasy);
+    GameModel::change_difficulty(Difficulty::DiffEasy);
     GameModel::new_game();
 }
 
-void change_difficulty(Difficulty df) {
+void GameModel::change_difficulty(Difficulty df) {
     switch (df) {
         case Difficulty::DiffEasy:
             Constants::diff = 1;

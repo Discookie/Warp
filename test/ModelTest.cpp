@@ -287,12 +287,12 @@ protected:
 TEST_F(FactoryFixture, InitTest) {
     EXPECT_EQ(factory->attack_speed(), Constants::FACTORY_ATTACK_SPEED);
     EXPECT_EQ(factory->production_speed(), Constants::FACTORY_BASE_PRODUCTION_SPEED);
-    EXPECT_EQ(factory->cost(), Constants::FACTORY_BASE_COST);
-    EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST);
+    EXPECT_EQ(factory->cost(), Constants::FACTORY_BASE_COST());
+    EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST());
     EXPECT_EQ(factory->max_hp(), Constants::FACTORY_MAX_HP);
     EXPECT_EQ(factory->production_amount(), Constants::FACTORY_BASE_PRODUCTION);
     EXPECT_EQ(factory->remove_value(), Constants::FACTORY_BASE_REMOVE_VALUE);
-    EXPECT_EQ(factory->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(factory->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(factory->get_vector_pos(), -1);
     EXPECT_FALSE(factory->is_upgraded());
     EXPECT_TRUE(factory->is_friendly());
@@ -302,12 +302,12 @@ TEST_F(FactoryFixture, UpgradeTest) {
     factory->upgrade();
     EXPECT_EQ(factory->attack_speed(), Constants::FACTORY_ATTACK_SPEED);
     EXPECT_EQ(factory->production_speed(), Constants::FACTORY_UPGRADE_PRODUCTION_SPEED);
-    EXPECT_EQ(factory->cost(), Constants::FACTORY_UPGRADE_COST);
-    EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST);
+    EXPECT_EQ(factory->cost(), Constants::FACTORY_UPGRADE_COST());
+    EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST());
     EXPECT_EQ(factory->max_hp(), Constants::FACTORY_MAX_HP);
     EXPECT_EQ(factory->production_amount(), Constants::FACTORY_UPGRADE_PRODUCTION);
     EXPECT_EQ(factory->remove_value(), Constants::FACTORY_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(factory->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(factory->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(factory->get_vector_pos(), -1);
     EXPECT_TRUE(factory->is_upgraded());
     EXPECT_TRUE(factory->is_friendly());
@@ -344,12 +344,12 @@ protected:
 
 TEST_F(LaserTowerFixture, InitTest) {
     EXPECT_EQ(laserTower->attack_speed(), Constants::LASERTOWER_BASE_ATTACKSPEED);
-    EXPECT_EQ(laserTower->damage(), Constants::LASERTOWER_BASE_DAMAGE);
-    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_BASE_COST);
+    EXPECT_EQ(laserTower->damage(), Constants::LASERTOWER_BASE_DAMAGE());
+    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_BASE_COST());
     EXPECT_EQ(laserTower->remove_value(), Constants::LASERTOWER_BASE_REMOVE_VALUE);
-    EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST);
+    EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST());
     EXPECT_EQ(laserTower->max_hp(), Constants::LASERTOWER_MAX_HP);
-    EXPECT_EQ(laserTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(laserTower->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(laserTower->get_vector_pos(), -1);
     EXPECT_FALSE(laserTower->is_upgraded());
     EXPECT_TRUE(laserTower->is_friendly());
@@ -358,11 +358,11 @@ TEST_F(LaserTowerFixture, InitTest) {
 TEST_F(LaserTowerFixture, UpgradeTest) {
     laserTower->upgrade();
     EXPECT_EQ(laserTower->attack_speed(), Constants::LASERTOWER_UPGRADE_ATTACKSPEED);
-    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_UPGRADE_COST);
-    EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST);
+    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_UPGRADE_COST());
+    EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST());
     EXPECT_EQ(laserTower->max_hp(), Constants::LASERTOWER_MAX_HP);
     EXPECT_EQ(laserTower->remove_value(), Constants::LASERTOWER_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(laserTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(laserTower->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(laserTower->get_vector_pos(), -1);
     EXPECT_TRUE(laserTower->is_upgraded());
     EXPECT_TRUE(laserTower->is_friendly());
@@ -399,12 +399,12 @@ protected:
 
 TEST_F(SniperTowerFixture, InitTest) {
     EXPECT_EQ(sniperTower->attack_speed(), Constants::SNIPERTOWER_BASE_ATTACKSPEED);
-    EXPECT_EQ(sniperTower->damage(), Constants::SNIPERTOWER_BASE_DAMAGE);
-    EXPECT_EQ(sniperTower->cost(), Constants::SNIPERTOWER_BASE_COST);
+    EXPECT_EQ(sniperTower->damage(), Constants::SNIPERTOWER_BASE_DAMAGE());
+    EXPECT_EQ(sniperTower->cost(), Constants::SNIPERTOWER_BASE_COST());
     EXPECT_EQ(sniperTower->remove_value(), Constants::SNIPERTOWER_BASE_REMOVE_VALUE);
-    EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST);
+    EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST());
     EXPECT_EQ(sniperTower->max_hp(), Constants::SNIPERTOWER_MAX_HP);
-    EXPECT_EQ(sniperTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(sniperTower->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(sniperTower->get_vector_pos(), -1);
     EXPECT_FALSE(sniperTower->is_upgraded());
     EXPECT_TRUE(sniperTower->is_friendly());
@@ -413,11 +413,11 @@ TEST_F(SniperTowerFixture, InitTest) {
 TEST_F(SniperTowerFixture, UpgradeTest) {
     sniperTower->upgrade();
     EXPECT_EQ(sniperTower->attack_speed(), Constants::SNIPERTOWER_UPGRADE_ATTACKSPEED);
-    EXPECT_EQ(sniperTower->cost(), Constants::SNIPERTOWER_UPGRADE_COST);
-    EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST);
+    EXPECT_EQ(sniperTower->cost(), Constants::SNIPERTOWER_BASE_COST());
+    EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST());
     EXPECT_EQ(sniperTower->max_hp(), Constants::SNIPERTOWER_MAX_HP);
     EXPECT_EQ(sniperTower->remove_value(), Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(sniperTower->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(sniperTower->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(sniperTower->get_vector_pos(), -1);
     EXPECT_TRUE(sniperTower->is_upgraded());
     EXPECT_TRUE(sniperTower->is_friendly());
@@ -454,12 +454,12 @@ protected:
 
 TEST_F(TeslaCoilFixture, InitTest) {
     EXPECT_EQ(teslaCoil->attack_speed(), Constants::TESLACOIL_BASE_ATTACKSPEED);
-    EXPECT_EQ(teslaCoil->damage(), Constants::TESLACOIL_BASE_DAMAGE);
-    EXPECT_EQ(teslaCoil->cost(), Constants::TESLACOIL_BASE_COST);
+    EXPECT_EQ(teslaCoil->damage(), Constants::TESLACOIL_BASE_DAMAGE());
+    EXPECT_EQ(teslaCoil->cost(), Constants::TESLACOIL_BASE_COST());
     EXPECT_EQ(teslaCoil->remove_value(), Constants::TESLACOIL_BASE_REMOVE_VALUE);
-    EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST);
+    EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST());
     EXPECT_EQ(teslaCoil->max_hp(), Constants::TESLACOIL_MAX_HP);
-    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(teslaCoil->get_vector_pos(), -1);
     EXPECT_FALSE(teslaCoil->is_upgraded());
     EXPECT_TRUE(teslaCoil->is_friendly());
@@ -468,11 +468,11 @@ TEST_F(TeslaCoilFixture, InitTest) {
 TEST_F(TeslaCoilFixture, UpgradeTest) {
     teslaCoil->upgrade();
     EXPECT_EQ(teslaCoil->attack_speed(), Constants::TESLACOIL_UPGRADE_ATTACKSPEED);
-    EXPECT_EQ(teslaCoil->cost(), Constants::TESLACOIL_UPGRADE_COST);
-    EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST);
+    EXPECT_EQ(teslaCoil->cost(), Constants::TESLACOIL_BASE_COST());
+    EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST());
     EXPECT_EQ(teslaCoil->max_hp(), Constants::TESLACOIL_MAX_HP);
     EXPECT_EQ(teslaCoil->remove_value(), Constants::TESLACOIL_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate){0, 0}));
+    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate) {0, 0}));
     EXPECT_EQ(teslaCoil->get_vector_pos(), -1);
     EXPECT_TRUE(teslaCoil->is_upgraded());
     EXPECT_TRUE(teslaCoil->is_friendly());

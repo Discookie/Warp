@@ -121,6 +121,12 @@ void Field::spawn_moving_entity(EntityType type) {
 }
 
 void Field::add_moving_entity(std::shared_ptr<Unstable> obj) {
+    if (obj->is_friendly() && this->team_status == Team::TeamEnemy) {
+        throw std::invalid_argument("Team status error");
+    }
+    if (!obj->is_friendly() && this->team_status == Team::TeamFriendly) {
+        throw std::invalid_argument("Team status error");
+    }
     if (this->team_status == Team::TeamNeutral) {
         this->team_status = obj->is_friendly() ? Team::TeamFriendly : Team::TeamEnemy;
     }
