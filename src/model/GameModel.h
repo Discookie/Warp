@@ -52,6 +52,8 @@ private:
 public:
     GameModel();
 
+    void change_difficulty(Difficulty df);
+
     void new_game();
 
     // Persistence

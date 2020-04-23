@@ -7,12 +7,12 @@ class Robot : public Enemy {
 public:
     Robot(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos) :
             Enemy(position, game_model_callback, vector_pos) {
-        this->hp = Constants::ROBOT_MAX_HP;
+        this->hp = Constants::ROBOT_MAX_HP();
     }
 
-    int max_hp() const override { return Constants::ROBOT_MAX_HP; }
+    int max_hp() const override { return Constants::ROBOT_MAX_HP(); }
 
-    int move_speed() const override { return Constants::ROBOT_MOVESPEED; }
+    int move_speed() const override { return Constants::ROBOT_MOVESPEED(); }
 
     int attack_speed() const override { return Constants::ROBOT_ATTACKSPEED; }
 

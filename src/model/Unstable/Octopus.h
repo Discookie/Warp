@@ -7,12 +7,12 @@ class Octopus : public Enemy {
 public:
     Octopus(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback, int vector_pos) :
             Enemy(position, game_model_callback, vector_pos) {
-        this->hp = Constants::OCTOPUS_MAX_HP;
+        this->hp = Constants::OCTOPUS_MAX_HP();
     }
 
-    int max_hp() const override { return Constants::OCTOPUS_MAX_HP; }
+    int max_hp() const override { return Constants::OCTOPUS_MAX_HP(); }
 
-    int move_speed() const override { return Constants::OCTOPUS_MOVESPEED; }
+    int move_speed() const override { return Constants::OCTOPUS_MOVESPEED(); }
 
     int attack_speed() const override { return Constants::OCTOPUS_ATTACKSPEED; }
 

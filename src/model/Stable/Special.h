@@ -26,13 +26,13 @@ public:
 
     int max_hp() const override { return Constants::SPECIAL_MAX_HP; }
 
-    int cost() const override { return Constants::SPECIAL_BASE_COST; }
+    int cost() const override { return Constants::SPECIAL_BASE_COST(); }
 
     int upgrade_cost() const override { return Constants::SPECIAL_UPGRADE_COST; }
 
     int attack_speed() const override { return Constants::SPECIAL_ATTACKSPEED; }
 
-    int damage() const override { return Constants::SPECIAL_DAMAGE; }
+    int damage() const override { return Constants::SPECIAL_DAMAGE(); }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (auto &vf:fields) {

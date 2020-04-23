@@ -7,7 +7,7 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS *.cpp)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-add_library(WarpLib STATIC ${SRCS} model/Difficulty.h)
+add_library(WarpLib STATIC ${SRCS})
 
 # Need to set separately for each build target
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

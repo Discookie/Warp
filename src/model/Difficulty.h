@@ -6,9 +6,9 @@
 #define WARP_DIFFICULTY_H
 
 enum Difficulty {
-    DiffEasy = 5,
-    DiffNormal = 6 ,
-    DiffHard = 7,
+    DiffEasy,
+    DiffNormal,
+    DiffHard,
 };
 
 #endif  // WARP_DIFFICULTY_H

@@ -58,7 +58,7 @@ void GameModel::update_fields() {
     }
 }
 
-bool GameModel::check_win() const { return this->wave_number >= Constants::FINAL_WAVE_NUMBER; }
+bool GameModel::check_win() const { return this->wave_number >= Constants::FINAL_WAVE_NUMBER(); }
 
 bool GameModel::check_lose() const {
     for (const auto &a : this->fields) {
@@ -143,7 +143,25 @@ void GameModel::init_callbacks() {
 GameModel::GameModel() {
     this->fields = std::vector(12, std::vector<Field>(10));
     GameModel::init_callbacks();
+    change_difficulty(Difficulty::DiffEasy);
     GameModel::new_game();
+}
+
+void change_difficulty(Difficulty df) {
+    switch (df) {
+        case Difficulty::DiffEasy:
+            Constants::diff = 1;
+            break;
+        case Difficulty::DiffNormal:
+            Constants::diff = 1.2;
+            break;
+        case Difficulty::DiffHard:
+            Constants::diff = 1.5;
+            break;
+        default:
+            Constants::diff = 1;
+            break;
+    }
 }
 
 void GameModel::new_game() {
@@ -230,19 +248,19 @@ void GameModel::select_tower(EntityType type) { this->selected_tower = type; }
 bool GameModel::is_buildable(EntityType type) const {
     switch (type) {
         case EntityType::TypeFactory:
-            return this->gold >= Constants::FACTORY_BASE_COST;
+            return this->gold >= Constants::FACTORY_BASE_COST();
         case EntityType::TypeLaserTower:
-            return this->gold >= Constants::LASERTOWER_BASE_COST;
+            return this->gold >= Constants::LASERTOWER_BASE_COST();
         case EntityType::TypeTeslaCoil:
-            return this->gold >= Constants::TESLACOIL_BASE_COST;
+            return this->gold >= Constants::TESLACOIL_BASE_COST();
         case EntityType::TypeSniperTower:
-            return this->gold >= Constants::SNIPERTOWER_BASE_COST;
+            return this->gold >= Constants::SNIPERTOWER_BASE_COST();
         case EntityType::TypeHqAttack:
-            return this->gold >= Constants::HQATTACK_BASE_COST;
+            return this->gold >= Constants::HQATTACK_BASE_COST();
         case EntityType::TypeHqDefense:
-            return this->gold >= Constants::HQDEFENSE_BASE_COST;
+            return this->gold >= Constants::HQDEFENSE_BASE_COST();
         case EntityType::TypeSpecial:
-            return this->gold >= Constants::SPECIAL_BASE_COST && this->have_special;
+            return this->gold >= Constants::SPECIAL_BASE_COST() && this->have_special;
         default:
             return false;
     }
