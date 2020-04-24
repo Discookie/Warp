@@ -16,7 +16,7 @@ neither::Either<std::string, GameSprite> GameSprite::create(const std::string& s
     return retTy::rightOf(std::move(ret));
 }
 
-void GameSprite::render_sprite_16px(int left, int top, const ALLEGRO_EVENT& event) const {
+void GameSprite::render_sprite_20px(int left, int top, const ALLEGRO_EVENT& event) const {
     ALLEGRO_BITMAP* raw_image = small_sprite.get();
     al_draw_bitmap(
         raw_image,

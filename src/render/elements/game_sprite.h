@@ -14,6 +14,6 @@ class GameSprite {
     GameSprite(std::unique_ptr<ALLEGRO_BITMAP, BitmapDeleter>&& small) : small_sprite(std::move(small)) {}
 public:
     static neither::Either<std::string, GameSprite> create(const std::string& sprite_name);
-    void render_sprite_16px(int left, int top, const ALLEGRO_EVENT& event) const;
+    void render_sprite_20px(int left, int top, const ALLEGRO_EVENT& event) const;
     // void render_sprite_12px(int left, int top, const ALLEGRO_EVENT& event);
 };

@@ -113,14 +113,14 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
             if (sprite) {
                 auto is_empty = sprite.has_value();
                 auto& sprite_clone = *sprite;
-                sprite->render_sprite_16px(x_pos, y_pos, event);
+                sprite->render_sprite_20px(x_pos, y_pos, event);
 
                 // TODO: Render attacks, such as lasers, depending on attack type
                 // TODO: Render HP bars
 
                 // For the entities, render the ribbon
                 if (!entities.empty()) {
-                    multiple_sprite->render_sprite_16px(x_pos, y_pos, event);
+                    multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
                 }
             // If there's no building, render the highest-priority entity
             // Priorities: Friendly > Robot > Octopus > Alien
@@ -131,7 +131,7 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
                 ) {
                     if (entities_found[ty] > 0) {
                         if (sprites[ty]) {
-                            sprites[ty]->render_sprite_16px(x_pos, y_pos, event);
+                            sprites[ty]->render_sprite_20px(x_pos, y_pos, event);
                         }
                         break;
                     }
@@ -140,7 +140,7 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
 
                 // For the rest of the objects, render the ribbon
                 if (entities.size() > 1) {
-                    multiple_sprite->render_sprite_16px(x_pos, y_pos, event);
+                    multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
                 }
             }
         }
