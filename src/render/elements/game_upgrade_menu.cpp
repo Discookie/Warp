@@ -10,15 +10,15 @@ using menu_ptr = std::unique_ptr<GameUpgradeMenu>;
 
 // {name, type, cost}
 const std::vector<std::optional<int>> item_upgrade_costs = {
-    std::nullopt,
-    Constants::FACTORY_UPGRADE_COST,
-    Constants::LASERTOWER_UPGRADE_COST,
-    Constants::TESLACOIL_UPGRADE_COST,
-    Constants::SNIPERTOWER_UPGRADE_COST,
-    Constants::HQATTACK_UPGRADE_COST,
-    Constants::HQDEFENSE_UPGRADE_COST,
-    Constants::SPECIAL_UPGRADE_COST,
-    std::nullopt,
+        std::nullopt,
+        Constants::FACTORY_UPGRADE_COST(),
+        Constants::LASERTOWER_UPGRADE_COST(),
+        Constants::TESLACOIL_UPGRADE_COST(),
+        Constants::SNIPERTOWER_UPGRADE_COST(),
+        Constants::HQATTACK_UPGRADE_COST,
+        Constants::HQDEFENSE_UPGRADE_COST,
+        Constants::SPECIAL_UPGRADE_COST,
+        std::nullopt,
 };
 
 const std::vector<std::optional<int>> item_delete_costs = {
