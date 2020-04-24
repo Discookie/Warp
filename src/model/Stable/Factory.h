@@ -29,9 +29,9 @@ public:
 
     int max_hp() const override { return Constants::FACTORY_MAX_HP; }
 
-    int cost() const override { return Constants::FACTORY_BASE_COST; }
+    int cost() const override { return Constants::FACTORY_BASE_COST(); }
 
-    int upgrade_cost() const override { return Constants::FACTORY_UPGRADE_COST; }
+    int upgrade_cost() const override { return Constants::FACTORY_UPGRADE_COST(); }
 
     int attack_speed() const override { return Constants::FACTORY_ATTACK_SPEED; }
 

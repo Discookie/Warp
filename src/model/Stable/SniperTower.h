@@ -25,9 +25,9 @@ public:
 
     int max_hp() const override { return Constants::SNIPERTOWER_MAX_HP; }
 
-    int cost() const override { return Constants::SNIPERTOWER_BASE_COST; }
+    int cost() const override { return Constants::SNIPERTOWER_BASE_COST(); }
 
-    int upgrade_cost() const override { return Constants::SNIPERTOWER_UPGRADE_COST; }
+    int upgrade_cost() const override { return Constants::SNIPERTOWER_UPGRADE_COST(); }
 
     int attack_speed() const override {
         return !upgraded ?
@@ -36,7 +36,7 @@ public:
 
     int damage() const override {
         return !upgraded ?
-               Constants::SNIPERTOWER_BASE_DAMAGE : Constants::SNIPERTOWER_UPGRADE_DAMAGE;
+               Constants::SNIPERTOWER_BASE_DAMAGE() : Constants::SNIPERTOWER_UPGRADE_DAMAGE();
     }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {

@@ -22,7 +22,7 @@ public:
 
     int max_hp() const override { return Constants::HQDEFENSE_MAX_HP; }
 
-    int cost() const override { return Constants::HQDEFENSE_BASE_COST; }
+    int cost() const override { return Constants::HQDEFENSE_BASE_COST(); }
 
     int upgrade_cost() const override { return Constants::HQDEFENSE_UPGRADE_COST; }
 

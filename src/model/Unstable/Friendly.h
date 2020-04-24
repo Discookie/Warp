@@ -17,11 +17,11 @@ public:
 
     int move_speed() const override { return Constants::FRIENDLY_MOVESPEED; }
 
-    int cost() const override { return Constants::FRIENDLY_COST; }
+    int cost() const override { return Constants::FRIENDLY_COST(); }
 
     int attack_speed() const override { return Constants::FRIENDLY_ATTACKSPEED; }
 
-    int damage() const override { return Constants::FRIENDLY_DAMAGE; }
+    int damage() const override { return Constants::FRIENDLY_DAMAGE(); }
 
     std::optional<Coordinate> move_to(const std::vector<std::vector<Field>> &fields) override {
         if (this->position.x + 1 < fields.size()) {

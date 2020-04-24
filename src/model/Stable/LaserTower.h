@@ -26,9 +26,9 @@ public:
 
     int max_hp() const override { return Constants::LASERTOWER_MAX_HP; }
 
-    int cost() const override { return Constants::LASERTOWER_BASE_COST; }
+    int cost() const override { return Constants::LASERTOWER_BASE_COST(); }
 
-    int upgrade_cost() const override { return Constants::LASERTOWER_UPGRADE_COST; }
+    int upgrade_cost() const override { return Constants::LASERTOWER_UPGRADE_COST(); }
 
     int attack_speed() const override {
         return !upgraded ?
@@ -37,7 +37,7 @@ public:
 
     int damage() const override {
         return !upgraded ?
-               Constants::LASERTOWER_BASE_DAMAGE : Constants::LASERTOWER_UPGRADE_DAMAGE;
+               Constants::LASERTOWER_BASE_DAMAGE() : Constants::LASERTOWER_UPGRADE_DAMAGE();
     }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {

@@ -24,13 +24,13 @@ public:
 
     int max_hp() const override { return Constants::HQATTACK_MAX_HP; }
 
-    int cost() const override { return Constants::HQATTACK_BASE_COST; }
+    int cost() const override { return Constants::HQATTACK_BASE_COST(); }
 
     int upgrade_cost() const override { return Constants::HQATTACK_UPGRADE_COST; }
 
     int attack_speed() const override { return Constants::HQATTACK_ATTACKSPEED; }
 
-    int damage() const override { return Constants::HQATTACK_DAMAGE; }
+    int damage() const override { return Constants::HQATTACK_DAMAGE(); }
 
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (int i = this->position.x + 1; i < fields.size(); i++) {
