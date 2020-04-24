@@ -95,7 +95,7 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
             int ty = tower ? tower->get_entity_type() : EntityType::TypeNone;
 
             std::vector<std::shared_ptr<const Unstable>> entities = field.get_moving_entities_const();
-            const std::optional<GameSprite>& sprite = sprites[static_cast<int>(ty)];
+            const std::optional<GameSprite>& sprite = sprites[ty];
 
             if (ty == EntityType::TypeSpecial) {
                 // TODO: Render special effect bg
@@ -130,7 +130,9 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
                     ty >= EntityType::TypeAlien; ty--
                 ) {
                     if (entities_found[ty] > 0) {
-                        sprites[ty]->render_sprite_16px(x_pos, y_pos, event);
+                        if (sprites[ty]) {
+                            sprites[ty]->render_sprite_16px(x_pos, y_pos, event);
+                        }
                         break;
                     }
                 }
