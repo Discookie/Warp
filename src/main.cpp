@@ -1,5 +1,6 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
@@ -8,6 +9,9 @@
 #include <memory>
 
 #include "menu/main_menu.h"
+#include "menu/new_game.h"
+#include "render/game_scene.h"
+#include "model/GameModel.h"
 #include "scene/scene_manager.h"
 #include "utils/deleters.hpp"
 
@@ -25,6 +29,8 @@ int main() {
     not_null(al_install_mouse(), "initializing mouse");
     not_null(al_init_image_addon(), "initializing image formats");
     not_null(al_init_primitives_addon(), "initializing primitives");
+    not_null(al_init_font_addon(), "initializing fonts");
+    not_null(al_init_ttf_addon(), "initializing TTF fonts");
 
     std::shared_ptr<ALLEGRO_TIMER> frame_timer = std::shared_ptr<ALLEGRO_TIMER>(
         al_create_timer(1.0 / 30.0), [](auto* timer) { al_destroy_timer(timer); });
@@ -48,20 +54,29 @@ int main() {
     al_register_event_source(main_queue.get(), al_get_timer_event_source(frame_timer.get()));
 
     SceneManager scene_manager = SceneManager();
+    GameModel game_model = GameModel();
 
-    auto main_menu_scene =
-        MainMenuScene::create()
-            .leftMap([&](auto&& err) {
-                not_null(true, "adding main menu scene failed: " + err);
-                return 0;
-            })
-            .rightMap([&](auto&& scene_ptr) {
-                std::unique_ptr<Scene> casted_scene_ptr =
-                    std::unique_ptr<Scene>(scene_ptr.release());
-                scene_manager.add_scene("main_menu", std::move(casted_scene_ptr));
-                scene_manager.set_scene("main_menu");
-                return 0;
-            });
+    const auto try_add_scene = [&](auto new_scene_opt, auto& scene_name){
+        new_scene_opt
+        .leftMap([&](auto&& err) {
+            std::cerr << "adding " << scene_name << " scene failed: " << err << std::endl;
+            not_null(false, "loading a scene");
+            return 0;
+        }).rightMap([&](auto&& scene_ptr){
+            std::unique_ptr<Scene> casted_scene_ptr = std::unique_ptr<Scene>(scene_ptr.release());
+            scene_manager.add_scene(scene_name, std::move(casted_scene_ptr));
+            scene_manager.set_scene(scene_name);
+            return 0;
+        });
+    };
+
+    try_add_scene(MainMenuScene::create(), "main_menu");
+    try_add_scene(NewGameScene::create([](int x){
+        std::cout << "Selected diff: " << x << std::endl;
+    }), "new_game");
+    try_add_scene(GameScene::create(game_model), "in_game");
+    scene_manager.set_scene("main_menu");
+    
 
     ALLEGRO_EVENT event;
     std::optional<ALLEGRO_EVENT> last_frame_event;
