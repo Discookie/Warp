@@ -29,7 +29,7 @@ public:
                std::shared_ptr<ALLEGRO_FONT> button_font,
                std::optional<std::function<void()>> on_click,
                std::optional<std::function<void()>> on_release
-    ) : x(center_x), y(center_y), w(width), h(height), enabled(false),
+    ) : x(center_x), y(center_y), w(width), h(height), enabled(false), visible(true),
         name(name_text), price(price_value), 
         font(button_font),
         click_callback(on_click), release_callback(on_release) {}

@@ -12,7 +12,7 @@ bool GameButton::update_buyable(int money) {
 }
 
 void GameButton::on_click(const ALLEGRO_MOUSE_EVENT& event) {
-    if (enabled
+    if (enabled && visible
         && is_between(event.x, x - w / 2, x + (w + 1) / 2)
         && is_between(event.y, y - h / 2, y + (h + 1) / 2)
     ) {
@@ -23,7 +23,7 @@ void GameButton::on_click(const ALLEGRO_MOUSE_EVENT& event) {
 }
 
 void GameButton::on_release(const ALLEGRO_MOUSE_EVENT& event) {
-    if (enabled
+    if (enabled && visible
         && is_between(event.x, x - w / 2, x + (w + 1) / 2)
         && is_between(event.y, y - h / 2, y + (h + 1) / 2)
     ) {
@@ -34,6 +34,8 @@ void GameButton::on_release(const ALLEGRO_MOUSE_EVENT& event) {
 }
 
 void GameButton::render_button() {
+    if (!visible) return;
+    
     int font_height = al_get_font_line_height(font.get());
 
     if (enabled) {
