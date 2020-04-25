@@ -55,7 +55,7 @@ protected:
     }
 
     [[nodiscard]] TestScene *extract_from_scene_manager(const std::string &scene_to_remove) {
-        return dynamic_cast<TestScene *>(scene_manager.remove_scene(scene_to_remove).value().get());
+        return dynamic_cast<TestScene *>(scene_manager.remove_scene(scene_to_remove)->release());
     }
 
     void add_n_set(const std::string &scene, int id) {
