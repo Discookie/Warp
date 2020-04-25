@@ -120,7 +120,9 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
 
                 // For the entities, render the ribbon
                 if (!entities.empty()) {
-                    multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
+                    if (multiple_sprite) {
+                        multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
+                    }
                 }
             // If there's no building, render the highest-priority entity
             // Priorities: Friendly > Robot > Octopus > Alien
@@ -140,7 +142,9 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
 
                 // For the rest of the objects, render the ribbon
                 if (entities.size() > 1) {
-                    multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
+                    if (multiple_sprite) {
+                        multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
+                    }
                 }
             }
         }
