@@ -578,7 +578,7 @@ TEST_F(GameModelFixture, NewGameTest) {
 TEST_F(GameModelFixture, BuildTest1) {
     for (int i = 0; i < 12; ++i) {
         game_model.select_tower((EntityType)i);
-        if (game_model.is_buildable((EntityType)i)) {
+        if (game_model.is_buildable((EntityType)i) || i == EntityType::TypeFriendly) {
             EXPECT_NO_THROW(game_model.add_friendly_entity({i, 0}));
         } else {
             EXPECT_ANY_THROW(game_model.add_friendly_entity({i, 0}));
