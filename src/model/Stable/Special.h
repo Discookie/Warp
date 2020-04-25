@@ -39,9 +39,12 @@ public:
             for (auto &f:vf) {
                 if (distance(this->get_position(), f.get_position()) <= Constants::SPECIAL_ATTACK_RANGE) {
                     if (f.get_team_status() == Team::TeamEnemy) {
-                        auto me = f.get_moving_entities();
-                        for (auto &m : me) {
-                            m->take_damage(this->damage());
+                        for (int i = 0; i < f.get_moving_entities().size(); ++i) {
+                            int s = f.get_moving_entities().size();
+                            f.get_moving_entities()[i]->take_damage(this->damage());
+                            if (s != f.get_moving_entities().size()) {
+                                --i;
+                            }
                         }
                     }
                 }

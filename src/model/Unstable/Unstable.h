@@ -28,7 +28,7 @@ public:
         this->vector_position = vector_pos;
     }
 
-    ~Unstable() override = default;
+    virtual ~Unstable() = default;
 
     int get_vector_pos() const final { return vector_position; }
 

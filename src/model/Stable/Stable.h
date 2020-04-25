@@ -13,7 +13,7 @@ public:
     Stable(Coordinate position, const std::shared_ptr<FieldEntityCallback> &game_model_callback)
         : FieldEntity(position, game_model_callback) {}
 
-    ~Stable() override = default;
+    virtual ~Stable() = default;
 
     bool is_friendly() const final { return true; }
 

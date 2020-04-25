@@ -103,11 +103,11 @@ void GameModel::spawn_wave() {
 
 void GameModel::init_callbacks() {
     // Produce Callback
-    auto pro = [this](const std::shared_ptr<FieldEntity> &obj) {
+    auto pro = [this](std::shared_ptr<FieldEntity> obj) {
         this->gold += std::static_pointer_cast<Factory>(obj)->production_amount();
     };
     // Move Callback
-    auto mov = [this](const std::shared_ptr<FieldEntity> &obj) {
+    auto mov = [this](std::shared_ptr<FieldEntity> obj) {
         std::optional<Coordinate> new_pos =
             std::static_pointer_cast<Unstable>(obj)->move_to(this->fields);
         if (!new_pos) {
@@ -126,15 +126,18 @@ void GameModel::init_callbacks() {
         }
     };
     // Attack Callback
-    auto att = [this](const std::shared_ptr<FieldEntity> &obj) {
+    auto att = [this](std::shared_ptr<FieldEntity> obj) {
         obj->attack_entities(this->fields);
     };
     // Die Callback
-    auto die = [this](const std::shared_ptr<FieldEntity> &obj) {
+    auto die = [this](std::shared_ptr<FieldEntity> obj) {
         if (obj->get_vector_pos() == -1) {
             this->get_field(obj->get_position()).remove_tower();
         } else {
             this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
+            if (obj->get_entity_type() == EntityType::TypeRobot) {
+                this->have_special = true;
+            }
         }
     };
     call_backs = std::make_shared<FieldEntityCallback>(pro, mov, att, die);

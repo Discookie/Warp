@@ -158,8 +158,12 @@ void Field::update_entities() {
     if (this->tower) {
         this->tower->update();
     }
-    for (auto &me : this->moving_entities) {
-        me->update();
+    for (unsigned long i = 0; i < moving_entities.size(); ++i) {
+        unsigned long s = moving_entities.size();
+        moving_entities[i]->update();
+        if (s != moving_entities.size()) {
+            --i;
+        }
     }
 }
 
