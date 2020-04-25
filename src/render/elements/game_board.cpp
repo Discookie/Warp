@@ -8,7 +8,7 @@ const std::vector<std::string> sprite_names = {
     "laser",
     "tesla_coil",
     "sniper_tower",
-    "hs_attac",
+    "hq_attac",
     "hq_deffense",
     "special",
     "alien",

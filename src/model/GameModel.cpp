@@ -273,6 +273,9 @@ void GameModel::build_tower(Coordinate position) {
     if (this->get_field(position).get_tower_const()) {
         throw std::invalid_argument("Tower space occupied");
     }
+    if (selected_tower == EntityType::TypeSpecial && !this->have_special) {
+        throw std::invalid_argument("Don't have special");
+    }
     if (!this->is_buildable(selected_tower)) {
         throw std::invalid_argument("Insufficient gold");
     }
