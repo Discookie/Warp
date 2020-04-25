@@ -45,6 +45,14 @@ public:
               [this](const std::shared_ptr<FieldEntity> &obj) { ++die_calls; }) {}
 };
 /*
+class TFactory : public Factory {
+public:
+    TFactory(Coordinate c, const std::shared_ptr<FieldEntityCallback> &fe_cb) : Factory(c, fe_cb) {}
+    void p_die() { die(); }
+    void p_produce() { produce(); }
+};
+*/
+/*
 TEST(TestMockCallback, Test) {
     std::shared_ptr<MockCallback> cb = std::make_shared<MockCallback>();
     std::shared_ptr<Factory> factory = std::make_shared<Factory>(Factory({0, 0}, cb));
@@ -108,19 +116,19 @@ TEST_F(FieldFixture, InitTest) {
 }
 
 // TEST_F(FieldFixture, BuildTest) {
-//     field.build_tower(EntityType::TypeFactory);
+//     field.add_friendly_entity(EntityType::TypeFactory);
 //
 //     EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
 //     ASSERT_TRUE(field.get_tower());
 //
-//     EXPECT_ANY_THROW(field.build_tower(EntityType::TypeFactory))
+//     EXPECT_ANY_THROW(field.add_friendly_entity(EntityType::TypeFactory))
 //         << "Double build should throw exception";
 //     field.get_tower()->die();
 //     EXPECT_EQ(field.get_team_status(), Team::TeamNeutral);
 // }
 //
 // TEST_F(FieldFixture, BuildFactoryTest) {
-//     field.build_tower(EntityType::TypeFactory);
+//     field.add_friendly_entity(EntityType::TypeFactory);
 //     EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeFactory);
 //
 //     std::dynamic_pointer_cast<Factory>(field.get_tower())->produce();
@@ -130,7 +138,7 @@ TEST_F(FieldFixture, InitTest) {
 // }
 //
 // TEST_F(FieldFixture, BuildLaserTowerTest) {
-//     field.build_tower(EntityType::TypeLaserTower);
+//     field.add_friendly_entity(EntityType::TypeLaserTower);
 //     EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeLaserTower);
 //
 //     field.get_tower()->attack();
@@ -140,7 +148,7 @@ TEST_F(FieldFixture, InitTest) {
 // }
 //
 // TEST_F(FieldFixture, BuildTeslaCoilTest) {
-//     field.build_tower(EntityType::TypeTeslaCoil);
+//     field.add_friendly_entity(EntityType::TypeTeslaCoil);
 //     EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeTeslaCoil);
 //
 //     field.get_tower()->attack();
@@ -150,7 +158,7 @@ TEST_F(FieldFixture, InitTest) {
 // }
 //
 // TEST_F(FieldFixture, BuildSniperTowerTest) {
-//     field.build_tower(EntityType::TypeSniperTower);
+//     field.add_friendly_entity(EntityType::TypeSniperTower);
 //     EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeSniperTower);
 //
 //     field.get_tower()->attack();
@@ -160,7 +168,7 @@ TEST_F(FieldFixture, InitTest) {
 // }
 //
 // TEST_F(FieldFixture, BuildSpecialTest) {
-//     field.build_tower(EntityType::TypeSpecial);
+//     field.add_friendly_entity(EntityType::TypeSpecial);
 //     EXPECT_EQ(field.get_tower()->get_entity_type(), EntityType::TypeSpecial);
 //
 //     field.get_tower()->attack();
@@ -555,7 +563,6 @@ TEST_F(GameModelFixture, SaveLoadTest) {
     }
     game_model1.load_game("test.txt");
     EXPECT_EQ(game_model, game_model1);
-
 }
 
 TEST_F(GameModelFixture, NewGameTest) {
@@ -572,9 +579,9 @@ TEST_F(GameModelFixture, BuildTest1) {
     for (int i = 0; i < 12; ++i) {
         game_model.select_tower((EntityType)i);
         if (game_model.is_buildable((EntityType)i)) {
-            EXPECT_NO_THROW(game_model.build_tower({i, 0}));
+            EXPECT_NO_THROW(game_model.add_friendly_entity({i, 0}));
         } else {
-            EXPECT_ANY_THROW(game_model.build_tower({i, 0}));
+            EXPECT_ANY_THROW(game_model.add_friendly_entity({i, 0}));
         }
     }
 }
@@ -584,12 +591,12 @@ TEST_F(GameModelFixture, BuildTest2) {
     while (!game_model.is_buildable(TypeFactory)) {
         game_model.update();
     }
-    game_model.build_tower({0, 0});
+    game_model.add_friendly_entity({0, 0});
     EXPECT_EQ(game_model.get_field_const({0, 0}).get_team_status(), Team::TeamFriendly);
     while (!game_model.is_buildable(TypeFactory)) {
         game_model.update();
     }
-    EXPECT_ANY_THROW(game_model.build_tower({0, 0}));
+    EXPECT_ANY_THROW(game_model.add_friendly_entity({0, 0}));
 }
 
 #pragma clang diagnostic pop
