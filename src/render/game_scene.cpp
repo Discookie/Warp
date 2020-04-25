@@ -65,7 +65,7 @@ GameScene::GameScene(
 
         if (building_tower) {
             std::cout << "Placed" << std::endl;
-            model.build_tower(pos);
+            model.add_friendly_entity(pos);
             buy_menu->clear_selection();
             set_selected_field(std::nullopt);
         } else if (selected_field) {

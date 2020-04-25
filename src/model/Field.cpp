@@ -110,13 +110,9 @@ void Field::spawn_moving_entity(EntityType type) {
     if (this->team_status != Team::TeamFriendly && type != EntityType::TypeFriendly) {
         add_unstable(type);
         this->team_status = Team::TeamEnemy;
-        return;
-    }
-    if (this->team_status != Team::TeamEnemy && type == EntityType::TypeFriendly) {
-        this->moving_entities.push_back(std::make_shared<Friendly>
-                                                (this->position, this->callback, this->get_moving_entities().size()));
+    } else if (this->team_status != Team::TeamEnemy && type == EntityType::TypeFriendly) {
+        add_unstable(type);
         this->team_status = Team::TeamFriendly;
-        return;
     }
 }
 

@@ -49,6 +49,8 @@ private:
 
     void init_callbacks();
 
+    void build_tower(Coordinate position);
+
 public:
     GameModel();
 
@@ -73,7 +75,7 @@ public:
     // Building (player interaction)
     void select_tower(EntityType type);
 
-    void build_tower(Coordinate position);
+    void add_friendly_entity(Coordinate position);
 
     void upgrade_tower(Coordinate position);
 

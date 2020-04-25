@@ -266,10 +266,24 @@ bool GameModel::is_buildable(EntityType type) const {
     }
 }
 
-void GameModel::build_tower(Coordinate position) {
+void GameModel::add_friendly_entity(Coordinate position) {
     if (!this->valid_position(position)) {
         throw std::invalid_argument("Out-of-range coordinates");
     }
+    if (this->get_field(position).get_team_status() == Team::TeamEnemy) {
+        throw std::invalid_argument("TeamEnemy territory");
+    }
+    if (selected_tower != EntityType::TypeFriendly) {
+        build_tower(position);
+    }
+    else {
+        this->get_field(position).spawn_moving_entity(selected_tower);
+        this->gold -= Constants::FRIENDLY_COST();
+        // TODO: this->points += Constants::POINTS_FOR_FRIENDLY;
+    }
+}
+
+void GameModel::build_tower(Coordinate position) {
     if (this->get_field(position).get_tower_const()) {
         throw std::invalid_argument("Tower space occupied");
     }
@@ -278,9 +292,6 @@ void GameModel::build_tower(Coordinate position) {
     }
     if (!this->is_buildable(selected_tower)) {
         throw std::invalid_argument("Insufficient gold");
-    }
-    if (this->get_field(position).get_team_status() == Team::TeamEnemy) {
-        throw std::invalid_argument("TeamEnemy territory");
     }
 
     this->get_field(position).build_tower(selected_tower);
