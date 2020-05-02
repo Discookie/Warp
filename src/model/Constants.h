@@ -126,27 +126,27 @@ namespace Constants {
     static const int ALIEN_DAMAGE = 100;
     static const int ALIEN_ATTACKSPEED = 100;
 
-    MAKE_CONSTANT_DIFF(ALIEN_MOVESPEED, 50 * (2 - diff));
-    static const int ALIEN_SPWN_BASE_FREQUENCY = 200;
-    static const int ALIEN_SPWN_WAVE_FREQUENCY = 100;
+    MAKE_CONSTANT_DIFF(ALIEN_MOVESPEED, 30 * (2 - diff));
+    static const int ALIEN_SPWN_BASE_FREQUENCY = 100;
+    static const int ALIEN_SPWN_WAVE_FREQUENCY = 50;
 
 /// Octopus
     MAKE_CONSTANT_DIFF(OCTOPUS_MAX_HP, 1500 * diff);
     static const int OCTOPUS_DAMAGE = 100;
     static const int OCTOPUS_ATTACKSPEED = 100;
 
-    MAKE_CONSTANT_DIFF(OCTOPUS_MOVESPEED, 150 * (2 - diff));
-    static const int OCTOPUS_SPWN_BASE_FREQUENCY = 600;
-    static const int OCTOPUS_SPWN_WAVE_FREQUENCY = 300;
+    MAKE_CONSTANT_DIFF(OCTOPUS_MOVESPEED, 50 * (2 - diff));
+    static const int OCTOPUS_SPWN_BASE_FREQUENCY = 300;
+    static const int OCTOPUS_SPWN_WAVE_FREQUENCY = 150;
 
 /// Robot
     MAKE_CONSTANT_DIFF(ROBOT_MAX_HP, 1000 * diff);
     static const int ROBOT_DAMAGE = 100;
     static const int ROBOT_ATTACKSPEED = 100;
 
-    MAKE_CONSTANT_DIFF(ROBOT_MOVESPEED, 100 * (2 - diff));
-    static const int ROBOT_SPWN_BASE_FREQUENCY = 1000;
-    static const int ROBOT_SPWN_WAVE_FREQUENCY = 500;
+    MAKE_CONSTANT_DIFF(ROBOT_MOVESPEED, 70 * (2 - diff));
+    static const int ROBOT_SPWN_BASE_FREQUENCY = 500;
+    static const int ROBOT_SPWN_WAVE_FREQUENCY = 300;
 
 };  // namespace Constants
 

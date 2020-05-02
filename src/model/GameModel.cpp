@@ -116,7 +116,9 @@ void GameModel::init_callbacks() {
         if (obj->get_vector_pos() == -1) {
             throw std::invalid_argument("Tower entity can not move");
         }
-        this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
+        auto &f = this->get_field(obj->get_position());
+        auto p = obj->get_vector_pos();
+        f.remove_entity_at(p);
         if (new_pos->x != -1 && new_pos->y != -1) {
             if (!this->valid_position(new_pos.value())) {
                 throw std::invalid_argument("Out-of-range coordinates");
