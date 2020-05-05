@@ -90,10 +90,10 @@ GameUpgradeMenu::GameUpgradeMenu(
     set_visible(false);
 }
 
-void GameUpgradeMenu::set_prices(std::optional<EntityType> type) {
+void GameUpgradeMenu::set_prices(std::optional<EntityType> type, bool is_upgraded) {
     int idx = type.value_or(EntityType::TypeNone);
 
-    if (item_upgrade_costs[idx]) {
+    if (!is_upgraded && item_upgrade_costs[idx]) {
         upgrade_button.set_price(*item_upgrade_costs[idx]);
         upgrade_button.set_visible(true);
     } else {

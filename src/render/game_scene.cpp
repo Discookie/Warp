@@ -106,9 +106,9 @@ void GameScene::set_selected_field(std::optional<Coordinate> pos) {
     if (pos) {
         std::shared_ptr<const Stable> tower = model.get_field_const(*pos).get_tower_const();
         EntityType tower_type = tower ? tower->get_entity_type() : EntityType::TypeNone;
-        upgrade_menu->set_prices(tower_type);
+        upgrade_menu->set_prices(tower_type, tower->is_upgraded());
     } else {
-        upgrade_menu->set_prices(EntityType::TypeNone);
+        upgrade_menu->set_prices(EntityType::TypeNone, false);
     }
     
     selected_field = pos;
@@ -139,7 +139,7 @@ void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& e
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
             board->on_release(event.mouse);
             buy_menu->on_release(event.mouse);
-            upgrade_menu->on_click(event.mouse);
+            upgrade_menu->on_release(event.mouse);
             break;
 
         // Mouse move
