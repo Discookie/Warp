@@ -91,6 +91,7 @@ GameScene::GameScene(
     upgrade_callbacks.on_upgrade = [&]() {
         if (selected_field) {
             model.upgrade_tower(*selected_field);
+            upgrade_menu->set_upgrade_visible(false); // FIXME: Check manually for upgraded state here
             // do not clear field here
         }
     };

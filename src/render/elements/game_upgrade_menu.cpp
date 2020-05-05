@@ -107,10 +107,12 @@ void GameUpgradeMenu::set_prices(std::optional<EntityType> type, bool is_upgrade
         delete_button.set_visible(false);
     }
 }
+void GameUpgradeMenu::set_upgrade_visible(bool new_vis) {
+    upgrade_button.set_visible(new_vis);
+}
 void GameUpgradeMenu::set_visible(bool new_vis) {
     upgrade_button.set_visible(new_vis);
     delete_button.set_visible(new_vis);
-
 }
 void GameUpgradeMenu::update_buyable(int money) {
     upgrade_button.update_buyable(money);
