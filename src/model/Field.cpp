@@ -129,7 +129,10 @@ void Field::add_moving_entity(std::shared_ptr<Unstable> obj) {
     this->moving_entities.push_back(obj);
 }
 
-void Field::remove_entity_at(int ind) {
+bool Field::remove_entity_at(int ind) {
+    if (ind >= moving_entities.size()) {
+        return true;
+    }
     this->moving_entities.erase(this->moving_entities.begin() + ind);
     for (int i = 0; i < this->moving_entities.size(); i++) {
         moving_entities[i]->set_vector_pos(i);
@@ -137,6 +140,7 @@ void Field::remove_entity_at(int ind) {
     if (this->get_moving_entities().empty() && !this->get_tower_const()) {
         this->team_status = Team::TeamNeutral;
     }
+    return false;
 }
 
 std::vector<std::shared_ptr<Unstable>> Field::get_moving_entities() {

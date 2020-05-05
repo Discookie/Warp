@@ -46,7 +46,7 @@ public:
     void add_moving_entity(std::shared_ptr<Unstable> obj);
 
     /// This is supposed to be called only by die() callback
-    void remove_entity_at(int ind);
+    bool remove_entity_at(int ind);
 
     std::vector<std::shared_ptr<Unstable>> get_moving_entities();
 

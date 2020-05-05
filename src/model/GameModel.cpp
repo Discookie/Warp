@@ -118,13 +118,14 @@ void GameModel::init_callbacks() {
         }
         auto &f = this->get_field(obj->get_position());
         auto p = obj->get_vector_pos();
-        f.remove_entity_at(p);
+        bool bug = f.remove_entity_at(p);
         if (new_pos->x != -1 && new_pos->y != -1) {
             if (!this->valid_position(new_pos.value())) {
                 throw std::invalid_argument("Out-of-range coordinates");
             }
             obj->set_position(*new_pos);
-            this->get_field(*new_pos).add_moving_entity(std::static_pointer_cast<Unstable>(obj));
+            if (!bug)
+                this->get_field(*new_pos).add_moving_entity(std::static_pointer_cast<Unstable>(obj));
         }
     };
     // Attack Callback
@@ -136,10 +137,10 @@ void GameModel::init_callbacks() {
         if (obj->get_vector_pos() == -1) {
             this->get_field(obj->get_position()).remove_tower();
         } else {
-            this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
             if (obj->get_entity_type() == EntityType::TypeRobot) {
                 this->have_special = true;
             }
+            this->get_field(obj->get_position()).remove_entity_at(obj->get_vector_pos());
         }
     };
     call_backs = std::make_shared<FieldEntityCallback>(pro, mov, att, die);
