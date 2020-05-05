@@ -18,25 +18,25 @@ private:
     bool visible;
     // FIXME: Add a Dragged state
     std::string name;
-    int price;
+    std::function<int()> price;
     std::shared_ptr<ALLEGRO_FONT> font;
     std::optional<std::function<void()>> click_callback;
     std::optional<std::function<void()>> release_callback;
 public:
     GameButton() = default;
     GameButton(int center_x, int center_y, int width, int height,
-               std::string name_text, int price_value,
+               std::string name_text, std::function<int()> price_func,
                std::shared_ptr<ALLEGRO_FONT> button_font,
                std::optional<std::function<void()>> on_click,
                std::optional<std::function<void()>> on_release
     ) : x(center_x), y(center_y), w(width), h(height), enabled(false), visible(true),
-        name(name_text), price(price_value), 
+        name(name_text), price(price_func), 
         font(button_font),
         click_callback(on_click), release_callback(on_release) {}
 
     void set_name(std::string new_name) { name = new_name; }
-    int get_price() { return price; }
-    void set_price(int new_price) { price = new_price; }
+    int get_price() { return price(); }
+    void set_price(std::function<int()> new_price) { price = new_price; }
     void set_visible(bool new_vis) { visible = new_vis; };
     /// Returns the button's enabled state
     bool update_buyable(int money);

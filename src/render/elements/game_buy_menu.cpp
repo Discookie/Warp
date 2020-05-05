@@ -7,17 +7,18 @@
 const auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
 
 using menu_ptr = std::unique_ptr<GameBuyMenu>;
+using cost_func = std::function<int(void)>;
 
 // {name, type, cost}
-const std::vector<std::tuple<std::string, EntityType, int>> item_infos = {
-        {"Factory",      EntityType::TypeFactory,     Constants::FACTORY_BASE_COST()},
-        {"Laser Tower",  EntityType::TypeLaserTower,  Constants::LASERTOWER_BASE_COST()},
-        {"Tesla Coil",   EntityType::TypeTeslaCoil,   Constants::TESLACOIL_BASE_COST()},
-        {"Sniper Tower", EntityType::TypeSniperTower, Constants::SNIPERTOWER_BASE_COST()},
-        {"HQ: Attack",   EntityType::TypeHqAttack,    Constants::HQATTACK_BASE_COST()},
-        {"HQ: Defense",  EntityType::TypeHqDefense,   Constants::HQDEFENSE_BASE_COST()},
-        {"Unit",         EntityType::TypeFriendly,    Constants::FRIENDLY_COST()},
-        {"Special",      EntityType::TypeSpecial,     Constants::SPECIAL_BASE_COST()},
+const std::vector<std::tuple<std::string, EntityType, cost_func>> item_infos = {
+        {"Factory",      EntityType::TypeFactory,     Constants::FACTORY_BASE_COST},
+        {"Laser Tower",  EntityType::TypeLaserTower,  Constants::LASERTOWER_BASE_COST},
+        {"Tesla Coil",   EntityType::TypeTeslaCoil,   Constants::TESLACOIL_BASE_COST},
+        {"Sniper Tower", EntityType::TypeSniperTower, Constants::SNIPERTOWER_BASE_COST},
+        {"HQ: Attack",   EntityType::TypeHqAttack,    Constants::HQATTACK_BASE_COST},
+        {"HQ: Defense",  EntityType::TypeHqDefense,   Constants::HQDEFENSE_BASE_COST},
+        {"Unit",         EntityType::TypeFriendly,    Constants::FRIENDLY_COST},
+        {"Special",      EntityType::TypeSpecial,     Constants::SPECIAL_BASE_COST},
 };
 
 neither::Either<std::string, menu_ptr> GameBuyMenu::create(
