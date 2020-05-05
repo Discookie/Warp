@@ -7,29 +7,38 @@
 const auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
 
 using menu_ptr = std::unique_ptr<GameUpgradeMenu>;
+using cost_func = std::function<int()>;
+
+inline cost_func make_cost_func(int value) {
+    return [value](){ return value; };
+}
+inline cost_func invert(cost_func fn) {
+    return [fn](){ return -fn(); };
+}
+
 
 // {name, type, cost}
-const std::vector<std::optional<int>> item_upgrade_costs = {
+const std::vector<std::optional<cost_func>> item_upgrade_costs = {
         std::nullopt,
-        Constants::FACTORY_UPGRADE_COST(),
-        Constants::LASERTOWER_UPGRADE_COST(),
-        Constants::TESLACOIL_UPGRADE_COST(),
-        Constants::SNIPERTOWER_UPGRADE_COST(),
-        Constants::HQATTACK_UPGRADE_COST,
-        Constants::HQDEFENSE_UPGRADE_COST,
-        Constants::SPECIAL_UPGRADE_COST,
+        Constants::FACTORY_UPGRADE_COST,
+        Constants::LASERTOWER_UPGRADE_COST,
+        Constants::TESLACOIL_UPGRADE_COST,
+        Constants::SNIPERTOWER_UPGRADE_COST,
+        make_cost_func(Constants::HQATTACK_UPGRADE_COST),
+        make_cost_func(Constants::HQDEFENSE_UPGRADE_COST),
+        make_cost_func(Constants::SPECIAL_UPGRADE_COST),
         std::nullopt,
 };
 
-const std::vector<std::optional<int>> item_delete_costs = {
+const std::vector<std::optional<std::function<int()>>> item_delete_costs = {
     std::nullopt,
-    Constants::FACTORY_BASE_REMOVE_VALUE,
-    Constants::LASERTOWER_BASE_REMOVE_VALUE,
-    Constants::TESLACOIL_BASE_REMOVE_VALUE,
-    Constants::SNIPERTOWER_BASE_REMOVE_VALUE,
-    Constants::HQATTACK_REMOVE_VALUE,
-    Constants::HQDEFENSE_REMOVE_VALUE,
-    Constants::SPECIAL_REMOVE_VALUE,
+    make_cost_func(Constants::FACTORY_BASE_REMOVE_VALUE),
+    make_cost_func(Constants::LASERTOWER_BASE_REMOVE_VALUE),
+    make_cost_func(Constants::TESLACOIL_BASE_REMOVE_VALUE),
+    make_cost_func(Constants::SNIPERTOWER_BASE_REMOVE_VALUE),
+    make_cost_func(Constants::HQATTACK_REMOVE_VALUE),
+    make_cost_func(Constants::HQDEFENSE_REMOVE_VALUE),
+    make_cost_func(Constants::SPECIAL_REMOVE_VALUE),
     std::nullopt,
 };
 
@@ -45,12 +54,12 @@ neither::Either<std::string, menu_ptr> GameUpgradeMenu::create(
 
     GameButton upgrade_button(
         center_x, center_top_y, 70, offset - 4,
-        "Upgrade", item_upgrade_costs[0].value_or(0), button_font,
+        "Upgrade", item_upgrade_costs[0].value_or(make_cost_func(0)), button_font,
         std::nullopt, std::nullopt
     );
     GameButton delete_button(
         center_x, center_top_y + offset, 70, offset - 4,
-        "Delete", -item_upgrade_costs[0].value_or(0), button_font,
+        "Delete", invert(item_upgrade_costs[0].value_or(make_cost_func(0))), button_font,
         std::nullopt, std::nullopt
     );
     return ret_ty::rightOf(menu_ptr(
@@ -81,10 +90,10 @@ GameUpgradeMenu::GameUpgradeMenu(
     set_visible(false);
 }
 
-void GameUpgradeMenu::set_prices(std::optional<EntityType> type) {
+void GameUpgradeMenu::set_prices(std::optional<EntityType> type, bool is_upgraded) {
     int idx = type.value_or(EntityType::TypeNone);
 
-    if (item_upgrade_costs[idx]) {
+    if (!is_upgraded && item_upgrade_costs[idx]) {
         upgrade_button.set_price(*item_upgrade_costs[idx]);
         upgrade_button.set_visible(true);
     } else {
@@ -98,10 +107,12 @@ void GameUpgradeMenu::set_prices(std::optional<EntityType> type) {
         delete_button.set_visible(false);
     }
 }
+void GameUpgradeMenu::set_upgrade_visible(bool new_vis) {
+    upgrade_button.set_visible(new_vis);
+}
 void GameUpgradeMenu::set_visible(bool new_vis) {
     upgrade_button.set_visible(new_vis);
     delete_button.set_visible(new_vis);
-
 }
 void GameUpgradeMenu::update_buyable(int money) {
     upgrade_button.update_buyable(money);

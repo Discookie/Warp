@@ -36,7 +36,8 @@ public:
         GameUpgradeCallbacks callback_list
     );
 
-    void set_prices(std::optional<EntityType> type);
+    void set_prices(std::optional<EntityType> type, bool is_upgraded);
+    void set_upgrade_visible(bool new_vis);
     void set_visible(bool new_vis);
     GameUpgradeCallbacks& modify_callbacks() { return callbacks; }
     /// Enables items based on how much money you have

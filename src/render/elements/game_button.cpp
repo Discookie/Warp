@@ -7,7 +7,7 @@
 const auto is_between = [](int num, int low, int high) { return num >= low && num <= high; };
 
 bool GameButton::update_buyable(int money) {
-    enabled = money >= price;
+    enabled = money >= price();
     return enabled;
 }
 
@@ -52,7 +52,7 @@ void GameButton::render_button() {
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
             x + 20, y - 2, ALLEGRO_ALIGN_RIGHT,
-            std::to_string(price).c_str()
+            std::to_string(price()).c_str()
         );
     } else {
         al_draw_filled_rectangle(
@@ -71,7 +71,7 @@ void GameButton::render_button() {
         al_draw_text(
             font.get(), al_map_rgb(255, 255, 255),
             x + 20, y - 2, ALLEGRO_ALIGN_RIGHT,
-            std::to_string(price).c_str()
+            std::to_string(price()).c_str()
         );
     }
 }
