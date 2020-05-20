@@ -104,14 +104,20 @@ GameScene::GameScene(
 }
 
 void GameScene::set_selected_field(std::optional<Coordinate> pos) {
-    if (pos) {
-        std::shared_ptr<const Stable> tower = model.get_field_const(*pos).get_tower_const();
-        EntityType tower_type = tower ? tower->get_entity_type() : EntityType::TypeNone;
-        upgrade_menu->set_prices(tower_type, tower->is_upgraded());
-    } else {
-        upgrade_menu->set_prices(EntityType::TypeNone, false);
-    }
+    std::shared_ptr<const Stable> tower;
+    EntityType tower_type = EntityType::TypeNone;
+    bool is_upgraded = false;
     
+    if (pos 
+        && (tower = model.get_field_const(*pos).get_tower_const())
+        && (tower_type = tower->get_entity_type()) != EntityType::TypeNone
+    ) {
+        is_upgraded = tower->is_upgraded();
+    } else {
+        pos = std::nullopt;
+    }
+
+    upgrade_menu->set_prices(tower_type, is_upgraded);
     selected_field = pos;
 }
 
