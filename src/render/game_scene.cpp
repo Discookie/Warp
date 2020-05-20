@@ -1,4 +1,5 @@
 #include "game_scene.h"
+#include "../model/Constants.h"
 
 #include <allegro5/allegro_ttf.h>
 
@@ -30,6 +31,10 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
         std::nullopt
     };
 
+    GameStatusText points_text = GameStatusText(105, 14, 70, "Points:", "", font);
+    GameStatusText gold_text = GameStatusText(182, 14, 70, "Gold:", "", font);
+    GameStatusBar status_bar = GameStatusBar(283, 14, 70, 0, "Wave:", font);
+
     return 
         GameBoard::create(124, 135, board_callbacks)
         .rightFlatMap([&](auto&& board_ptr) {
@@ -44,19 +49,25 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
                     auto&& buymenu = std::get<1>(tuple_board_buymenu);
                     return std::make_tuple(std::move(board), std::move(buymenu), std::move(upgrade_ptr));
                 });
-        }).rightMap([&model](auto&& tuple_board_buymenu_upgrade) {
+        }).rightMap([&](auto&& tuple_board_buymenu_upgrade) {
             auto&& board = std::get<0>(tuple_board_buymenu_upgrade);
             auto&& buymenu = std::get<1>(tuple_board_buymenu_upgrade);
             auto&& upgrade = std::get<2>(tuple_board_buymenu_upgrade);
-            return scene_ptr(new GameScene(model, std::move(board), std::move(buymenu), std::move(upgrade)));
+            return scene_ptr(new GameScene(
+                model, std::move(board),
+                std::move(buymenu), std::move(upgrade),
+                std::move(points_text), std::move(gold_text), std::move(status_bar)
+            ));
         });
 }
 
 GameScene::GameScene(
     GameModel& _model, std::unique_ptr<GameBoard>&& _board,
-    std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu
+    std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
+    GameStatusText&& _points_text, GameStatusText&& _gold_text, GameStatusBar&& _status_bar
 ) : model(_model), board(std::move(_board)), selected_field(std::nullopt),
-    buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu))
+    buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu)),
+    gold_text(_gold_text), points_text(_points_text), status_bar(_status_bar), menu_shown(false)
 {
     GameBoardCallbacks& board_callbacks = board->modify_callbacks();
     
@@ -126,13 +137,31 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     // FIXME: Move this to a better location
     // FIXME: Reset the model on scene leave/enter
     // TODO: Track previous frame for frameskips
-    model.update();
-    buy_menu->update_buyable(model.get_gold());
-    upgrade_menu->update_buyable(model.get_gold());
+    if (!menu_shown) {
+        model.update();
+        buy_menu->update_buyable(model.get_gold());
+        upgrade_menu->update_buyable(model.get_gold());
+
+        points_text.set_value(std::to_string(model.get_points()));
+        gold_text.set_value(std::to_string(model.get_gold()));
+
+        status_bar.set_fill(std::max(
+            (Constants::WAVE_COUNTDOWN_TIME - model.get_wave_progress()) 
+                * 100 / Constants::WAVE_COUNTDOWN_TIME,
+            0
+        ));
+        status_bar.set_label("Wave: " + std::to_string(model.get_wave_number()));
+    }
 
     board->render_board(event);
     buy_menu->render_selector();
     upgrade_menu->render_selector();
+
+    points_text.render_text();
+    gold_text.render_text();
+    status_bar.render_status_bar();
+
+
 }
 
 void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {

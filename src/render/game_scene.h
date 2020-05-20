@@ -18,13 +18,20 @@ private:
     std::unique_ptr<GameBuyMenu> buy_menu;
     std::unique_ptr<GameUpgradeMenu> upgrade_menu;
 
+    GameStatusText points_text;
+    GameStatusText gold_text;
+    GameStatusBar status_bar;
+
+    bool menu_shown;
+
     GameModel& model;
 
     //std::optional<GameTooltip> tooltip;
 
     GameScene(
         GameModel& _model, std::unique_ptr<GameBoard>&& _board,
-        std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu
+        std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
+        GameStatusText&& points_text, GameStatusText&& gold_text, GameStatusBar&& status_bar
     );
 public:
     static neither::Either<std::string, std::unique_ptr<GameScene>> create(GameModel& model);
