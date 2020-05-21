@@ -5,7 +5,7 @@
 
 namespace Constants {
 /// Difficulty constants
-    static float diff;
+    extern float diff;
 //1s -> 30t
 // Game
     static const int STARTING_GOLD = 0;
