@@ -62,7 +62,7 @@ public:
 
     void save_game(const std::string &file_name) const;
 
-    std::optional<std::string> get_file_name() const;
+    std::optional<std::string> get_file_name(bool must_exist) const;
 
     bool load_game();
 

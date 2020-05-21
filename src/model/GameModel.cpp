@@ -200,7 +200,7 @@ void GameModel::save_game(const std::string &file_name) const {
     fs.close();
 }
 
-std::optional<std::string> GameModel::get_file_name() const {
+std::optional<std::string> GameModel::get_file_name(bool must_exist) const {
     char filename[MAX_PATH];
 
     OPENFILENAME ofn;
@@ -212,7 +212,10 @@ std::optional<std::string> GameModel::get_file_name() const {
     ofn.lpstrFile   = filename;
     ofn.nMaxFile    = MAX_PATH;
     ofn.lpstrTitle  = "Select a File, yo!";
-    ofn.Flags       = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
+    if (must_exist)
+        ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
+    else
+        ofn.Flags = OFN_DONTADDTORECENT;
 
     if (GetOpenFileNameA(&ofn)) {
         return std::string(filename);
@@ -223,7 +226,7 @@ std::optional<std::string> GameModel::get_file_name() const {
 
 bool GameModel::load_game() {
     try {
-        std::optional<std::string> filename = get_file_name();
+        std::optional<std::string> filename = get_file_name(true);
         if (filename) {
             load_game(*filename);
             return true;
@@ -236,7 +239,7 @@ bool GameModel::load_game() {
 
 bool GameModel::save_game() const {
     try {
-        std::optional<std::string> filename = get_file_name();
+        std::optional<std::string> filename = get_file_name(false);
         if (filename) {
             save_game(*filename);
             return true;
