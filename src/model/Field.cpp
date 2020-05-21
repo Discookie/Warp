@@ -54,6 +54,15 @@ void Field::build_tower(EntityType type) {
     if (this->tower) {
         throw std::invalid_argument("Tower space occupied");
     }
+    if (type == EntityType::TypeHqAttack || type == EntityType::TypeHqDefense) {
+        if (this->position.x != 0) {
+            throw std::invalid_argument("You can't build HQ here");
+        }
+    } else {
+        if (this->position.x == 0) {
+            throw std::invalid_argument("You can only build HQ here");
+        }
+    }
     switch (type) {
         case EntityType::TypeFactory:
             this->tower = std::make_shared<Factory>(this->position, this->callback);
