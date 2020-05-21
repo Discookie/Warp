@@ -199,7 +199,7 @@ void GameModel::save_game(const std::string &file_name) const {
     fs.close();
 }
 
-std::string GameModel::get_file_name() const {
+std::optional<std::string> GameModel::get_file_name() const {
     char filename[MAX_PATH];
 
     OPENFILENAME ofn;
@@ -216,26 +216,34 @@ std::string GameModel::get_file_name() const {
     if (GetOpenFileNameA(&ofn)) {
         return std::string(filename);
     } else {
-        throw std::invalid_argument("Error during file open");
+        return {};
     }
 }
 
-void GameModel::load_game() {
+bool GameModel::load_game() {
     try {
-        load_game(get_file_name());
+        std::optional<std::string> filename = get_file_name();
+        if (filename) {
+            load_game(*filename);
+            return true;
+        }
     }
     catch (std::exception& e) {
-
     }
+    return false;
 }
 
-void GameModel::save_game() const {
+bool GameModel::save_game() const {
     try {
-        save_game(get_file_name());
+        std::optional<std::string> filename = get_file_name();
+        if (filename) {
+            save_game(*filename);
+            return true;
+        }
     }
     catch (std::exception& e) {
-
     }
+    return false;
 }
 
 const Field &GameModel::get_field_const(Coordinate position) const {

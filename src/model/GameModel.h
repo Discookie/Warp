@@ -22,7 +22,6 @@ private:
     bool have_special;
     EntityType selected_tower;
     bool game_over;
-    Difficulty diff;
 
     // Helpers
     void construct_fields();
@@ -63,11 +62,11 @@ public:
 
     void save_game(const std::string &file_name) const;
 
-    std::string get_file_name() const;
+    std::optional<std::string> get_file_name() const;
 
-    void load_game();
+    bool load_game();
 
-    void save_game() const;
+    bool save_game() const;
     // Updates
     void update();
 
