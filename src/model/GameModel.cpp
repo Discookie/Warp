@@ -309,6 +309,15 @@ std::optional<std::string> GameModel::build_tower(Coordinate position) {
     if (!this->is_buildable(selected_tower)) {
         return "Insufficient gold";
     }
+    if (selected_tower == EntityType::TypeHqAttack || selected_tower == EntityType::TypeHqDefense) {
+        if (position.x != 0) {
+            return "You can't build HQ here";
+        }
+    } else {
+        if (position.x == 0) {
+            return "You can only build HQ here";
+        }
+    }
 
     this->get_field(position).build_tower(selected_tower);
     this->gold -= get_field(position).get_tower_const()->cost();
