@@ -1,6 +1,7 @@
 #include "game_scene.h"
 #include "../model/Constants.h"
 
+#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
 
 #include <functional>
@@ -67,7 +68,8 @@ GameScene::GameScene(
     GameStatusText&& _points_text, GameStatusText&& _gold_text, GameStatusBar&& _status_bar
 ) : model(_model), board(std::move(_board)), selected_field(std::nullopt),
     buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu)),
-    gold_text(_gold_text), points_text(_points_text), status_bar(_status_bar), menu_shown(false)
+    gold_text(_gold_text), points_text(_points_text), status_bar(_status_bar),
+    menu_shown(false), clicked_scene(std::nullopt)
 {
     GameBoardCallbacks& board_callbacks = board->modify_callbacks();
     
@@ -112,6 +114,23 @@ GameScene::GameScene(
             set_selected_field(std::nullopt);
         }
     };
+
+    font_ptr font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -10, 0), FontDeleter());
+    menu_pause_button = GameMenuButton(35, 17, 56, 15, "Pause", font, [&]() { menu_shown = true; });
+
+    font_ptr menu_font = font_ptr(al_create_builtin_font(), FontDeleter());
+    menu_resume_button = GameMenuButton(135, 70, 200, 20, "Resume", menu_font, [&]() { menu_shown = false; });
+    menu_save_button = GameMenuButton(135, 120, 200, 20, "Save", menu_font, [&]() {
+        model.save_game();
+        menu_shown = false;
+    });
+    menu_options_button = GameMenuButton(135, 150, 200, 20, "Options", menu_font, [&]() { 
+        clicked_scene = "options";
+    });
+    menu_options_button.disable();
+    menu_exit_button = GameMenuButton(135, 200, 200, 20, "Exit without saving", menu_font, [&]() {
+        clicked_scene = "main_menu";
+    });
 }
 
 void GameScene::set_selected_field(std::optional<Coordinate> pos) {
@@ -161,21 +180,46 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     gold_text.render_text();
     status_bar.render_status_bar();
 
+    menu_pause_button.render_button();
 
+    if (menu_shown) {
+        al_draw_filled_rectangle(0, 0, 320, 240, al_map_rgba(64, 64, 64, 128));
+        
+        menu_resume_button.render_button();
+        menu_save_button.render_button();
+        menu_options_button.render_button();
+        menu_exit_button.render_button();
+    }
 }
 
 void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
     switch (event.type) {
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            board->on_click(event.mouse);
-            buy_menu->on_click(event.mouse);
-            upgrade_menu->on_click(event.mouse);
+            if (!menu_shown) {
+                board->on_click(event.mouse);
+                buy_menu->on_click(event.mouse);
+                upgrade_menu->on_click(event.mouse);
+
+                menu_pause_button.on_click(event.mouse);
+            } else {
+                menu_resume_button.on_click(event.mouse);
+                menu_save_button.on_click(event.mouse);
+                menu_options_button.on_click(event.mouse);
+                menu_exit_button.on_click(event.mouse);
+
+                if (clicked_scene) {
+                    messenger.switch_scene(*clicked_scene);
+                    clicked_scene = std::nullopt;
+                }
+            }
             break;
         
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-            board->on_release(event.mouse);
-            buy_menu->on_release(event.mouse);
-            upgrade_menu->on_release(event.mouse);
+            if (!menu_shown) {
+                board->on_release(event.mouse);
+                buy_menu->on_release(event.mouse);
+                upgrade_menu->on_release(event.mouse);
+            }
             break;
 
         // Mouse move
@@ -186,4 +230,8 @@ void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& e
 
 void GameScene::on_keyboard_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
     // unimplemented!();
+}
+
+void GameScene::on_scene_enter(std::string previous_scene) {
+    menu_shown = false;
 }
