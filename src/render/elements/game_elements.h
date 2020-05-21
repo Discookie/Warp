@@ -4,3 +4,7 @@
 #include "game_buy_menu.h"
 #include "game_upgrade_menu.h"
 #include "game_board.h"
+#include "game_status_bar.h"
+#include "game_status_text.h"
+
+#include "game_menu_button.h"

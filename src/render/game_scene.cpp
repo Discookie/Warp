@@ -1,5 +1,7 @@
 #include "game_scene.h"
+#include "../model/Constants.h"
 
+#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
 
 #include <functional>
@@ -30,6 +32,10 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
         std::nullopt
     };
 
+    GameStatusText points_text = GameStatusText(105, 14, 70, "Points:", "", font);
+    GameStatusText gold_text = GameStatusText(182, 14, 70, "Gold:", "", font);
+    GameStatusBar status_bar = GameStatusBar(283, 14, 70, 0, "Wave:", font);
+
     return 
         GameBoard::create(124, 135, board_callbacks)
         .rightFlatMap([&](auto&& board_ptr) {
@@ -44,19 +50,26 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
                     auto&& buymenu = std::get<1>(tuple_board_buymenu);
                     return std::make_tuple(std::move(board), std::move(buymenu), std::move(upgrade_ptr));
                 });
-        }).rightMap([&model](auto&& tuple_board_buymenu_upgrade) {
+        }).rightMap([&](auto&& tuple_board_buymenu_upgrade) {
             auto&& board = std::get<0>(tuple_board_buymenu_upgrade);
             auto&& buymenu = std::get<1>(tuple_board_buymenu_upgrade);
             auto&& upgrade = std::get<2>(tuple_board_buymenu_upgrade);
-            return scene_ptr(new GameScene(model, std::move(board), std::move(buymenu), std::move(upgrade)));
+            return scene_ptr(new GameScene(
+                model, std::move(board),
+                std::move(buymenu), std::move(upgrade),
+                std::move(points_text), std::move(gold_text), std::move(status_bar)
+            ));
         });
 }
 
 GameScene::GameScene(
     GameModel& _model, std::unique_ptr<GameBoard>&& _board,
-    std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu
+    std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
+    GameStatusText&& _points_text, GameStatusText&& _gold_text, GameStatusBar&& _status_bar
 ) : model(_model), board(std::move(_board)), selected_field(std::nullopt),
-    buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu))
+    buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu)),
+    gold_text(_gold_text), points_text(_points_text), status_bar(_status_bar),
+    menu_shown(false), clicked_scene(std::nullopt)
 {
     GameBoardCallbacks& board_callbacks = board->modify_callbacks();
     
@@ -101,17 +114,40 @@ GameScene::GameScene(
             set_selected_field(std::nullopt);
         }
     };
+
+    font_ptr font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -10, 0), FontDeleter());
+    menu_pause_button = GameMenuButton(35, 17, 56, 15, "Pause", font, [&]() { menu_shown = true; });
+
+    font_ptr menu_font = font_ptr(al_create_builtin_font(), FontDeleter());
+    menu_resume_button = GameMenuButton(135, 70, 200, 20, "Resume", menu_font, [&]() { menu_shown = false; });
+    menu_save_button = GameMenuButton(135, 120, 200, 20, "Save", menu_font, [&]() {
+        model.save_game();
+        menu_shown = false;
+    });
+    menu_options_button = GameMenuButton(135, 150, 200, 20, "Options", menu_font, [&]() { 
+        clicked_scene = "options";
+    });
+    menu_options_button.disable();
+    menu_exit_button = GameMenuButton(135, 200, 200, 20, "Exit without saving", menu_font, [&]() {
+        clicked_scene = "main_menu";
+    });
 }
 
 void GameScene::set_selected_field(std::optional<Coordinate> pos) {
-    if (pos) {
-        std::shared_ptr<const Stable> tower = model.get_field_const(*pos).get_tower_const();
-        EntityType tower_type = tower ? tower->get_entity_type() : EntityType::TypeNone;
-        upgrade_menu->set_prices(tower_type, tower->is_upgraded());
-    } else {
-        upgrade_menu->set_prices(EntityType::TypeNone, false);
-    }
+    std::shared_ptr<const Stable> tower;
+    EntityType tower_type = EntityType::TypeNone;
+    bool is_upgraded = false;
     
+    if (pos 
+        && (tower = model.get_field_const(*pos).get_tower_const())
+        && (tower_type = tower->get_entity_type()) != EntityType::TypeNone
+    ) {
+        is_upgraded = tower->is_upgraded();
+    } else {
+        pos = std::nullopt;
+    }
+
+    upgrade_menu->set_prices(tower_type, is_upgraded);
     selected_field = pos;
 }
 
@@ -120,27 +156,70 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     // FIXME: Move this to a better location
     // FIXME: Reset the model on scene leave/enter
     // TODO: Track previous frame for frameskips
-    model.update();
-    buy_menu->update_buyable(model.get_gold());
-    upgrade_menu->update_buyable(model.get_gold());
+    if (!menu_shown) {
+        model.update();
+        buy_menu->update_buyable(model.get_gold());
+        upgrade_menu->update_buyable(model.get_gold());
+
+        points_text.set_value(std::to_string(model.get_points()));
+        gold_text.set_value(std::to_string(model.get_gold()));
+
+        status_bar.set_fill(std::max(
+            (Constants::WAVE_COUNTDOWN_TIME - model.get_wave_progress()) 
+                * 100 / Constants::WAVE_COUNTDOWN_TIME,
+            0
+        ));
+        status_bar.set_label("Wave: " + std::to_string(model.get_wave_number()));
+    }
 
     board->render_board(event);
     buy_menu->render_selector();
     upgrade_menu->render_selector();
+
+    points_text.render_text();
+    gold_text.render_text();
+    status_bar.render_status_bar();
+
+    menu_pause_button.render_button();
+
+    if (menu_shown) {
+        al_draw_filled_rectangle(0, 0, 320, 240, al_map_rgba(64, 64, 64, 128));
+        
+        menu_resume_button.render_button();
+        menu_save_button.render_button();
+        menu_options_button.render_button();
+        menu_exit_button.render_button();
+    }
 }
 
 void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
     switch (event.type) {
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            board->on_click(event.mouse);
-            buy_menu->on_click(event.mouse);
-            upgrade_menu->on_click(event.mouse);
+            if (!menu_shown) {
+                board->on_click(event.mouse);
+                buy_menu->on_click(event.mouse);
+                upgrade_menu->on_click(event.mouse);
+
+                menu_pause_button.on_click(event.mouse);
+            } else {
+                menu_resume_button.on_click(event.mouse);
+                menu_save_button.on_click(event.mouse);
+                menu_options_button.on_click(event.mouse);
+                menu_exit_button.on_click(event.mouse);
+
+                if (clicked_scene) {
+                    messenger.switch_scene(*clicked_scene);
+                    clicked_scene = std::nullopt;
+                }
+            }
             break;
         
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-            board->on_release(event.mouse);
-            buy_menu->on_release(event.mouse);
-            upgrade_menu->on_release(event.mouse);
+            if (!menu_shown) {
+                board->on_release(event.mouse);
+                buy_menu->on_release(event.mouse);
+                upgrade_menu->on_release(event.mouse);
+            }
             break;
 
         // Mouse move
@@ -151,4 +230,8 @@ void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& e
 
 void GameScene::on_keyboard_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
     // unimplemented!();
+}
+
+void GameScene::on_scene_enter(std::string previous_scene) {
+    menu_shown = false;
 }

@@ -39,16 +39,24 @@ std::optional<scene_ptr> SceneManager::remove_scene(const std::string &scene) {
     return std::nullopt;
 }
 
-void SceneManager::set_scene(const std::string &scene) {
-    if (scene.empty() || scene == "exit") {
+void SceneManager::set_scene(const std::string &scene_name) {
+    std::string old_scene;
+    if (current_scene) {
+        scene_ptr &scene = current_scene->get().second;
+        if (scene) { scene->on_scene_leave(scene_name); }
+        old_scene = current_scene->get().first;
+    }
+
+    if (scene_name.empty() || scene_name == "exit") {
         current_scene = std::nullopt;
     } else {
-        auto found_scene = scenes.find(scene);
+        auto found_scene = scenes.find(scene_name);
 
         if (found_scene == scenes.end()) {
             current_scene = std::nullopt;
         } else {
             current_scene = *found_scene;
+            found_scene->second->on_scene_enter(old_scene);
         }
     }
 }
@@ -64,10 +72,15 @@ void SceneManager::render(const ALLEGRO_EVENT &event) {
     SceneMessenger messenger = SceneMessenger();
 
     scene_ptr &scene = current_scene->get().second;
-    scene->render_scene(messenger, event);
 
-    if (messenger.get_scene()) {
-        set_scene(*messenger.get_scene());
+    if (scene) {
+        scene->render_scene(messenger, event);
+
+        if (messenger.get_scene()) {
+            set_scene(*messenger.get_scene());
+
+            scene_ptr &new_scene = current_scene->get().second;
+        }
     }
 
     al_flip_display();
