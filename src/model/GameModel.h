@@ -22,7 +22,6 @@ private:
     bool have_special;
     EntityType selected_tower;
     bool game_over;
-    Difficulty diff;
 
     // Helpers
     void construct_fields();
