@@ -70,10 +70,16 @@ int main() {
         });
     };
 
-    try_add_scene(MainMenuScene::create(), "main_menu");
-    try_add_scene(NewGameScene::create([](int x){
-        std::cout << "Selected diff: " << x << std::endl;
-    }), "new_game");
+    const auto load_game = [&game_model](){
+        game_model.load_game();
+    };
+
+    const auto change_diff = [&game_model](int x){
+        game_model.change_difficulty((Difficulty)x);
+    };
+
+    try_add_scene(MainMenuScene::create(load_game), "main_menu");
+    try_add_scene(NewGameScene::create(change_diff), "new_game");
     try_add_scene(GameScene::create(game_model), "in_game");
     scene_manager.set_scene("main_menu");
     

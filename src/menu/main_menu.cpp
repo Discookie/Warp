@@ -9,7 +9,8 @@ const int MENU_WIDTH = 200;
 using font_ptr       = std::shared_ptr<ALLEGRO_FONT>;
 using scene_ptr      = std::unique_ptr<MainMenuScene>;
 
-neither::Either<std::string, std::unique_ptr<MainMenuScene>> MainMenuScene::create() {
+neither::Either<std::string, std::unique_ptr<MainMenuScene>> MainMenuScene::create(
+    std::function<void()>&& load_game_func) {
     // 200px x 70px
     return MenuImage::load_from_path(160, 45, "assets/header.png")
         .rightFlatMap([](auto&& img) {
@@ -23,20 +24,27 @@ neither::Either<std::string, std::unique_ptr<MainMenuScene>> MainMenuScene::crea
                 return ret_ty::rightOf(std::make_tuple(std::forward<decltype(img)>(img), font));
             }
         })
-        .rightMap([](auto&& tuple_img_font) {
+        .rightMap([&load_game_func](auto&& tuple_img_font) {
             return std::unique_ptr<MainMenuScene>(
                 new MainMenuScene(  // NOLINT(modernize-make-unique)
-                    std::move(std::get<0>(tuple_img_font)), std::get<1>(tuple_img_font)));
+                    std::move(std::get<0>(tuple_img_font)), std::get<1>(tuple_img_font),
+                    std::move(load_game_func)));
         });
 }
 
-MainMenuScene::MainMenuScene(MenuImage&& img, const font_ptr& font) {
+MainMenuScene::MainMenuScene(
+    MenuImage&& img, const font_ptr& font, std::function<void()>&& _load_game_func
+) : load_game_func(_load_game_func) {
     header_image = std::move(img);
 
     new_game_button = MenuButton(
         160, 100, MENU_WIDTH, 20, "New game", font, [&]() { clicked_scene = "new_game"; });
     load_game_button = MenuButton(
-        160, 130, MENU_WIDTH, 20, "Load game", font, [&]() { clicked_scene = "load_game"; });
+        160, 130, MENU_WIDTH, 20, "Load game", font, [&]() { 
+            load_game_func();
+            clicked_scene = "in_game";
+        }
+    );
     load_game_button.disable();
     options_button =
         MenuButton(160, 160, MENU_WIDTH, 20, "Options", font, [&]() { clicked_scene = "options"; });
