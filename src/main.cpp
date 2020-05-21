@@ -75,8 +75,8 @@ int main() {
     };
 
     try_add_scene(MainMenuScene::create(std::move(load_game_func)), "main_menu");
-    try_add_scene(NewGameScene::create([](int x){
-        std::cout << "Selected diff: " << x << std::endl;
+    try_add_scene(NewGameScene::create([&game_model](int x){
+        game_model.change_difficulty((Difficulty)x);
     }), "new_game");
     try_add_scene(GameScene::create(game_model), "in_game");
     scene_manager.set_scene("main_menu");
