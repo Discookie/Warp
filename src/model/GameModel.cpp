@@ -42,12 +42,10 @@ void GameModel::update_model() {
         this->wave_timer = Constants::WAVE_COUNTDOWN_TIME;
         this->wave_number++;
     }
-    if (this->time_counter % Constants::GOLD_GEN_SPEED) {
+    if (this->time_counter % Constants::GOLD_GEN_SPEED == 0) {
         this->gold += Constants::GOLD_GEN_AMOUNT;
     }
-    if (this->time_counter % Constants::SPAWN_ENEMIES_TIME) {
-        this->spawn_enemies();
-    }
+    this->spawn_enemies();
 }
 
 void GameModel::update_fields() {
