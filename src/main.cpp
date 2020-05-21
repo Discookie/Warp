@@ -70,7 +70,11 @@ int main() {
         });
     };
 
-    try_add_scene(MainMenuScene::create(), "main_menu");
+    const auto load_game_func = [&game_model]()->bool{
+        return game_model.load_game();
+    };
+
+    try_add_scene(MainMenuScene::create(std::move(load_game_func)), "main_menu");
     try_add_scene(NewGameScene::create([](int x){
         std::cout << "Selected diff: " << x << std::endl;
     }), "new_game");
