@@ -48,7 +48,7 @@ private:
 
     void init_callbacks();
 
-    void build_tower(Coordinate position);
+    std::optional<std::string> build_tower(Coordinate position);
 
 public:
     GameModel();
@@ -74,11 +74,11 @@ public:
     // Building (player interaction)
     void select_tower(EntityType type);
 
-    void add_friendly_entity(Coordinate position);
+    std::optional<std::string> add_friendly_entity(Coordinate position);
 
-    void upgrade_tower(Coordinate position);
+    std::optional<std::string> upgrade_tower(Coordinate position);
 
-    void remove_tower(Coordinate position);
+    std::optional<std::string> remove_tower(Coordinate position);
 
     // Getters
     const Field &get_field_const(Coordinate position) const;

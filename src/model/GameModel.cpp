@@ -278,12 +278,12 @@ bool GameModel::is_buildable(EntityType type) const {
     }
 }
 
-void GameModel::add_friendly_entity(Coordinate position) {
+std::optional<std::string> GameModel::add_friendly_entity(Coordinate position) {
     if (!this->valid_position(position)) {
-        throw std::invalid_argument("Out-of-range coordinates");
+        return "Out-of-range coordinates";
     }
     if (this->get_field(position).get_team_status() == Team::TeamEnemy) {
-        throw std::invalid_argument("TeamEnemy territory");
+        return "TeamEnemy territory";
     }
     if (selected_tower != EntityType::TypeFriendly) {
         build_tower(position);
@@ -293,54 +293,58 @@ void GameModel::add_friendly_entity(Coordinate position) {
         this->gold -= Constants::FRIENDLY_COST();
         // TODO: this->points += Constants::POINTS_FOR_FRIENDLY;
     }
+    return {};
 }
 
-void GameModel::build_tower(Coordinate position) {
+std::optional<std::string> GameModel::build_tower(Coordinate position) {
     if (this->get_field(position).get_tower_const()) {
-        throw std::invalid_argument("Tower space occupied");
+        return "Tower space occupied";
     }
     if (selected_tower == EntityType::TypeSpecial && !this->have_special) {
-        throw std::invalid_argument("Don't have special");
+        return"Don't have special";
     }
     if (!this->is_buildable(selected_tower)) {
-        throw std::invalid_argument("Insufficient gold");
+        return "Insufficient gold";
     }
 
     this->get_field(position).build_tower(selected_tower);
     this->gold -= get_field(position).get_tower_const()->cost();
     this->points += Constants::POINTS_FOR_TOWER_BUILD;
+    return {};
 }
 
-void GameModel::upgrade_tower(Coordinate position) {
+std::optional<std::string> GameModel::upgrade_tower(Coordinate position) {
     if (!this->valid_position(position)) {
-        throw std::invalid_argument("Out-of-range coordinates");
+        return "Out-of-range coordinates";
     }
     if (!this->get_field(position).get_tower_const()) {
-        throw std::invalid_argument("No tower to upgrade");
+        return "No tower to upgrade";
     }
     if (this->get_field(position).get_tower_const()->is_upgraded()) {
-        throw std::invalid_argument("Tower already upgraded");
+        return "Tower already upgraded";
     }
     if (this->gold < get_field(position).get_tower_const()->upgrade_cost()) {
-        throw std::invalid_argument("Insufficient gold");
+        return "Insufficient gold";
     }
 
     this->gold -= get_field(position).get_tower_const()->upgrade_cost();
     get_field(position).upgrade_tower();
     this->points += Constants::POINTS_FOR_TOWER_UPGRADE;
+    return {};
 }
 
-void GameModel::remove_tower(Coordinate position) {
+std::optional<std::string> GameModel::remove_tower(Coordinate position) {
     if (!this->valid_position(position)) {
-        throw std::invalid_argument("Out-of-range coordinates");
+        return "Out-of-range coordinates";
     }
     if (!this->get_field(position).get_tower_const()) {
-        throw std::invalid_argument("No tower to remove");
+        return "No tower to remove";
     }
 
     this->gold += this->get_field(position).get_tower_const()->remove_value();
     this->get_field(position).remove_tower();
     this->points -= Constants::POINTS_FOR_TOWER_REMOVE;
+    return {};
 }
 
 std::ostream &operator<<(std::ostream &os, const GameModel &model) {
