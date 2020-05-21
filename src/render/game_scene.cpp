@@ -237,5 +237,6 @@ void GameScene::on_scene_enter(std::string previous_scene) {
     if (previous_scene == "new_game") {
         model.new_game();
     }
+    set_selected_field(std::nullopt);
     menu_shown = false;
 }
