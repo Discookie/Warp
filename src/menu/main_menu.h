@@ -15,6 +15,7 @@ private:
     MenuButton options_button;
     MenuButton credits_button;
     MenuButton exit_button;
+    std::function<void()> load_game_func;
 
     std::optional<std::string> clicked_scene;
 

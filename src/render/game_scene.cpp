@@ -233,5 +233,9 @@ void GameScene::on_keyboard_event(SceneMessenger& messenger, const ALLEGRO_EVENT
 }
 
 void GameScene::on_scene_enter(std::string previous_scene) {
+    // Check for creating new game here
+    if (previous_scene == "new_game") {
+        model.new_game();
+    }
     menu_shown = false;
 }

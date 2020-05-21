@@ -96,6 +96,9 @@ MenuDifficulty::MenuDifficulty(std::vector<MenuDifficultyButton>&& difficulties,
     int idx = 0;
     for (auto& diff : diffs) {
         diff.set_callback([&, idx](){
+            if (callback) {
+                (*callback)(idx);
+            }
             selected_diff = idx;
         });
 
