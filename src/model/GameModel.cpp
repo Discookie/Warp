@@ -297,11 +297,14 @@ std::optional<std::string> GameModel::add_friendly_entity(Coordinate position) {
 }
 
 std::optional<std::string> GameModel::build_tower(Coordinate position) {
+    if (this->selected_tower == EntityType::TypeNone) {
+        return "No selected tower";
+    }
     if (this->get_field(position).get_tower_const()) {
         return "Tower space occupied";
     }
     if (selected_tower == EntityType::TypeSpecial && !this->have_special) {
-        return"Don't have special";
+        return "Don't have special";
     }
     if (!this->is_buildable(selected_tower)) {
         return "Insufficient gold";
