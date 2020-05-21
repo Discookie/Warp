@@ -19,4 +19,7 @@ public:
     virtual void on_keyboard_event(SceneMessenger &messenger, const ALLEGRO_EVENT &event) {}
 
     virtual void on_event(SceneMessenger &messenger, const ALLEGRO_EVENT &event) {}
+
+    virtual void on_scene_enter(std::string previous_scene) {}
+    virtual void on_scene_leave(std::string next_scene) {}
 };
