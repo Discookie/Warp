@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <fstream>
 #include <model/Stable/Factory.h>
+#include <cmath>
 
 void GameModel::construct_fields() {
     for (int i = 0; i < 12; i++) {
@@ -69,15 +70,15 @@ bool GameModel::check_lose() const {
 
 void GameModel::spawn_enemies() {
     int r = std::rand();
-    if (r % Constants::ALIEN_SPWN_BASE_FREQUENCY == 0) {
+    if (r % int(Constants::ALIEN_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
         int y = std::rand() % 10;
         this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
     }
-    if (r % Constants::OCTOPUS_SPWN_BASE_FREQUENCY == 0) {
+    if (r % int(Constants::OCTOPUS_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
         int y = std::rand() % 10;
         this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
     }
-    if (r % Constants::ROBOT_SPWN_BASE_FREQUENCY == 0) {
+    if (r % int(Constants::ROBOT_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
         int y = std::rand() % 10;
         this->fields[11][y].spawn_moving_entity(EntityType::TypeRobot);
     }
@@ -85,15 +86,15 @@ void GameModel::spawn_enemies() {
 
 void GameModel::spawn_wave() {
     int r = std::rand();
-    if (r % Constants::ALIEN_SPWN_WAVE_FREQUENCY == 0) {
+    if (r % int(Constants::ALIEN_SPWN_WAVE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
         int y = std::rand() % 10;
         this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
     }
-    if (r % Constants::OCTOPUS_SPWN_WAVE_FREQUENCY == 0) {
+    if (r % int(Constants::OCTOPUS_SPWN_WAVE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
         int y = std::rand() % 10;
         this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
     }
-    if (r % Constants::ROBOT_SPWN_WAVE_FREQUENCY == 0) {
+    if (r % int(Constants::ROBOT_SPWN_WAVE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
         int y = std::rand() % 10;
         this->fields[11][y].spawn_moving_entity(EntityType::TypeRobot);
     }

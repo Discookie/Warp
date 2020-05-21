@@ -11,9 +11,9 @@ namespace Constants {
     static const int STARTING_GOLD = 0;
     static const int GOLD_GEN_AMOUNT = 50;
     static const int GOLD_GEN_SPEED = 90; // 3s
-    static const int WAVE_COUNTDOWN_TIME = 5400;
+    static const int WAVE_COUNTDOWN_TIME = 3600;
     static const int WAVE_SPAWN_TIME_START = 0;
-    static const int WAVE_SPAWN_TIME_END = -2700;
+    static const int WAVE_SPAWN_TIME_END = -1800;
     static const int WAVE_OVER_TIME = -900;
 
     MAKE_CONSTANT_DIFF(FINAL_WAVE_NUMBER, 5 * diff);
@@ -27,16 +27,16 @@ namespace Constants {
 /// Factory
     MAKE_CONSTANT_DIFF(FACTORY_BASE_COST, 150 * diff);
 
-    MAKE_CONSTANT_DIFF(FACTORY_UPGRADE_COST, 300 * diff);
+    MAKE_CONSTANT_DIFF(FACTORY_UPGRADE_COST, 1000 * diff);
     static const int FACTORY_MAX_HP = 1000;
     static const int FACTORY_DAMAGE = 0;
     static const int FACTORY_ATTACK_SPEED = 0;
     static const int FACTORY_BASE_PRODUCTION = 50;
     static const int FACTORY_UPGRADE_PRODUCTION = 100;
-    static const int FACTORY_BASE_PRODUCTION_SPEED = 90;
-    static const int FACTORY_UPGRADE_PRODUCTION_SPEED = 60;
+    static const int FACTORY_BASE_PRODUCTION_SPEED = 180;
+    static const int FACTORY_UPGRADE_PRODUCTION_SPEED = 90;
     static const int FACTORY_BASE_REMOVE_VALUE = 50;
-    static const int FACTORY_UPGRADE_REMOVE_VALUE = 100;
+    static const int FACTORY_UPGRADE_REMOVE_VALUE = 500;
 
 /// LaserTower
     MAKE_CONSTANT_DIFF(LASERTOWER_BASE_COST, 100 * diff);
@@ -68,9 +68,9 @@ namespace Constants {
     static const int TESLACOIL_UPGRADE_REMOVE_VALUE = 100;
 
 /// SniperTower
-    MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_COST, 1000 * diff);
+    MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_COST, 1500 * diff);
 
-    MAKE_CONSTANT_DIFF(SNIPERTOWER_UPGRADE_COST, 2000 * diff);
+    MAKE_CONSTANT_DIFF(SNIPERTOWER_UPGRADE_COST, 3000 * diff);
     static const int SNIPERTOWER_MAX_HP = 1500;
 
     MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_DAMAGE, 300 * (2 - diff));
