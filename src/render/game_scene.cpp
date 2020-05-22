@@ -223,9 +223,18 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     // render game over text over everything
     if (model.is_game_over()) {
         if (model.is_game_won()) {
+            // Same text offset by 1 to draw shadow; better legibility
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(0, 0, 0), 125, 89,
+                ALLEGRO_ALIGN_CENTER, "CONGRATS"
+            );
             al_draw_text(
                 huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 88,
                 ALLEGRO_ALIGN_CENTER, "CONGRATS"
+            );
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(0, 0, 0), 125, 129,
+                ALLEGRO_ALIGN_CENTER, "YOU WON!"
             );
             al_draw_text(
                 huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 128,
@@ -233,8 +242,16 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
             );
         } else {
             al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(0, 0, 0), 125, 89,
+                ALLEGRO_ALIGN_CENTER, "BETTER LUCK"
+            );
+            al_draw_text(
                 huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 88,
                 ALLEGRO_ALIGN_CENTER, "BETTER LUCK"
+            );
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(0, 0, 0), 125, 129,
+                ALLEGRO_ALIGN_CENTER, "NEXT TIME!"
             );
             al_draw_text(
                 huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 128,
