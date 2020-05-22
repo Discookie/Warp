@@ -7,12 +7,12 @@ void GameStatusBar::render_status_bar() const {
     al_draw_filled_rectangle(
         x - width / 2, y,
         fill_width, y + 8,
-        al_map_rgb(203, 214, 137)
+        al_map_rgb(155, 227, 157)
     );
     al_draw_rectangle(
         x - width / 2, y,
         x + width / 2, y + 8,
-        al_map_rgb(203, 214, 137), 1
+        al_map_rgb(175, 175, 175), 1
     );
 
     al_draw_text(
