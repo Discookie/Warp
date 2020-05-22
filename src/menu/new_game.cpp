@@ -50,13 +50,13 @@ NewGameScene::NewGameScene(std::unique_ptr<MenuDifficulty>&& difficulty, std::sh
     diff = std::move(difficulty);
 
     start_button = MenuButton(
-        210, 230,
+        210, 225,
         BUTTON_WIDTH, 20,
         "Start", font,
         [&](){ clicked_scene = "in_game"; }
     );
     back_button = MenuButton(
-        110, 230,
+        110, 225,
         BUTTON_WIDTH, 20,
         "Back", font,
         [&](){ clicked_scene = "main_menu"; }

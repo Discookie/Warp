@@ -195,9 +195,13 @@ void GameBoard::on_click(const ALLEGRO_MOUSE_EVENT& event) {
             (event.y - top) / field_size
         };
 
+        std::optional<Coordinate> backup_field = selected_field;
+        
+        selected_field = field;
+
         // Defaults to 'true' return value
-        if (!callbacks.on_select_field || (*callbacks.on_select_field)(field)) {
-            selected_field = field;
+        if (callbacks.on_select_field && !(*callbacks.on_select_field)(field)) {
+            selected_field = backup_field;
         }
     }
 }
