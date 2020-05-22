@@ -287,10 +287,10 @@ std::optional<std::string> GameModel::add_friendly_entity(Coordinate position) {
         return "Out-of-range coordinates";
     }
     if (this->get_field(position).get_team_status() == Team::TeamEnemy) {
-        return "TeamEnemy territory";
+        return "Enemy territory";
     }
     if (selected_tower != EntityType::TypeFriendly) {
-        build_tower(position);
+        return build_tower(position);
     }
     else {
         this->get_field(position).spawn_moving_entity(selected_tower);
