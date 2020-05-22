@@ -61,8 +61,8 @@ void GameModel::update_fields() {
 bool GameModel::check_win() const { return this->wave_number >= Constants::FINAL_WAVE_NUMBER(); }
 
 bool GameModel::check_lose() const {
-    for (const auto &a : this->fields) {
-        if (a[0].get_team_status() == Team::TeamEnemy) {
+    for (const auto &a : this->fields[0]) {
+        if (a.get_team_status() == Team::TeamEnemy) {
             return true;
         }
     }
