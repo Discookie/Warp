@@ -20,6 +20,7 @@ const std::vector<std::string> sprite_names = {
     "laser_up",
     "tesla_coil_up",
     "sniper_tower_up",
+    "hq",
     "multiple"
 };
 
@@ -86,6 +87,7 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
     }
 
     const std::optional<GameSprite>& multiple_sprite = *sprites.rbegin();
+    const std::optional<GameSprite>& hq_sprite = *(++sprites.rbegin());
 
     int y_pos = top;
 
@@ -153,6 +155,12 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
                     if (multiple_sprite) {
                         multiple_sprite->render_sprite_20px(x_pos, y_pos, event);
                     }
+                }
+            // If there's no entities either, there is a special case: The HQ row
+            // where we render "hq" buildings instead of empty spaces
+            } else if (idx_x == 0) {
+                if (hq_sprite) {
+                    hq_sprite->render_sprite_20px(x_pos, y_pos, event);
                 }
             }
 
