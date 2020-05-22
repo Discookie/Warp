@@ -10,6 +10,7 @@
 
 #include "menu/main_menu.h"
 #include "menu/new_game.h"
+#include "menu/options.h"
 #include "render/game_scene.h"
 #include "model/GameModel.h"
 #include "scene/scene_manager.h"
@@ -92,16 +93,23 @@ int main() {
         // commit on success (true)
         if (al_resize_display(
             display.get(), 
-            320 * scale_multiplier, 240 * scale_multiplier
+            320 * new_scale_multiplier, 240 * new_scale_multiplier
         )) {
             scale_multiplier = new_scale_multiplier;
         }
+    };
+
+    const auto scale_get_func = [&]()->int {
+        return scale_multiplier;
     };
 
     try_add_scene(MainMenuScene::create(std::move(load_game_func)), "main_menu");
     try_add_scene(NewGameScene::create([&game_model](int x){
         game_model.change_difficulty((Difficulty)x);
     }), "new_game");
+    try_add_scene(OptionsScene::create(
+        std::move(scale_get_func), std::move(scale_func)
+    ), "options");
     try_add_scene(GameScene::create(game_model), "in_game");
     scene_manager.set_scene("main_menu");
     
