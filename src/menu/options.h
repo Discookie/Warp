@@ -17,6 +17,7 @@ private:
     MenuButton back_button;
     
     std::optional<std::string> clicked_scene;
+    std::string previous_scene;
 
     std::function<int()> scale_getter;
     std::function<void(bool)> scale_setter;
@@ -34,4 +35,6 @@ public:
     void render_scene(SceneMessenger &messenger, const ALLEGRO_EVENT &event) override;
 
     void on_mouse_event(SceneMessenger &messenger, const ALLEGRO_EVENT &event) override;
+
+    void on_scene_enter(std::string previous_scene) override;
 };

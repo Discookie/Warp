@@ -142,7 +142,6 @@ GameScene::GameScene(
     menu_options_button = GameMenuButton(135, 150, 200, 20, "Options", menu_font, [&]() { 
         clicked_scene = "options";
     });
-    menu_options_button.disable();
     menu_exit_button = GameMenuButton(135, 200, 200, 20, "Exit without saving", menu_font, [&]() {
         clicked_scene = "main_menu";
     });

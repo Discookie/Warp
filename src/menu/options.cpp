@@ -36,7 +36,7 @@ neither::Either<std::string, std::unique_ptr<OptionsScene>> OptionsScene::create
 OptionsScene::OptionsScene(
     MenuImage &&img, const std::shared_ptr<ALLEGRO_FONT> &font,
     std::function<int()>&& _scale_getter, std::function<void(bool)>&& _scale_setter
-) : scale_getter(_scale_getter), scale_setter(_scale_setter) {
+) : scale_getter(_scale_getter), scale_setter(_scale_setter), previous_scene("main_menu") {
     header_image = std::move(img);
 
     scale_text = MenuText(160, 120, "Scale: " + std::to_string(scale_getter()), font);
@@ -57,7 +57,7 @@ OptionsScene::OptionsScene(
         
     back_button = MenuButton(
         110, 220, 95, 20, "Back", font,
-        [&](){ clicked_scene = "main_menu"; }
+        [&](){ clicked_scene = previous_scene; }
     );
 
 
@@ -85,4 +85,8 @@ void OptionsScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT
             clicked_scene = std::nullopt;
         }
     }
+}
+
+void OptionsScene::on_scene_enter(std::string prev_scene) {
+    previous_scene = prev_scene;
 }
