@@ -71,17 +71,33 @@ bool GameModel::check_lose() const {
 
 void GameModel::spawn_enemies() {
     int r = std::rand();
-    if (r % int(Constants::ALIEN_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
-        int y = std::rand() % 10;
-        this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
-    }
-    if (r % int(Constants::OCTOPUS_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
-        int y = std::rand() % 10;
-        this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
-    }
-    if (r % int(Constants::ROBOT_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
-        int y = std::rand() % 10;
-        this->fields[11][y].spawn_moving_entity(EntityType::TypeRobot);
+    if (time_counter < Constants::WAVE_COUNTDOWN_TIME) {
+        if (r % int(Constants::ALIEN_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
+            int y = std::rand() % 10;
+            this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
+        }
+    } else if (time_counter < Constants::WAVE_COUNTDOWN_TIME * 2) {
+        if (r % int(Constants::ALIEN_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
+            int y = std::rand() % 10;
+            this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
+        }
+        if (r % int(Constants::OCTOPUS_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
+            int y = std::rand() % 10;
+            this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
+        }
+    } else {
+        if (r % int(Constants::ALIEN_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
+            int y = std::rand() % 10;
+            this->fields[11][y].spawn_moving_entity(EntityType::TypeAlien);
+        }
+        if (r % int(Constants::OCTOPUS_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
+            int y = std::rand() % 10;
+            this->fields[11][y].spawn_moving_entity(EntityType::TypeOctopus);
+        }
+        if (r % int(Constants::ROBOT_SPWN_BASE_FREQUENCY * std::pow(0.6, this->wave_number)) == 0) {
+            int y = std::rand() % 10;
+            this->fields[11][y].spawn_moving_entity(EntityType::TypeRobot);
+        }
     }
 }
 

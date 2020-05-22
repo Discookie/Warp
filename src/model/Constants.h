@@ -8,10 +8,10 @@ namespace Constants {
     extern float diff;
 //1s -> 30t
 // Game
-    static const int STARTING_GOLD = 0;
+    static const int STARTING_GOLD = 200;
     static const int GOLD_GEN_AMOUNT = 50;
     static const int GOLD_GEN_SPEED = 90; // 3s
-    static const int WAVE_COUNTDOWN_TIME = 3600;
+    static const int WAVE_COUNTDOWN_TIME = 1800;
     static const int WAVE_SPAWN_TIME_START = 0;
     static const int WAVE_SPAWN_TIME_END = -1800;
     static const int WAVE_OVER_TIME = -900;
@@ -25,7 +25,7 @@ namespace Constants {
 
 // Stable
 /// Factory
-    MAKE_CONSTANT_DIFF(FACTORY_BASE_COST, 150 * diff);
+    MAKE_CONSTANT_DIFF(FACTORY_BASE_COST, 100 * diff);
 
     MAKE_CONSTANT_DIFF(FACTORY_UPGRADE_COST, 1000 * diff);
     static const int FACTORY_MAX_HP = 1000;
@@ -33,8 +33,8 @@ namespace Constants {
     static const int FACTORY_ATTACK_SPEED = 0;
     static const int FACTORY_BASE_PRODUCTION = 50;
     static const int FACTORY_UPGRADE_PRODUCTION = 100;
-    static const int FACTORY_BASE_PRODUCTION_SPEED = 180;
-    static const int FACTORY_UPGRADE_PRODUCTION_SPEED = 90;
+    static const int FACTORY_BASE_PRODUCTION_SPEED = 900;
+    static const int FACTORY_UPGRADE_PRODUCTION_SPEED = 750;
     static const int FACTORY_BASE_REMOVE_VALUE = 50;
     static const int FACTORY_UPGRADE_REMOVE_VALUE = 500;
 
@@ -61,25 +61,25 @@ namespace Constants {
     MAKE_CONSTANT_DIFF(TESLACOIL_BASE_DAMAGE, 100 * (2 - diff));
 
     MAKE_CONSTANT_DIFF(TESLACOIL_UPGRADE_DAMAGE, 200 * (2 - diff));
-    static const int TESLACOIL_BASE_ATTACKSPEED = 30;
+    static const int TESLACOIL_BASE_ATTACKSPEED = 10;
     static const int TESLACOIL_ATTACK_RANGE = 1;
     static const int TESLACOIL_UPGRADE_ATTACKSPEED = 15;
     static const int TESLACOIL_BASE_REMOVE_VALUE = 50;
     static const int TESLACOIL_UPGRADE_REMOVE_VALUE = 100;
 
 /// SniperTower
-    MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_COST, 1500 * diff);
+    MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_COST, 2500 * diff);
 
-    MAKE_CONSTANT_DIFF(SNIPERTOWER_UPGRADE_COST, 3000 * diff);
-    static const int SNIPERTOWER_MAX_HP = 1500;
+    MAKE_CONSTANT_DIFF(SNIPERTOWER_UPGRADE_COST, 2500 * diff);
+    static const int SNIPERTOWER_MAX_HP = 100;
 
-    MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_DAMAGE, 300 * (2 - diff));
+    MAKE_CONSTANT_DIFF(SNIPERTOWER_BASE_DAMAGE, 200 * (2 - diff));
 
-    MAKE_CONSTANT_DIFF(SNIPERTOWER_UPGRADE_DAMAGE, 600 * (2 - diff));
-    static const int SNIPERTOWER_BASE_ATTACKSPEED = 240;
-    static const int SNIPERTOWER_UPGRADE_ATTACKSPEED = 120;
-    static const int SNIPERTOWER_BASE_REMOVE_VALUE = 500;
-    static const int SNIPERTOWER_UPGRADE_REMOVE_VALUE = 1000;
+    MAKE_CONSTANT_DIFF(SNIPERTOWER_UPGRADE_DAMAGE, 300 * (2 - diff));
+    static const int SNIPERTOWER_BASE_ATTACKSPEED = 450;
+    static const int SNIPERTOWER_UPGRADE_ATTACKSPEED = 300;
+    static const int SNIPERTOWER_BASE_REMOVE_VALUE = 1500;
+    static const int SNIPERTOWER_UPGRADE_REMOVE_VALUE = 3000;
 
 /// HqAttack
     MAKE_CONSTANT_DIFF(HQATTACK_BASE_COST, 1000 * diff);
@@ -88,7 +88,7 @@ namespace Constants {
 
     MAKE_CONSTANT_DIFF(HQATTACK_DAMAGE, 300 * (2 - diff));
     static const int HQATTACK_ATTACKSPEED = 90;
-    static const int HQATTACK_REMOVE_VALUE = 500;
+    static const int HQATTACK_REMOVE_VALUE = 1000;
 
 /// HqDefense
     MAKE_CONSTANT_DIFF(HQDEFENSE_BASE_COST, 1000 * diff);
@@ -121,31 +121,31 @@ namespace Constants {
     static const int ENEMY_COST = 0;
 
 /// Alien
-    MAKE_CONSTANT_DIFF(ALIEN_MAX_HP, 200 * diff);
+    MAKE_CONSTANT_DIFF(ALIEN_MAX_HP, 100 * diff);
     static const int ALIEN_DAMAGE = 300;
     static const int ALIEN_ATTACKSPEED = 60;
 
-    MAKE_CONSTANT_DIFF(ALIEN_MOVESPEED, 60 * (2 - diff));
-    static const int ALIEN_SPWN_BASE_FREQUENCY = 150;
-    static const int ALIEN_SPWN_WAVE_FREQUENCY = 60;
+    MAKE_CONSTANT_DIFF(ALIEN_MOVESPEED, 100 * (2 - diff));
+    static const int ALIEN_SPWN_BASE_FREQUENCY = 200;
+    static const int ALIEN_SPWN_WAVE_FREQUENCY = 100;
 
 /// Octopus
     MAKE_CONSTANT_DIFF(OCTOPUS_MAX_HP, 1500 * diff);
-    static const int OCTOPUS_DAMAGE = 500;
+    static const int OCTOPUS_DAMAGE = 100;
     static const int OCTOPUS_ATTACKSPEED = 120;
 
-    MAKE_CONSTANT_DIFF(OCTOPUS_MOVESPEED, 90 * (2 - diff));
-    static const int OCTOPUS_SPWN_BASE_FREQUENCY = 500;
-    static const int OCTOPUS_SPWN_WAVE_FREQUENCY = 150;
+    MAKE_CONSTANT_DIFF(OCTOPUS_MOVESPEED, 120 * (2 - diff));
+    static const int OCTOPUS_SPWN_BASE_FREQUENCY = 1000;
+    static const int OCTOPUS_SPWN_WAVE_FREQUENCY = 250;
 
 /// Robot
-    MAKE_CONSTANT_DIFF(ROBOT_MAX_HP, 5000 * diff);
+    MAKE_CONSTANT_DIFF(ROBOT_MAX_HP, 2500 * diff);
     static const int ROBOT_DAMAGE = 600;
     static const int ROBOT_ATTACKSPEED = 120;
 
     MAKE_CONSTANT_DIFF(ROBOT_MOVESPEED, 150 * (2 - diff));
-    static const int ROBOT_SPWN_BASE_FREQUENCY = 3600;
-    static const int ROBOT_SPWN_WAVE_FREQUENCY = 1200;
+    static const int ROBOT_SPWN_BASE_FREQUENCY = 5000;
+    static const int ROBOT_SPWN_WAVE_FREQUENCY = 2500;
 
 };  // namespace Constants
 
