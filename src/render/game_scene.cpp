@@ -35,16 +35,17 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     GameStatusText points_text = GameStatusText(105, 14, 70, "Points:", "", font);
     GameStatusText gold_text = GameStatusText(182, 14, 70, "Gold:", "", font);
     GameStatusBar status_bar = GameStatusBar(283, 14, 70, 0, "Wave:", font);
+    GameTooltipBox tooltip_box = GameTooltipBox(124, 233, 224, 12, font);
 
     return 
-        GameBoard::create(124, 135, board_callbacks)
+        GameBoard::create(124, 128, board_callbacks)
         .rightFlatMap([&](auto&& board_ptr) {
-            return GameBuyMenu::create(283, 123, font, buy_callbacks)
+            return GameBuyMenu::create(283, 116, font, buy_callbacks)
                 .rightMap([&board_ptr](auto&& buymenu_ptr) {
                     return std::make_tuple(std::move(board_ptr), std::move(buymenu_ptr));
                 });
         }).rightFlatMap([&](auto&& tuple_board_buymenu) {
-            return GameUpgradeMenu::create(283, 217, font, upgrade_callbacks)
+            return GameUpgradeMenu::create(283, 210, font, upgrade_callbacks)
                 .rightMap([&tuple_board_buymenu](auto&& upgrade_ptr) {
                     auto&& board = std::get<0>(tuple_board_buymenu);
                     auto&& buymenu = std::get<1>(tuple_board_buymenu);
@@ -57,7 +58,8 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
             return scene_ptr(new GameScene(
                 model, std::move(board),
                 std::move(buymenu), std::move(upgrade),
-                std::move(points_text), std::move(gold_text), std::move(status_bar)
+                std::move(points_text), std::move(gold_text),
+                std::move(status_bar), std::move(tooltip_box)
             ));
         });
 }
@@ -65,11 +67,12 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
 GameScene::GameScene(
     GameModel& _model, std::unique_ptr<GameBoard>&& _board,
     std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
-    GameStatusText&& _points_text, GameStatusText&& _gold_text, GameStatusBar&& _status_bar
+    GameStatusText&& _points_text, GameStatusText&& _gold_text,
+    GameStatusBar&& _status_bar, GameTooltipBox&& _tooltip_box
 ) : model(_model), board(std::move(_board)), selected_field(std::nullopt),
     buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu)),
     gold_text(_gold_text), points_text(_points_text), status_bar(_status_bar),
-    menu_shown(false), clicked_scene(std::nullopt)
+    menu_shown(false), clicked_scene(std::nullopt), tooltip_box(_tooltip_box)
 {
     GameBoardCallbacks& board_callbacks = board->modify_callbacks();
     
@@ -77,15 +80,17 @@ GameScene::GameScene(
         bool building_tower = buy_menu->get_selected_item() >= 0;
 
         if (building_tower) {
-            std::cout << "Placed" << std::endl;
-            model.add_friendly_entity(pos);
+            auto result = model.add_friendly_entity(pos);
+            if (result) {
+                tooltip_box.show_text(*result);
+                return !building_tower;
+            }
+
             buy_menu->clear_selection();
             set_selected_field(std::nullopt);
         } else if (selected_field) {
-            std::cout << "Deselected" << std::endl;
             set_selected_field(std::nullopt);
         } else {
-            std::cout << "Selected" << std::endl;
             set_selected_field(pos);
         }
 
@@ -103,20 +108,30 @@ GameScene::GameScene(
 
     upgrade_callbacks.on_upgrade = [&]() {
         if (selected_field) {
-            model.upgrade_tower(*selected_field);
+            auto result = model.upgrade_tower(*selected_field);
+            if (result) {
+                tooltip_box.show_text(*result);
+                return;
+            }
+
             upgrade_menu->set_upgrade_visible(false); // FIXME: Check manually for upgraded state here
             // do not clear field here
         }
     };
     upgrade_callbacks.on_delete = [&]() {
         if (selected_field) {
-            model.remove_tower(*selected_field);
+            auto result = model.remove_tower(*selected_field);
+            if (result) {
+                tooltip_box.show_text(*result);
+                return;
+            }
+
             set_selected_field(std::nullopt);
         }
     };
 
     font_ptr font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -10, 0), FontDeleter());
-    menu_pause_button = GameMenuButton(35, 17, 56, 15, "Pause", font, [&]() { menu_shown = true; });
+    menu_pause_button = GameMenuButton(35, 14, 56, 15, "Pause", font, [&]() { menu_shown = true; });
 
     font_ptr menu_font = font_ptr(al_create_builtin_font(), FontDeleter());
     menu_resume_button = GameMenuButton(135, 70, 200, 20, "Resume", menu_font, [&]() { menu_shown = false; });
@@ -179,6 +194,7 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     points_text.render_text();
     gold_text.render_text();
     status_bar.render_status_bar();
+    tooltip_box.render_tooltip();
 
     menu_pause_button.render_button();
 

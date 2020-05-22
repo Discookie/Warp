@@ -5,13 +5,13 @@
 void GameStatusBar::render_status_bar() const {
     int fill_width = x + width * (percent_filled - 50) / 100;
     al_draw_filled_rectangle(
-        x - width / 2, y + 2,
-        fill_width, y + 10,
+        x - width / 2, y,
+        fill_width, y + 8,
         al_map_rgb(203, 214, 137)
     );
     al_draw_rectangle(
-        x - width / 2, y + 2,
-        x + width / 2, y + 10,
+        x - width / 2, y,
+        x + width / 2, y + 8,
         al_map_rgb(203, 214, 137), 1
     );
 

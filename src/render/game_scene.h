@@ -21,6 +21,7 @@ private:
     GameStatusText points_text;
     GameStatusText gold_text;
     GameStatusBar status_bar;
+    GameTooltipBox tooltip_box;
 
     bool menu_shown;
     GameMenuButton menu_pause_button;
@@ -37,7 +38,8 @@ private:
     GameScene(
         GameModel& _model, std::unique_ptr<GameBoard>&& _board,
         std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
-        GameStatusText&& points_text, GameStatusText&& gold_text, GameStatusBar&& status_bar
+        GameStatusText&& points_text, GameStatusText&& gold_text, GameStatusBar&& status_bar,
+        GameTooltipBox&& tooltip_box
     );
 public:
     static neither::Either<std::string, std::unique_ptr<GameScene>> create(GameModel& model);
