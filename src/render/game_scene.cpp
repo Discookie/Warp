@@ -132,18 +132,23 @@ GameScene::GameScene(
 
     font_ptr font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -10, 0), FontDeleter());
     menu_pause_button = GameMenuButton(35, 14, 56, 15, "Pause", font, [&]() { menu_shown = true; });
-
     font_ptr menu_font = font_ptr(al_create_builtin_font(), FontDeleter());
-    menu_resume_button = GameMenuButton(135, 70, 200, 20, "Resume", menu_font, [&]() { menu_shown = false; });
+    
+    // Moved up for reference reasons
+    menu_exit_button = GameMenuButton(135, 200, 200, 20, "Exit without saving", menu_font, [&]() {
+        clicked_scene = "main_menu";
+    });
+
+    menu_resume_button = GameMenuButton(135, 70, 200, 20, "Resume", menu_font, [&]() {
+        menu_shown = false;
+        menu_exit_button.set_text("Exit without saving");
+    });
     menu_save_button = GameMenuButton(135, 120, 200, 20, "Save", menu_font, [&]() {
         model.save_game();
-        menu_shown = false;
+        menu_exit_button.set_text("Exit");
     });
     menu_options_button = GameMenuButton(135, 150, 200, 20, "Options", menu_font, [&]() { 
         clicked_scene = "options";
-    });
-    menu_exit_button = GameMenuButton(135, 200, 200, 20, "Exit without saving", menu_font, [&]() {
-        clicked_scene = "main_menu";
     });
 }
 
@@ -252,6 +257,11 @@ void GameScene::on_scene_enter(std::string previous_scene) {
     if (previous_scene == "new_game") {
         model.new_game();
     }
-    set_selected_field(std::nullopt);
-    menu_shown = false;
+
+    // Don't unpause when returning from options scene
+    if (previous_scene != "options") {
+        set_selected_field(std::nullopt);
+        menu_shown = false;
+        menu_exit_button.set_text("Exit without saving");
+    }
 }
