@@ -172,6 +172,10 @@ void Field::update_entities() {
         this->tower->update();
     }
     for (unsigned long i = 0; i < moving_entities.size(); ++i) {
+        // safety checks
+        moving_entities[i]->set_position(this->position);
+        moving_entities[i]->set_vector_pos(i);
+
         unsigned long s = moving_entities.size();
         moving_entities[i]->update();
         if (s != moving_entities.size()) {
