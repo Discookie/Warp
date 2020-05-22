@@ -38,7 +38,7 @@ public:
     );
 
     int get_selected_item() { return selected_item; }
-    void clear_selection() { selected_item = -1; }
+    void clear_selection();
     GameBuyCallbacks& modify_callbacks() { return callbacks; }
     /// Enables items based on how much money you have
     void update_buyable(int money);

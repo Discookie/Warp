@@ -74,4 +74,11 @@ void GameButton::render_button() {
             std::to_string(price()).c_str()
         );
     }
+
+    if (selected) {
+        al_draw_rectangle(
+            x - w / 2 - 1,       y - h / 2 - 1,
+            x + (w + 3) / 2, y + (h + 3) / 2,
+            al_map_rgb(106, 193, 200), 3);
+    }
 }

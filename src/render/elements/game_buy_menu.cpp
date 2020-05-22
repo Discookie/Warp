@@ -46,16 +46,25 @@ neither::Either<std::string, menu_ptr> GameBuyMenu::create(
 }
 
 GameBuyMenu::GameBuyMenu(int cx, int cy, std::vector<GameButton>&& buy_items, GameBuyCallbacks callback_list)
-    : center_x(cx), center_y(cy), items(std::move(buy_items)), callbacks(callback_list)
+    : center_x(cx), center_y(cy), items(std::move(buy_items)), callbacks(callback_list), selected_item(-1)
 {
     for (int i = 0; i < items.size(); i++) {
         GameButton& button = items[i];
         
         button.set_click_callback([&, i](){
-            selected_item = i;
-            if (callbacks.drag_callback) {
-                EntityType ent = std::get<1>(item_infos[i]);
-                (*callbacks.drag_callback)(ent);
+            if (selected_item != -1) {
+                items[selected_item].set_selected(false);
+            }
+
+            if (selected_item == i) {
+                selected_item = -1;
+            } else {
+                selected_item = i;
+                if (callbacks.drag_callback) {
+                    EntityType ent = std::get<1>(item_infos[i]);
+                    (*callbacks.drag_callback)(ent);
+                }
+                button.set_selected(true);
             }
         });
         
@@ -70,6 +79,13 @@ GameBuyMenu::GameBuyMenu(int cx, int cy, std::vector<GameButton>&& buy_items, Ga
     }
 }
 
+void GameBuyMenu::clear_selection() { 
+    if (selected_item != -1) {
+        items[selected_item].set_selected(false);
+    }
+    selected_item = -1;
+}
+
 void GameBuyMenu::update_buyable(int money) {
     for (int i = 0; i < items.size(); i++) {
         GameButton& button = items[i];
@@ -77,6 +93,7 @@ void GameBuyMenu::update_buyable(int money) {
 
         if (!enabled && selected_item == i) {
             selected_item = -1;
+            button.set_selected(false);
             if (callbacks.drag_cancel_callback) {
                 (*callbacks.drag_cancel_callback)();
             }

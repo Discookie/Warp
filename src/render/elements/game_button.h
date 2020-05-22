@@ -16,6 +16,7 @@ private:
     int x, y, w, h;
     bool enabled;
     bool visible;
+    bool selected;
     // FIXME: Add a Dragged state
     std::string name;
     std::function<int()> price;
@@ -29,7 +30,7 @@ public:
                std::shared_ptr<ALLEGRO_FONT> button_font,
                std::optional<std::function<void()>> on_click,
                std::optional<std::function<void()>> on_release
-    ) : x(center_x), y(center_y), w(width), h(height), enabled(false), visible(true),
+    ) : x(center_x), y(center_y), w(width), h(height), enabled(false), visible(true), selected(false),
         name(name_text), price(price_func), 
         font(button_font),
         click_callback(on_click), release_callback(on_release) {}
@@ -38,6 +39,7 @@ public:
     int get_price() { return price(); }
     void set_price(std::function<int()> new_price) { price = new_price; }
     void set_visible(bool new_vis) { visible = new_vis; };
+    void set_selected(bool new_sel) { selected = new_sel; };
     /// Returns the button's enabled state
     bool update_buyable(int money);
 
