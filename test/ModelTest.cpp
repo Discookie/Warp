@@ -55,8 +55,8 @@ public:
 /*
 TEST(TestMockCallback, Test) {
     std::shared_ptr<MockCallback> cb = std::make_shared<MockCallback>();
-    std::shared_ptr<Factory> factory = std::make_shared<Factory>(Factory({0, 0}, cb));
-    std::shared_ptr<Alien> alien     = std::make_shared<Alien>(Alien({0, 0}, cb, 0));
+    std::shared_ptr<Factory> factory = std::make_shared<Factory>(Factory({1, 0}, cb));
+    std::shared_ptr<Alien> alien     = std::make_shared<Alien>(Alien({1, 0}, cb, 0));
     EXPECT_EQ(cb->pro_calls, 0);
     EXPECT_EQ(cb->mov_calls, 0);
     EXPECT_EQ(cb->att_calls, 0);
@@ -94,7 +94,7 @@ TEST(CoordinateTest, ioTest) {
         for (int j = 0; j < 10; ++j) {
             std::stringstream s;
             Coordinate c1 = {i, j};
-            Coordinate c2 = {0, 0};
+            Coordinate c2 = {1, 0};
             s << c1;
             s >> c2;
             EXPECT_EQ(c1, c2);
@@ -106,7 +106,7 @@ class FieldFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
     Field field;
-    FieldFixture() : cb(new MockCallback), field({0, 0}, cb) {}
+    FieldFixture() : cb(new MockCallback), field({1, 0}, cb) {}
 };
 
 TEST_F(FieldFixture, InitTest) {
@@ -210,7 +210,7 @@ TEST_F(FieldFixture, UpdateTest) {
         EXPECT_EQ(cb->pro_calls, 0);
         field.update_entities();
     }
-    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 0)));
     for (int i = 0; i < Constants::FRIENDLY_MOVESPEED; ++i) {
         EXPECT_EQ(cb->mov_calls, 0);
         field.update_entities();
@@ -220,28 +220,28 @@ TEST_F(FieldFixture, UpdateTest) {
 
 TEST_F(FieldFixture, AddEntityTest) {
     EXPECT_EQ(field.get_moving_entities().size(), 0);
-    field.add_moving_entity(std::make_shared<Alien>(Alien({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Alien>(Alien({1, 0}, cb, 0)));
     EXPECT_EQ(field.get_moving_entities().size(), 1);
-    field.add_moving_entity(std::make_shared<Octopus>(Octopus({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Octopus>(Octopus({1, 0}, cb, 0)));
     EXPECT_EQ(field.get_moving_entities().size(), 2);
-    field.add_moving_entity(std::make_shared<Robot>(Robot({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Robot>(Robot({1, 0}, cb, 0)));
     EXPECT_EQ(field.get_moving_entities().size(), 3);
     EXPECT_EQ(field.get_team_status(), Team::TeamEnemy);
-    EXPECT_ANY_THROW(field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0))));
+    EXPECT_ANY_THROW(field.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 0))));
     EXPECT_ANY_THROW(field.build_tower(EntityType::TypeTeslaCoil));
 }
 
 TEST_F(FieldFixture, AddFriendlyTest) {
-    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 0)));
     EXPECT_EQ(field.get_team_status(), Team::TeamFriendly);
-    EXPECT_ANY_THROW(field.add_moving_entity(std::make_shared<Robot>(Robot({0, 0}, cb, 0))));
+    EXPECT_ANY_THROW(field.add_moving_entity(std::make_shared<Robot>(Robot({1, 0}, cb, 0))));
     EXPECT_NO_THROW(field.build_tower(EntityType::TypeTeslaCoil));
 }
 
 TEST_F(FieldFixture, RemoveEntityTest) {
-    field.add_moving_entity(std::make_shared<Alien>(Alien({0, 0}, cb, 0)));
-    field.add_moving_entity(std::make_shared<Octopus>(Octopus({0, 0}, cb, 0)));
-    field.add_moving_entity(std::make_shared<Robot>(Robot({0, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Alien>(Alien({1, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Octopus>(Octopus({1, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Robot>(Robot({1, 0}, cb, 0)));
     field.remove_entity_at(0);
     EXPECT_EQ(field.get_moving_entities().size(), 2);
     EXPECT_EQ(field.get_team_status(), Team::TeamEnemy);
@@ -256,26 +256,26 @@ TEST_F(FieldFixture, RemoveEntityTest) {
 TEST_F(FieldFixture, EqTest) {
     Field field1({1, 1}, cb);
     EXPECT_NE(field, field1);  // coord
-    Field field2({0, 0}, cb);
+    Field field2({1, 0}, cb);
     field2.build_tower(EntityType::TypeSniperTower);
     EXPECT_NE(field, field2);  // tower
-    Field field3({0, 0}, cb);
-    field3.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
+    Field field3({1, 0}, cb);
+    field3.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 0)));
     EXPECT_NE(field, field3);  // moving_entity && teamstatus
-    Field field4({0, 0}, cb);
-    field4.add_moving_entity(std::make_shared<Alien>(Alien({0, 0}, cb, 0)));
+    Field field4({1, 0}, cb);
+    field4.add_moving_entity(std::make_shared<Alien>(Alien({1, 0}, cb, 0)));
     EXPECT_NE(field, field3);  // moving_entity && teamstatus
-    Field field5({0, 0}, cb);
+    Field field5({1, 0}, cb);
     EXPECT_EQ(field, field5);
 }
 
 TEST_F(FieldFixture, IOTest) {
     std::stringstream ss;
-    Field field1({0, 0}, cb);
+    Field field1({1, 0}, cb);
 
-    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 0)));
-    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 1)));
-    field.add_moving_entity(std::make_shared<Friendly>(Friendly({0, 0}, cb, 2)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 0)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 1)));
+    field.add_moving_entity(std::make_shared<Friendly>(Friendly({1, 0}, cb, 2)));
     field.build_tower(EntityType::TypeSniperTower);
     field.upgrade_tower();
 
@@ -289,7 +289,7 @@ class FactoryFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
     std::shared_ptr<Factory> factory;
-    FactoryFixture() : cb(new MockCallback()), factory(new Factory({0, 0}, cb)) {}
+    FactoryFixture() : cb(new MockCallback()), factory(new Factory({1, 0}, cb)) {}
 };
 
 TEST_F(FactoryFixture, InitTest) {
@@ -300,7 +300,7 @@ TEST_F(FactoryFixture, InitTest) {
     EXPECT_EQ(factory->max_hp(), Constants::FACTORY_MAX_HP);
     EXPECT_EQ(factory->production_amount(), Constants::FACTORY_BASE_PRODUCTION);
     EXPECT_EQ(factory->remove_value(), Constants::FACTORY_BASE_REMOVE_VALUE);
-    EXPECT_EQ(factory->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(factory->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(factory->get_vector_pos(), -1);
     EXPECT_FALSE(factory->is_upgraded());
     EXPECT_TRUE(factory->is_friendly());
@@ -310,12 +310,12 @@ TEST_F(FactoryFixture, UpgradeTest) {
     factory->upgrade();
     EXPECT_EQ(factory->attack_speed(), Constants::FACTORY_ATTACK_SPEED);
     EXPECT_EQ(factory->production_speed(), Constants::FACTORY_UPGRADE_PRODUCTION_SPEED);
-    EXPECT_EQ(factory->cost(), Constants::FACTORY_UPGRADE_COST());
+    EXPECT_EQ(factory->cost(), Constants::FACTORY_BASE_COST());
     EXPECT_EQ(factory->upgrade_cost(), Constants::FACTORY_UPGRADE_COST());
     EXPECT_EQ(factory->max_hp(), Constants::FACTORY_MAX_HP);
     EXPECT_EQ(factory->production_amount(), Constants::FACTORY_UPGRADE_PRODUCTION);
     EXPECT_EQ(factory->remove_value(), Constants::FACTORY_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(factory->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(factory->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(factory->get_vector_pos(), -1);
     EXPECT_TRUE(factory->is_upgraded());
     EXPECT_TRUE(factory->is_friendly());
@@ -347,7 +347,7 @@ class LaserTowerFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
     std::shared_ptr<LaserTower> laserTower;
-    LaserTowerFixture() : cb(new MockCallback()), laserTower(new LaserTower({0, 0}, cb)) {}
+    LaserTowerFixture() : cb(new MockCallback()), laserTower(new LaserTower({1, 0}, cb)) {}
 };
 
 TEST_F(LaserTowerFixture, InitTest) {
@@ -357,7 +357,7 @@ TEST_F(LaserTowerFixture, InitTest) {
     EXPECT_EQ(laserTower->remove_value(), Constants::LASERTOWER_BASE_REMOVE_VALUE);
     EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST());
     EXPECT_EQ(laserTower->max_hp(), Constants::LASERTOWER_MAX_HP);
-    EXPECT_EQ(laserTower->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(laserTower->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(laserTower->get_vector_pos(), -1);
     EXPECT_FALSE(laserTower->is_upgraded());
     EXPECT_TRUE(laserTower->is_friendly());
@@ -366,11 +366,11 @@ TEST_F(LaserTowerFixture, InitTest) {
 TEST_F(LaserTowerFixture, UpgradeTest) {
     laserTower->upgrade();
     EXPECT_EQ(laserTower->attack_speed(), Constants::LASERTOWER_UPGRADE_ATTACKSPEED);
-    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_UPGRADE_COST());
+    EXPECT_EQ(laserTower->cost(), Constants::LASERTOWER_BASE_COST());
     EXPECT_EQ(laserTower->upgrade_cost(), Constants::LASERTOWER_UPGRADE_COST());
     EXPECT_EQ(laserTower->max_hp(), Constants::LASERTOWER_MAX_HP);
     EXPECT_EQ(laserTower->remove_value(), Constants::LASERTOWER_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(laserTower->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(laserTower->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(laserTower->get_vector_pos(), -1);
     EXPECT_TRUE(laserTower->is_upgraded());
     EXPECT_TRUE(laserTower->is_friendly());
@@ -402,7 +402,7 @@ class SniperTowerFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
     std::shared_ptr<SniperTower> sniperTower;
-    SniperTowerFixture() : cb(new MockCallback()), sniperTower(new SniperTower({0, 0}, cb)) {}
+    SniperTowerFixture() : cb(new MockCallback()), sniperTower(new SniperTower({1, 0}, cb)) {}
 };
 
 TEST_F(SniperTowerFixture, InitTest) {
@@ -412,7 +412,7 @@ TEST_F(SniperTowerFixture, InitTest) {
     EXPECT_EQ(sniperTower->remove_value(), Constants::SNIPERTOWER_BASE_REMOVE_VALUE);
     EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST());
     EXPECT_EQ(sniperTower->max_hp(), Constants::SNIPERTOWER_MAX_HP);
-    EXPECT_EQ(sniperTower->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(sniperTower->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(sniperTower->get_vector_pos(), -1);
     EXPECT_FALSE(sniperTower->is_upgraded());
     EXPECT_TRUE(sniperTower->is_friendly());
@@ -425,7 +425,7 @@ TEST_F(SniperTowerFixture, UpgradeTest) {
     EXPECT_EQ(sniperTower->upgrade_cost(), Constants::SNIPERTOWER_UPGRADE_COST());
     EXPECT_EQ(sniperTower->max_hp(), Constants::SNIPERTOWER_MAX_HP);
     EXPECT_EQ(sniperTower->remove_value(), Constants::SNIPERTOWER_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(sniperTower->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(sniperTower->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(sniperTower->get_vector_pos(), -1);
     EXPECT_TRUE(sniperTower->is_upgraded());
     EXPECT_TRUE(sniperTower->is_friendly());
@@ -457,7 +457,7 @@ class TeslaCoilFixture : public ::testing::Test {
 protected:
     std::shared_ptr<MockCallback> cb;
     std::shared_ptr<TeslaCoil> teslaCoil;
-    TeslaCoilFixture() : cb(new MockCallback()), teslaCoil(new TeslaCoil({0, 0}, cb)) {}
+    TeslaCoilFixture() : cb(new MockCallback()), teslaCoil(new TeslaCoil({1, 0}, cb)) {}
 };
 
 TEST_F(TeslaCoilFixture, InitTest) {
@@ -467,7 +467,7 @@ TEST_F(TeslaCoilFixture, InitTest) {
     EXPECT_EQ(teslaCoil->remove_value(), Constants::TESLACOIL_BASE_REMOVE_VALUE);
     EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST());
     EXPECT_EQ(teslaCoil->max_hp(), Constants::TESLACOIL_MAX_HP);
-    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(teslaCoil->get_vector_pos(), -1);
     EXPECT_FALSE(teslaCoil->is_upgraded());
     EXPECT_TRUE(teslaCoil->is_friendly());
@@ -480,7 +480,7 @@ TEST_F(TeslaCoilFixture, UpgradeTest) {
     EXPECT_EQ(teslaCoil->upgrade_cost(), Constants::TESLACOIL_UPGRADE_COST());
     EXPECT_EQ(teslaCoil->max_hp(), Constants::TESLACOIL_MAX_HP);
     EXPECT_EQ(teslaCoil->remove_value(), Constants::TESLACOIL_UPGRADE_REMOVE_VALUE);
-    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate) {0, 0}));
+    EXPECT_EQ(teslaCoil->get_position(), ((Coordinate) {1, 0}));
     EXPECT_EQ(teslaCoil->get_vector_pos(), -1);
     EXPECT_TRUE(teslaCoil->is_upgraded());
     EXPECT_TRUE(teslaCoil->is_friendly());
@@ -579,9 +579,13 @@ TEST_F(GameModelFixture, BuildTest1) {
     for (int i = 0; i < 12; ++i) {
         game_model.select_tower((EntityType)i);
         if (game_model.is_buildable((EntityType)i) || i == EntityType::TypeFriendly) {
-            EXPECT_NO_THROW(game_model.add_friendly_entity({i, 0}));
+            if (i == EntityType::TypeHqAttack || i == EntityType::TypeHqDefense) {
+                EXPECT_EQ(game_model.add_friendly_entity({0, i}), std::nullopt);
+            } else {
+                EXPECT_EQ(game_model.add_friendly_entity({i, 0}), std::nullopt);
+            }
         } else {
-            EXPECT_ANY_THROW(game_model.add_friendly_entity({i, 0}));
+            EXPECT_NE(game_model.add_friendly_entity({i, 0}), std::nullopt);
         }
     }
 }
@@ -591,12 +595,12 @@ TEST_F(GameModelFixture, BuildTest2) {
     while (!game_model.is_buildable(TypeFactory)) {
         game_model.update();
     }
-    game_model.add_friendly_entity({0, 0});
-    EXPECT_EQ(game_model.get_field_const({0, 0}).get_team_status(), Team::TeamFriendly);
+    game_model.add_friendly_entity({1, 0});
+    EXPECT_EQ(game_model.get_field_const({1, 0}).get_team_status(), Team::TeamFriendly);
     while (!game_model.is_buildable(TypeFactory)) {
         game_model.update();
     }
-    EXPECT_ANY_THROW(game_model.add_friendly_entity({0, 0}));
+    EXPECT_NE(game_model.add_friendly_entity({1, 0}), std::nullopt);
 }
 
 #pragma clang diagnostic pop
