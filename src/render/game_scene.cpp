@@ -92,8 +92,10 @@ GameScene::GameScene(
 
             buy_menu->clear_selection();
             set_selected_field(std::nullopt);
+            board->clear_selection();
         } else if (selected_field) {
             set_selected_field(std::nullopt);
+            board->clear_selection();
         } else {
             set_selected_field(pos);
         }
@@ -106,6 +108,7 @@ GameScene::GameScene(
     buy_callbacks.select_callback = [&](EntityType type) {
         model.select_tower(type);
         set_selected_field(std::nullopt);
+        board->clear_selection();
     };
 
     GameUpgradeCallbacks& upgrade_callbacks = upgrade_menu->modify_callbacks();
@@ -131,6 +134,7 @@ GameScene::GameScene(
             }
 
             set_selected_field(std::nullopt);
+            board->clear_selection();
         }
     };
 
@@ -168,6 +172,7 @@ void GameScene::set_selected_field(std::optional<Coordinate> pos) {
         is_upgraded = tower->is_upgraded();
     } else {
         pos = std::nullopt;
+        board->clear_selection();
     }
 
     upgrade_menu->set_prices(tower_type, is_upgraded);
@@ -321,6 +326,7 @@ void GameScene::on_scene_enter(std::string previous_scene) {
     // Don't unpause when returning from options scene
     if (previous_scene != "options") {
         set_selected_field(std::nullopt);
+        board->clear_selection();
         menu_shown = false;
         menu_exit_button.set_text("Exit without saving");
     }
