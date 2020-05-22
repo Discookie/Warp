@@ -11,6 +11,7 @@ using font_ptr = std::shared_ptr<ALLEGRO_FONT>;
 
 neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
     font_ptr font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -10, 0), FontDeleter());
+    font_ptr huge_font = font_ptr(al_load_ttf_font("assets/slkscr.ttf", -40, 0), FontDeleter());
 
     auto board_click = [](Coordinate _c) {};
     auto board_drag_end = [](Coordinate _c) {};
@@ -59,7 +60,8 @@ neither::Either<std::string, scene_ptr> GameScene::create(GameModel& model) {
                 model, std::move(board),
                 std::move(buymenu), std::move(upgrade),
                 std::move(points_text), std::move(gold_text),
-                std::move(status_bar), std::move(tooltip_box)
+                std::move(status_bar), std::move(tooltip_box),
+                huge_font
             ));
         });
 }
@@ -68,11 +70,13 @@ GameScene::GameScene(
     GameModel& _model, std::unique_ptr<GameBoard>&& _board,
     std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
     GameStatusText&& _points_text, GameStatusText&& _gold_text,
-    GameStatusBar&& _status_bar, GameTooltipBox&& _tooltip_box
+    GameStatusBar&& _status_bar, GameTooltipBox&& _tooltip_box,
+    std::shared_ptr<ALLEGRO_FONT> _huge_font_ptr
 ) : model(_model), board(std::move(_board)), selected_field(std::nullopt),
     buy_menu(std::move(_buy_menu)), upgrade_menu(std::move(_upgrade_menu)),
     gold_text(_gold_text), points_text(_points_text), status_bar(_status_bar),
-    menu_shown(false), clicked_scene(std::nullopt), tooltip_box(_tooltip_box)
+    menu_shown(false), clicked_scene(std::nullopt), tooltip_box(_tooltip_box),
+    huge_font_ptr(_huge_font_ptr)
 {
     GameBoardCallbacks& board_callbacks = board->modify_callbacks();
     
@@ -175,20 +179,34 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     // FIXME: Move this to a better location
     // FIXME: Reset the model on scene leave/enter
     // TODO: Track previous frame for frameskips
-    if (!menu_shown) {
+    if (!menu_shown && !model.is_game_over()) {
         model.update();
-        buy_menu->update_buyable(model.get_gold());
-        upgrade_menu->update_buyable(model.get_gold());
+        
+        if (!model.is_game_over()) {
+            buy_menu->update_buyable(model.get_gold());
+            upgrade_menu->update_buyable(model.get_gold());
 
-        points_text.set_value(std::to_string(model.get_points()));
-        gold_text.set_value(std::to_string(model.get_gold()));
+                points_text.set_value(std::to_string(model.get_points()));
+            gold_text.set_value(std::to_string(model.get_gold()));
 
-        status_bar.set_fill(std::max(
-            (Constants::WAVE_COUNTDOWN_TIME - model.get_wave_progress()) 
-                * 100 / Constants::WAVE_COUNTDOWN_TIME,
-            0
-        ));
-        status_bar.set_label("Wave: " + std::to_string(model.get_wave_number()));
+                status_bar.set_fill(std::max(
+                (Constants::WAVE_COUNTDOWN_TIME - model.get_wave_progress()) 
+                    * 100 / Constants::WAVE_COUNTDOWN_TIME,
+                0
+            ));
+            status_bar.set_label("Wave: " + std::to_string(model.get_wave_number()));
+        }
+    }
+    
+    // render game over backdrops under everything
+    if (model.is_game_over()) {
+        if (model.is_game_won()) {
+            al_draw_filled_rectangle(3, 27, 23, 227, al_map_rgba(155, 227, 157, 24));
+            al_draw_filled_rectangle(24, 27, 243, 227, al_map_rgba(92, 173, 95, 16));
+        } else {
+            al_draw_filled_rectangle(3, 27, 23, 227, al_map_rgba(204, 127, 118, 192));
+            al_draw_filled_rectangle(24, 27, 243, 227, al_map_rgba(161, 77, 67, 128));
+        }
     }
 
     board->render_board(event);
@@ -201,6 +219,29 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
     tooltip_box.render_tooltip();
 
     menu_pause_button.render_button();
+    
+    // render game over text over everything
+    if (model.is_game_over()) {
+        if (model.is_game_won()) {
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 88,
+                ALLEGRO_ALIGN_CENTER, "CONGRATS"
+            );
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 128,
+                ALLEGRO_ALIGN_CENTER, "YOU WON!"
+            );
+        } else {
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 88,
+                ALLEGRO_ALIGN_CENTER, "BETTER LUCK"
+            );
+            al_draw_text(
+                huge_font_ptr.get(), al_map_rgb(255, 255, 255), 124, 128,
+                ALLEGRO_ALIGN_CENTER, "NEXT TIME!"
+            );
+        }
+    }
 
     if (menu_shown) {
         al_draw_filled_rectangle(0, 0, 320, 240, al_map_rgba(64, 64, 64, 128));
@@ -215,13 +256,7 @@ void GameScene::render_scene(SceneMessenger& messenger, const ALLEGRO_EVENT& eve
 void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& event) {
     switch (event.type) {
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            if (!menu_shown) {
-                board->on_click(event.mouse);
-                buy_menu->on_click(event.mouse);
-                upgrade_menu->on_click(event.mouse);
-
-                menu_pause_button.on_click(event.mouse);
-            } else {
+            if (menu_shown) {
                 menu_resume_button.on_click(event.mouse);
                 menu_save_button.on_click(event.mouse);
                 menu_options_button.on_click(event.mouse);
@@ -231,11 +266,19 @@ void GameScene::on_mouse_event(SceneMessenger& messenger, const ALLEGRO_EVENT& e
                     messenger.switch_scene(*clicked_scene);
                     clicked_scene = std::nullopt;
                 }
+            } else {
+                if (!model.is_game_over()) {
+                    board->on_click(event.mouse);
+                    buy_menu->on_click(event.mouse);
+                    upgrade_menu->on_click(event.mouse);
+                }
+
+                menu_pause_button.on_click(event.mouse);
             }
             break;
         
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-            if (!menu_shown) {
+            if (!menu_shown && !model.is_game_over()) {
                 board->on_release(event.mouse);
                 buy_menu->on_release(event.mouse);
                 upgrade_menu->on_release(event.mouse);

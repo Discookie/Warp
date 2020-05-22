@@ -32,14 +32,14 @@ private:
     std::optional<std::string> clicked_scene;
 
     GameModel& model;
-
-    //std::optional<GameTooltip> tooltip;
+    
+    std::shared_ptr<ALLEGRO_FONT> huge_font_ptr;
 
     GameScene(
         GameModel& _model, std::unique_ptr<GameBoard>&& _board,
         std::unique_ptr<GameBuyMenu>&& _buy_menu, std::unique_ptr<GameUpgradeMenu> _upgrade_menu,
         GameStatusText&& points_text, GameStatusText&& gold_text, GameStatusBar&& status_bar,
-        GameTooltipBox&& tooltip_box
+        GameTooltipBox&& tooltip_box, std::shared_ptr<ALLEGRO_FONT> huge_font_ptr
     );
 public:
     static neither::Either<std::string, std::unique_ptr<GameScene>> create(GameModel& model);

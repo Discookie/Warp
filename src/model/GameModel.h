@@ -95,6 +95,8 @@ public:
 
     bool is_game_over() const { return game_over; }
 
+    bool is_game_won() const { return check_win(); }
+
     friend std::ostream &operator<<(std::ostream &os, const GameModel &model);
 
     friend std::istream &operator>>(std::istream &is, GameModel &model);
