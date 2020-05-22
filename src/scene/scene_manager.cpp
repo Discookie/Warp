@@ -65,7 +65,6 @@ void SceneManager::render(const ALLEGRO_EVENT &event) {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
     if (!current_scene) {
-        al_flip_display();
         return;
     }
 
@@ -82,11 +81,9 @@ void SceneManager::render(const ALLEGRO_EVENT &event) {
             scene_ptr &new_scene = current_scene->get().second;
         }
     }
-
-    al_flip_display();
 }
 
-void SceneManager::handle_event(const ALLEGRO_EVENT &event) {
+void SceneManager::handle_event(const ALLEGRO_EVENT &event, int scale_multiplier) {
     if (!current_scene) {
         return;
     }
@@ -106,9 +103,16 @@ void SceneManager::handle_event(const ALLEGRO_EVENT &event) {
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
         case ALLEGRO_EVENT_MOUSE_WARPED:
         case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
-        case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
-            scene->on_mouse_event(messenger, event);
+        case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY: {
+            // scale mouse pos
+            ALLEGRO_EVENT event_copy = event;
+            event_copy.mouse.x /= scale_multiplier;
+            event_copy.mouse.y /= scale_multiplier;
+            event_copy.mouse.dx /= scale_multiplier;
+            event_copy.mouse.dy /= scale_multiplier;
+            scene->on_mouse_event(messenger, event_copy);
             break;
+        }
 
         default:
             scene->on_event(messenger, event);

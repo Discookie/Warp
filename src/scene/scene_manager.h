@@ -35,5 +35,5 @@ public:
     void render(const ALLEGRO_EVENT &event);
 
     /// Note: Does not accept render timer events.
-    void handle_event(const ALLEGRO_EVENT &event);
+    void handle_event(const ALLEGRO_EVENT &event, int scale_multiplier);
 };
