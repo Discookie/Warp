@@ -32,7 +32,7 @@ public:
     void attack_entities(std::vector<std::vector<Field>> &fields) override {
         for (int i = this->position.x - 1; i >= std::max(this->position.x - 3, 0); i--) {
             int k = i - this->position.x;
-            if (this->position.y - k >= 0) {
+            if (this->position.y - k >= 0 && this->position.y - k < 10) {
                 if (fields[i][this->position.y - k].get_team_status() == Team::TeamFriendly) {
                     if (fields[i][this->position.y - k].get_tower()) {
                         fields[i][this->position.y - k].get_tower()->take_damage(this->damage());
@@ -54,7 +54,7 @@ public:
                     }
                 }
             }
-            if (this->position.y + k < fields.size()) {
+            if (this->position.y + k >= 0 && this->position.y + k < fields.size()) {
                 if (fields[i][this->position.y + k].get_team_status() == Team::TeamFriendly) {
                     if (fields[i][this->position.y + k].get_tower()) {
                         fields[i][this->position.y + k].get_tower()->take_damage(this->damage());
