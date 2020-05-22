@@ -5,6 +5,7 @@
 #include <fstream>
 #include <model/Stable/Factory.h>
 #include <cmath>
+#include <ctime>
 
 void GameModel::construct_fields() {
     for (int i = 0; i < 12; i++) {
@@ -170,7 +171,7 @@ void GameModel::change_difficulty(Difficulty df) {
 }
 
 void GameModel::new_game() {
-    std::srand(std::rand());
+    std::srand(time(NULL));
     this->points = 0;
     this->gold = Constants::STARTING_GOLD;
     this->time_counter = 0;
