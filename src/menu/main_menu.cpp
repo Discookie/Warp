@@ -50,7 +50,6 @@ MainMenuScene::MainMenuScene(MenuImage&& img, const font_ptr& font, std::functio
         MenuButton(160, 160, MENU_WIDTH, 20, "Options", font, [&]() { clicked_scene = "options"; });
     credits_button =
         MenuButton(160, 190, MENU_WIDTH, 20, "Credits", font, [&]() { clicked_scene = "credits"; });
-    credits_button.disable();
     exit_button =
         MenuButton(160, 225, MENU_WIDTH, 20, "Exit", font, [&]() { clicked_scene = "exit"; });
 

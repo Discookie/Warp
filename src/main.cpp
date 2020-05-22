@@ -11,6 +11,7 @@
 #include "menu/main_menu.h"
 #include "menu/new_game.h"
 #include "menu/options.h"
+#include "menu/credits.h"
 #include "render/game_scene.h"
 #include "model/GameModel.h"
 #include "scene/scene_manager.h"
@@ -110,6 +111,7 @@ int main() {
     try_add_scene(OptionsScene::create(
         std::move(scale_get_func), std::move(scale_func)
     ), "options");
+    try_add_scene(CreditsScene::create(), "credits");
     try_add_scene(GameScene::create(game_model), "in_game");
     scene_manager.set_scene("main_menu");
     
