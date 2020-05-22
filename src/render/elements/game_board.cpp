@@ -147,6 +147,14 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
                     }
                 }
             }
+
+            // Render the selector, if the field is selected
+            if (selected_field && selected_field->x == idx_x && selected_field->y == idx_y) {
+                al_draw_rectangle(
+                    x_pos, y_pos, x_pos + field_size, y_pos + field_size,
+                    al_map_rgb(106, 193, 200), 3
+                );
+            }
         }
     }
 }
