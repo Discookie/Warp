@@ -15,6 +15,11 @@ const std::vector<std::string> sprite_names = {
     "octopus",
     "robot",
     "friendly",
+    "none",
+    "factory_up",
+    "laser_up",
+    "tesla_coil_up",
+    "sniper_tower_up",
     "multiple"
 };
 
@@ -93,6 +98,9 @@ void GameBoard::render_board(const ALLEGRO_EVENT& event) {
             std::shared_ptr<const Stable> tower = field.get_tower_const();
             // This is an int instead of EntityType for easier arithmetics
             int ty = tower ? tower->get_entity_type() : EntityType::TypeNone;
+
+            // HQ Onward cannot be upgraded
+            if (ty < 5 && tower && tower->is_upgraded()) { ty += 12; }
 
             std::vector<std::shared_ptr<const Unstable>> entities = field.get_moving_entities_const();
             const std::optional<GameSprite>& sprite = sprites[ty];
